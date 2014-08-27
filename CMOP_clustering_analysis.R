@@ -9,10 +9,10 @@ library(flowPhyto)
 cruise.path <- paste("/Volumes/seaflow/CMOP_6");pop.def  <- readPopDef(paste(cruise.path, "/pop.def.tab",sep="")) 
 cruise.path<-paste("."); save.path<-paste(".") #what is this for?
 
-all.files <- getCruiseFiles(cruise.dir=cruise.path, ext=".evt.opp") #warning: "no files found in directory"
+all.files <- getCruiseFiles(cruise.dir=cruise.path, ext=".evt.opp") #warning: "no files found in directory 2013_252"
 
 
-##since I only want to recluster (not refilter), don't need this?
+##they are already filtered? How can I change this so I can look file by file?
 
 #for(file in all.files){	
 #print(file)
