@@ -1,4 +1,4 @@
 CMOP
 ====
 
-CMOP data analysis :computer: :ocean: :dolphin:
+CMOP data analysis :computer:  :dolphin:  :boat:
