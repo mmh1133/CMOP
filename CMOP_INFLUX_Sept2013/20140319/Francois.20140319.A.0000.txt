@@ -1,0 +1,99 @@
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Francois\20140319\Francois.20140319.A.0001.fcs
+Comments:
+
+Institution:	UW		Operator:	Megane		Investigator:	Francois
+Project:	CMOP_6		Sample Number:	9 B		Cells:		
+Date:		19-MAR-14	System time:	Wed Mar 19 10:40:17 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Francois\20140319\Francois.20140319.A.0002.fcs
+Comments:
+
+Institution:	UW		Operator:	Megan		Investigator:	Francois
+Project:	CMOP_6		Sample Number:	5 S		Cells:		
+Date:		19-MAR-14	System time:	Wed Mar 19 11:25:51 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Francois\20140319\Francois.20140319.A.0003.fcs
+Comments:
+
+Institution:	UW		Operator:	Megan		Investigator:	Francois
+Project:	CMOP_6		Sample Number:	9 B		Cells:		
+Date:		19-MAR-14	System time:	Wed Mar 19 11:35:34 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Francois\20140319\Francois.20140319.A.0004.fcs
+Comments:
+
+Institution:	UW		Operator:	Megan		Investigator:	Francois
+Project:	CMOP_6		Sample Number:	37 S		Cells:		
+Date:		19-MAR-14	System time:	Wed Mar 19 12:17:06 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Francois\20140319\Francois.20140319.A.0005.fcs
+Comments:
+
+Institution:	UW		Operator:	Megan		Investigator:	Francois
+Project:	CMOP_6		Sample Number:	55 M		Cells:		
+Date:		19-MAR-14	System time:	Wed Mar 19 12:26:33 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Francois\20140319\Francois.20140319.A.0006.fcs
+Comments:
+
+Institution:	UW		Operator:	Megan		Investigator:	Francois
+Project:	CMOP_6		Sample Number:	60 B		Cells:		
+Date:		19-MAR-14	System time:	Wed Mar 19 13:20:04 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Francois\20140319\Francois.20140319.A.0007.fcs
+Comments:
+
+Institution:	UW		Operator:	Megan		Investigator:	Francois
+Project:	CMOP_6		Sample Number:	77 B		Cells:		
+Date:		19-MAR-14	System time:	Wed Mar 19 13:30:56 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Francois\20140319\Francois.20140319.A.0008.fcs
+Comments:
+
+Institution:	UW		Operator:	Megan		Investigator:	Francois
+Project:	CMOP_6		Sample Number:	83 B		Cells:		
+Date:		19-MAR-14	System time:	Wed Mar 19 13:44:05 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Francois\20140319\Francois.20140319.A.0009.fcs
+Comments:
+
+Institution:	UW		Operator:	Megan		Investigator:	Francois
+Project:	CMOP_6		Sample Number:	93 M		Cells:		
+Date:		19-MAR-14	System time:	Wed Mar 19 13:56:25 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Francois\20140319\Francois.20140319.A.0010.fcs
+Comments:
+
+Institution:	UW		Operator:	Megan		Investigator:	Francois
+Project:	CMOP_6		Sample Number:	103 M		Cells:		
+Date:		19-MAR-14	System time:	Wed Mar 19 14:09:19 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Francois\20140319\Francois.20140319.A.0011.fcs
+Comments:
+
+Institution:	UW		Operator:	Megan		Investigator:	Francois
+Project:	CMOP_6		Sample Number:	111 S		Cells:		
+Date:		19-MAR-14	System time:	Wed Mar 19 14:18:28 2014
+========================================================================================
+
+

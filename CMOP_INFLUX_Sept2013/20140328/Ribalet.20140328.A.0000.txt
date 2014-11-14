@@ -1,0 +1,45 @@
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\CMOP_Sept2013\Ribalet\20140328\Ribalet.20140328.A.0001.fcs
+Comments:
+
+Institution:	UW		Operator:	Schatz		Investigator:	Ribalet
+Project:	CMOP_Sept2013		Sample Number:	23 S		Cells:		
+Date:		28-MAR-14	System time:	Fri Mar 28 11:37:50 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\CMOP_Sept2013\Ribalet\20140328\Ribalet.20140328.A.0002.fcs
+Comments:
+
+Institution:	UW		Operator:	Schatz		Investigator:	Ribalet
+Project:	CMOP_Sept2013		Sample Number:	33 B		Cells:		
+Date:		28-MAR-14	System time:	Fri Mar 28 11:54:25 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\CMOP_Sept2013\Ribalet\20140328\Ribalet.20140328.A.0003.fcs
+Comments:
+
+Institution:	UW		Operator:	Schatz		Investigator:	Ribalet
+Project:	CMOP_Sept2013		Sample Number:	85 M		Cells:		
+Date:		28-MAR-14	System time:	Fri Mar 28 12:06:23 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\CMOP_Sept2013\Ribalet\20140328\Ribalet.20140328.A.0004.fcs
+Comments:
+
+Institution:	UW		Operator:	Schatz		Investigator:	Ribalet
+Project:	CMOP_Sept2013		Sample Number:	99 S		Cells:		
+Date:		28-MAR-14	System time:	Fri Mar 28 12:18:26 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\CMOP_Sept2013\Ribalet\20140328\Ribalet.20140328.A.0005.fcs
+Comments:
+
+Institution:	UW		Operator:	Schatz		Investigator:	Ribalet
+Project:	CMOP_Sept2013		Sample Number:	109 M		Cells:		
+Date:		28-MAR-14	System time:	Fri Mar 28 12:30:31 2014
+========================================================================================
+
+
