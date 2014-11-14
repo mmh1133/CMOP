@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fcs_metainfo version="1">
+  <fcs_file filename="C:\Documents and Settings\Administrator\Desktop\Francois\CMOP_Sept2013\Ribalet\20140826\Ribalet.20140826.A.0001.fcs">
+    <user_data investigator="Ribalet" project="CMOP" operator="Schatz" total_count="88803" comments="" cells="" time="Tue Aug 26 14:35:44 2014" institution="UW" date="26-AUG-14" sample_number="13M"/>
+    <parameters bit_count="16" range="65535" trigger_channel="1">
+      <parameter number="0" name="pulse width"/>
+      <parameter data_scaling="log" number="1" name="FSC small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="2" name="FSC big stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="3" name="692-40 small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="4" name="monochromater" decades="4,0"/>
+      <parameter data_scaling="log" number="5" name="580-30" decades="4,0"/>
+      <parameter data_scaling="log" number="6" name="530-40" decades="4,0"/>
+      <parameter data_scaling="log" number="7" name="460-50" decades="4,0"/>
+      <parameter data_scaling="lin" number="8" name="wavelengths" decades="0,0"/>
+      <parameter data_scaling="log" number="9" name="SSC" decades="4,0"/>
+      <parameter number="49" name="TIME"/>
+    </parameters>
+  </fcs_file>
+  <fcs_file filename="C:\Documents and Settings\Administrator\Desktop\Francois\CMOP_Sept2013\Ribalet\20140826\Ribalet.20140826.A.0002.fcs">
+    <user_data investigator="Ribalet" project="CMOP" operator="Schatz" total_count="132665" comments="" cells="" time="Tue Aug 26 14:50:58 2014" institution="UW" date="26-AUG-14" sample_number="43M"/>
+    <parameters bit_count="16" range="65535" trigger_channel="1">
+      <parameter number="0" name="pulse width"/>
+      <parameter data_scaling="log" number="1" name="FSC small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="2" name="FSC big stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="3" name="692-40 small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="4" name="monochromater" decades="4,0"/>
+      <parameter data_scaling="log" number="5" name="580-30" decades="4,0"/>
+      <parameter data_scaling="log" number="6" name="530-40" decades="4,0"/>
+      <parameter data_scaling="log" number="7" name="460-50" decades="4,0"/>
+      <parameter data_scaling="lin" number="8" name="wavelengths" decades="0,0"/>
+      <parameter data_scaling="log" number="9" name="SSC" decades="4,0"/>
+      <parameter number="49" name="TIME"/>
+    </parameters>
+  </fcs_file>
+  <fcs_file filename="C:\Documents and Settings\Administrator\Desktop\Francois\CMOP_Sept2013\Ribalet\20140826\Ribalet.20140826.A.0003.fcs">
+    <user_data investigator="Ribalet" project="CMOP" operator="Schatz" total_count="91225" comments="" cells="" time="Tue Aug 26 15:02:39 2014" institution="UW" date="26-AUG-14" sample_number="45S"/>
+    <parameters bit_count="16" range="65535" trigger_channel="1">
+      <parameter number="0" name="pulse width"/>
+      <parameter data_scaling="log" number="1" name="FSC small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="2" name="FSC big stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="3" name="692-40 small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="4" name="monochromater" decades="4,0"/>
+      <parameter data_scaling="log" number="5" name="580-30" decades="4,0"/>
+      <parameter data_scaling="log" number="6" name="530-40" decades="4,0"/>
+      <parameter data_scaling="log" number="7" name="460-50" decades="4,0"/>
+      <parameter data_scaling="lin" number="8" name="wavelengths" decades="0,0"/>
+      <parameter data_scaling="log" number="9" name="SSC" decades="4,0"/>
+      <parameter number="49" name="TIME"/>
+    </parameters>
+  </fcs_file>
+  <fcs_file filename="C:\Documents and Settings\Administrator\Desktop\Francois\CMOP_Sept2013\Ribalet\20140826\Ribalet.20140826.A.0004.fcs">
+    <user_data investigator="Ribalet" project="CMOP" operator="Schatz" total_count="112562" comments="" cells="" time="Tue Aug 26 15:13:23 2014" institution="UW" date="26-AUG-14" sample_number="49M"/>
+    <parameters bit_count="16" range="65535" trigger_channel="1">
+      <parameter number="0" name="pulse width"/>
+      <parameter data_scaling="log" number="1" name="FSC small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="2" name="FSC big stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="3" name="692-40 small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="4" name="monochromater" decades="4,0"/>
+      <parameter data_scaling="log" number="5" name="580-30" decades="4,0"/>
+      <parameter data_scaling="log" number="6" name="530-40" decades="4,0"/>
+      <parameter data_scaling="log" number="7" name="460-50" decades="4,0"/>
+      <parameter data_scaling="lin" number="8" name="wavelengths" decades="0,0"/>
+      <parameter data_scaling="log" number="9" name="SSC" decades="4,0"/>
+      <parameter number="49" name="TIME"/>
+    </parameters>
+  </fcs_file>
+  <fcs_file filename="C:\Documents and Settings\Administrator\Desktop\Francois\CMOP_Sept2013\Ribalet\20140826\Ribalet.20140826.A.0005.fcs">
+    <user_data investigator="Ribalet" project="CMOP" operator="Schatz" total_count="111220" comments="" cells="" time="Tue Aug 26 15:25:14 2014" institution="UW" date="26-AUG-14" sample_number="53B"/>
+    <parameters bit_count="16" range="65535" trigger_channel="1">
+      <parameter number="0" name="pulse width"/>
+      <parameter data_scaling="log" number="1" name="FSC small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="2" name="FSC big stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="3" name="692-40 small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="4" name="monochromater" decades="4,0"/>
+      <parameter data_scaling="log" number="5" name="580-30" decades="4,0"/>
+      <parameter data_scaling="log" number="6" name="530-40" decades="4,0"/>
+      <parameter data_scaling="log" number="7" name="460-50" decades="4,0"/>
+      <parameter data_scaling="lin" number="8" name="wavelengths" decades="0,0"/>
+      <parameter data_scaling="log" number="9" name="SSC" decades="4,0"/>
+      <parameter number="49" name="TIME"/>
+    </parameters>
+  </fcs_file>
+  <fcs_file filename="C:\Documents and Settings\Administrator\Desktop\Francois\CMOP_Sept2013\Ribalet\20140826\Ribalet.20140826.A.0006.fcs">
+    <user_data investigator="Ribalet" project="CMOP" operator="Schatz" total_count="123329" comments="" cells="" time="Tue Aug 26 15:34:59 2014" institution="UW" date="26-AUG-14" sample_number="71B"/>
+    <parameters bit_count="16" range="65535" trigger_channel="1">
+      <parameter number="0" name="pulse width"/>
+      <parameter data_scaling="log" number="1" name="FSC small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="2" name="FSC big stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="3" name="692-40 small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="4" name="monochromater" decades="4,0"/>
+      <parameter data_scaling="log" number="5" name="580-30" decades="4,0"/>
+      <parameter data_scaling="log" number="6" name="530-40" decades="4,0"/>
+      <parameter data_scaling="log" number="7" name="460-50" decades="4,0"/>
+      <parameter data_scaling="lin" number="8" name="wavelengths" decades="0,0"/>
+      <parameter data_scaling="log" number="9" name="SSC" decades="4,0"/>
+      <parameter number="49" name="TIME"/>
+    </parameters>
+  </fcs_file>
+  <fcs_file filename="C:\Documents and Settings\Administrator\Desktop\Francois\CMOP_Sept2013\Ribalet\20140826\Ribalet.20140826.A.0007.fcs">
+    <user_data investigator="Ribalet" project="CMOP" operator="Schatz" total_count="124121" comments="" cells="" time="Tue Aug 26 15:45:01 2014" institution="UW" date="26-AUG-14" sample_number="105S"/>
+    <parameters bit_count="16" range="65535" trigger_channel="1">
+      <parameter number="0" name="pulse width"/>
+      <parameter data_scaling="log" number="1" name="FSC small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="2" name="FSC big stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="3" name="692-40 small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="4" name="monochromater" decades="4,0"/>
+      <parameter data_scaling="log" number="5" name="580-30" decades="4,0"/>
+      <parameter data_scaling="log" number="6" name="530-40" decades="4,0"/>
+      <parameter data_scaling="log" number="7" name="460-50" decades="4,0"/>
+      <parameter data_scaling="lin" number="8" name="wavelengths" decades="0,0"/>
+      <parameter data_scaling="log" number="9" name="SSC" decades="4,0"/>
+      <parameter number="49" name="TIME"/>
+    </parameters>
+  </fcs_file>
+</fcs_metainfo>

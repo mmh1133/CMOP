@@ -1,0 +1,63 @@
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Francois\20140321\Francois.20140321.A.0001.fcs
+Comments:
+
+Institution:	UW		Operator:	Megan		Investigator:	Francois
+Project:	CMOP_6		Sample Number:	7 M		Cells:		
+Date:		21-MAR-14	System time:	Fri Mar 21 10:52:09 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Francois\20140321\Francois.20140321.A.0002.fcs
+Comments:
+
+Institution:	UW		Operator:	Megan		Investigator:	Francois
+Project:	CMOP_6		Sample Number:	19 M		Cells:		
+Date:		21-MAR-14	System time:	Fri Mar 21 11:06:41 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Francois\20140321\Francois.20140321.A.0003.fcs
+Comments:
+
+Institution:	UW		Operator:	Megan		Investigator:	Francois
+Project:	CMOP_6		Sample Number:	51 S		Cells:		
+Date:		21-MAR-14	System time:	Fri Mar 21 11:50:13 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Francois\20140321\Francois.20140321.A.0004.fcs
+Comments:
+
+Institution:	UW		Operator:	Megan		Investigator:	Francois
+Project:	CMOP_6		Sample Number:	63 S		Cells:		
+Date:		21-MAR-14	System time:	Fri Mar 21 12:03:54 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Francois\20140321\Francois.20140321.A.0005.fcs
+Comments:
+
+Institution:	UW		Operator:	Megan		Investigator:	Francois
+Project:	CMOP_6		Sample Number:	89 B		Cells:		
+Date:		21-MAR-14	System time:	Fri Mar 21 12:18:03 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Francois\20140321\Francois.20140321.A.0006.fcs
+Comments:
+
+Institution:	UW		Operator:	Megan		Investigator:	Francois
+Project:	CMOP_6		Sample Number:	95 B		Cells:		
+Date:		21-MAR-14	System time:	Fri Mar 21 12:31:00 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Francois\20140321\Francois.20140321.A.0007.fcs
+Comments:
+
+Institution:	UW		Operator:	Megan		Investigator:	Francois
+Project:	CMOP_6		Sample Number:	107 B		Cells:		
+Date:		21-MAR-14	System time:	Fri Mar 21 12:42:30 2014
+========================================================================================
+
+

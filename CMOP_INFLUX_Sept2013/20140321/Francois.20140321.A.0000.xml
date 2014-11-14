@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fcs_metainfo version="1">
+  <fcs_file filename="C:\Documents and Settings\Administrator\Desktop\Francois\Francois\20140321\Francois.20140321.A.0001.fcs">
+    <user_data investigator="Francois" project="CMOP_6" operator="Megan" total_count="93348" comments="" cells="" time="Fri Mar 21 10:52:09 2014" institution="UW" date="21-MAR-14" sample_number="7 M"/>
+    <parameters bit_count="16" range="65535" trigger_channel="1">
+      <parameter number="0" name="pulse width"/>
+      <parameter data_scaling="log" number="1" name="FSC small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="3" name="692-40 small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="5" name="580-30" decades="4,0"/>
+      <parameter data_scaling="log" number="6" name="530-40" decades="4,0"/>
+      <parameter data_scaling="log" number="9" name="SSC" decades="4,0"/>
+      <parameter number="49" name="TIME"/>
+    </parameters>
+  </fcs_file>
+  <fcs_file filename="C:\Documents and Settings\Administrator\Desktop\Francois\Francois\20140321\Francois.20140321.A.0002.fcs">
+    <user_data investigator="Francois" project="CMOP_6" operator="Megan" total_count="154216" comments="" cells="" time="Fri Mar 21 11:06:41 2014" institution="UW" date="21-MAR-14" sample_number="19 M"/>
+    <parameters bit_count="16" range="65535" trigger_channel="1">
+      <parameter number="0" name="pulse width"/>
+      <parameter data_scaling="log" number="1" name="FSC small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="3" name="692-40 small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="5" name="580-30" decades="4,0"/>
+      <parameter data_scaling="log" number="6" name="530-40" decades="4,0"/>
+      <parameter data_scaling="log" number="9" name="SSC" decades="4,0"/>
+      <parameter number="49" name="TIME"/>
+    </parameters>
+  </fcs_file>
+  <fcs_file filename="C:\Documents and Settings\Administrator\Desktop\Francois\Francois\20140321\Francois.20140321.A.0003.fcs">
+    <user_data investigator="Francois" project="CMOP_6" operator="Megan" total_count="138573" comments="" cells="" time="Fri Mar 21 11:50:13 2014" institution="UW" date="21-MAR-14" sample_number="51 S"/>
+    <parameters bit_count="16" range="65535" trigger_channel="1">
+      <parameter number="0" name="pulse width"/>
+      <parameter data_scaling="log" number="1" name="FSC small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="3" name="692-40 small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="5" name="580-30" decades="4,0"/>
+      <parameter data_scaling="log" number="6" name="530-40" decades="4,0"/>
+      <parameter data_scaling="log" number="9" name="SSC" decades="4,0"/>
+      <parameter number="49" name="TIME"/>
+    </parameters>
+  </fcs_file>
+  <fcs_file filename="C:\Documents and Settings\Administrator\Desktop\Francois\Francois\20140321\Francois.20140321.A.0004.fcs">
+    <user_data investigator="Francois" project="CMOP_6" operator="Megan" total_count="127239" comments="" cells="" time="Fri Mar 21 12:03:54 2014" institution="UW" date="21-MAR-14" sample_number="63 S"/>
+    <parameters bit_count="16" range="65535" trigger_channel="1">
+      <parameter number="0" name="pulse width"/>
+      <parameter data_scaling="log" number="1" name="FSC small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="3" name="692-40 small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="5" name="580-30" decades="4,0"/>
+      <parameter data_scaling="log" number="6" name="530-40" decades="4,0"/>
+      <parameter data_scaling="log" number="9" name="SSC" decades="4,0"/>
+      <parameter number="49" name="TIME"/>
+    </parameters>
+  </fcs_file>
+  <fcs_file filename="C:\Documents and Settings\Administrator\Desktop\Francois\Francois\20140321\Francois.20140321.A.0005.fcs">
+    <user_data investigator="Francois" project="CMOP_6" operator="Megan" total_count="182027" comments="" cells="" time="Fri Mar 21 12:18:03 2014" institution="UW" date="21-MAR-14" sample_number="89 B"/>
+    <parameters bit_count="16" range="65535" trigger_channel="1">
+      <parameter number="0" name="pulse width"/>
+      <parameter data_scaling="log" number="1" name="FSC small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="3" name="692-40 small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="5" name="580-30" decades="4,0"/>
+      <parameter data_scaling="log" number="6" name="530-40" decades="4,0"/>
+      <parameter data_scaling="log" number="9" name="SSC" decades="4,0"/>
+      <parameter number="49" name="TIME"/>
+    </parameters>
+  </fcs_file>
+  <fcs_file filename="C:\Documents and Settings\Administrator\Desktop\Francois\Francois\20140321\Francois.20140321.A.0006.fcs">
+    <user_data investigator="Francois" project="CMOP_6" operator="Megan" total_count="194772" comments="" cells="" time="Fri Mar 21 12:31:00 2014" institution="UW" date="21-MAR-14" sample_number="95 B"/>
+    <parameters bit_count="16" range="65535" trigger_channel="1">
+      <parameter number="0" name="pulse width"/>
+      <parameter data_scaling="log" number="1" name="FSC small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="3" name="692-40 small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="5" name="580-30" decades="4,0"/>
+      <parameter data_scaling="log" number="6" name="530-40" decades="4,0"/>
+      <parameter data_scaling="log" number="9" name="SSC" decades="4,0"/>
+      <parameter number="49" name="TIME"/>
+    </parameters>
+  </fcs_file>
+  <fcs_file filename="C:\Documents and Settings\Administrator\Desktop\Francois\Francois\20140321\Francois.20140321.A.0007.fcs">
+    <user_data investigator="Francois" project="CMOP_6" operator="Megan" total_count="151369" comments="" cells="" time="Fri Mar 21 12:42:30 2014" institution="UW" date="21-MAR-14" sample_number="107 B"/>
+    <parameters bit_count="16" range="65535" trigger_channel="1">
+      <parameter number="0" name="pulse width"/>
+      <parameter data_scaling="log" number="1" name="FSC small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="3" name="692-40 small stuff" decades="4,0"/>
+      <parameter data_scaling="log" number="5" name="580-30" decades="4,0"/>
+      <parameter data_scaling="log" number="6" name="530-40" decades="4,0"/>
+      <parameter data_scaling="log" number="9" name="SSC" decades="4,0"/>
+      <parameter number="49" name="TIME"/>
+    </parameters>
+  </fcs_file>
+</fcs_metainfo>
