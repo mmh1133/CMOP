@@ -20,7 +20,7 @@ summary.table <- NULL
 
 #files that are strange:40, 5
 #files that have only 1 crypto:10
-#okay files:20, 30, 25
+#okay files:20, 30, 25####
 #files that could potentially work well:15
 
 for (file in file.list) {
