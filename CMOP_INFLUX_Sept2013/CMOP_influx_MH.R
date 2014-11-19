@@ -15,12 +15,14 @@ library(plotrix)
 path <- paste("/Users/francois/CMOP/CMOP_INFLUX_Sept2013")
 file.list <- dir(path, pattern = ".fcs", recursive=T)
 
-file <- file.list[25]
+savepath<- paste0(path,"/results")
+
+file <- file.list[15]
 summary.table <- NULL
 
-#files that are strange:40, 5
-#files that have only 1 crypto:10
-#okay files:20, 30, 25####
+#files that are strange:40, 5, 12, 35
+#files that have only 1 crypto:10, 7
+#okay files:20, 30, 25
 #files that could potentially work well:15
 
 for (file in file.list) {
@@ -49,14 +51,14 @@ x <- subset(opp, pop==0)
 plot(x[,"chl_small"], x[,"pe"], pch=16, cex=0.4, col = densCols(x[,"chl_small"], x[,"pe"], colramp = .rainbow.cols), 
 		xlim=c(0,2^16), ylim=c(0,2^16), main="Gating NOISE & BEADS")
 
-print("Gating Noise")
-poly.noise <- getpoly(quiet=TRUE)
-print("Gating Beads")
-poly.beads <- getpoly(quiet=TRUE)
-print("Gating Pre-Crypto1")
-poly.pre.crypto1 <- getpoly(quiet=TRUE)
-print("Gating Pre-Crypto2")
-poly.pre.crypto2 <- getpoly(quiet=TRUE)
+#print("Gating Noise")
+#poly.noise <- getpoly(quiet=TRUE)
+#print("Gating Beads")
+#poly.beads <- getpoly(quiet=TRUE)
+#print("Gating Pre-Crypto1")
+#poly.pre.crypto1 <- getpoly(quiet=TRUE)
+#print("Gating Pre-Crypto2")
+#poly.pre.crypto2 <- getpoly(quiet=TRUE)
 
 polygon(poly.noise, lwd=2,border=2, col=NA)
 polygon(poly.beads, lwd=2,border=2, col=NA)
@@ -79,14 +81,14 @@ points(pre.crypto1$fsc_small, pre.crypto1$pe, col=2)
 points(pre.crypto2$fsc_small, pre.crypto2$pe, col=3)
 points(x[,"fsc_small"], x[,"pe"], pch=16, cex=0.4, col = densCols(x[,"fsc_small"], x[,"pe"], colramp = .rainbow.cols), xlim=c(0,2^16), ylim=c(0,2^16))
 
-print("Gating Noise2")
-poly.noise2 <- getpoly(quiet=TRUE)
-print("gating SYN")
-poly.syn <- getpoly(quiet=TRUE)
-print("gating CRYPTO1")
-poly.crypto1 <- getpoly(quiet=TRUE)
-print("gating CRYPTO2")
-poly.crypto2 <- getpoly(quiet=TRUE)
+#print("Gating Noise2")
+#poly.noise2 <- getpoly(quiet=TRUE)
+#print("gating SYN")
+#poly.syn <- getpoly(quiet=TRUE)
+#print("gating CRYPTO1")
+#poly.crypto1 <- getpoly(quiet=TRUE)
+#print("gating CRYPTO2")
+#poly.crypto2 <- getpoly(quiet=TRUE)
 
 polygon(poly.noise2, lwd=2,border=2, col=NA)
 polygon(poly.syn, lwd=2,border=2, col=NA)
@@ -122,20 +124,16 @@ points(x[,"fsc_small"], x[,"chl_small"], pch=16, cex=0.4, col = densCols(x[,"fsc
 # print("gating hetero")
 # poly.hetero <- getpoly(quiet=TRUE)
 
-polygon(poly.other, lwd=2,border=2, col=NA)
-polygon(poly.hetero, lwd=2,border=2, col=NA)
+#polygon(poly.other, lwd=2,border=2, col=NA)
+#olygon(poly.hetero, lwd=2,border=2, col=NA)
 
 
-other <- subset(x,inout(x[,c("fsc_small","chl_small")],poly=poly.other, bound=TRUE, quiet=TRUE))
-opp[row.names(other),'pop'] <- "other"
-hetero <- subset(x,inout(x[,c("fsc_small","chl_small")],poly=poly.hetero, bound=TRUE, quiet=TRUE))
-opp[row.names(hetero),'pop'] <- "hetero"
+# other <- subset(x,inout(x[,c("fsc_small","chl_small")],poly=poly.other, bound=TRUE, quiet=TRUE))
+# opp[row.names(other),'pop'] <- "other"
+# hetero <- subset(x,inout(x[,c("fsc_small","chl_small")],poly=poly.hetero, bound=TRUE, quiet=TRUE))
+# opp[row.names(hetero),'pop'] <- "hetero"
 
 
-par(mfrow=c(2,2))
-plot.vct.cytogram(opp, "fsc_small", "chl_small",main=basename(file))
-plot.vct.cytogram(opp, "fsc_small", "pe")
-plot.vct.cytogram(opp, "chl_small", "pe")
 
 
 ###################
@@ -175,60 +173,10 @@ stat.table <- rbind(stat.table, var)
 			
 	png(paste(savepath, "/", basename(file),".png", sep=""),width=9, height=12, unit='in', res=100)
 
-	breaks= 25
-	opp <- subset(opp, !(pop == 'noise'))
-	hist1 <- hist(opp$fsc_small, breaks=seq(0,2^16, by=2^16/breaks), plot=FALSE)
-	hist2 <- hist(opp$chl_small, breaks=seq(0,2^16, by=2^16/breaks), plot=FALSE)
-	hist3 <- hist(opp$pe, breaks=seq(0,2^16, by=2^16/breaks), plot=FALSE)
-	hist4 <- hist(opp$green, breaks=seq(0,2^16, by=2^16/breaks), plot=FALSE)
-	hist5 <- hist(opp$green_lin, breaks=seq(0,2^16, by=2^16/breaks), plot=FALSE)
-	hist6 <- hist(opp$ssc, breaks=seq(0,2^16, by=2^16/breaks), plot=FALSE)
-
-
-	def.par <- par(no.readonly = TRUE) # save default, for resetting...
-	nf <- layout(matrix(c(2,0,5,0,1,3,4,6,8,0,11,0,7,9,10,12,14,0,16,16,13,15,16,16),6,4,byrow=TRUE), c(3,1,3,1,3), c(1,3,1,3,1,3), TRUE)
-	
-	par(mar=c(6,6,1,1))
-	plotCytogram(opp, 'fsc_small', 'chl_small', pop.def=pop.def)
-	par(mar=c(0,6,1,1))
-	barplot(hist1$counts, axes=FALSE, space=0, col=NA)
-	par(mar=c(6,0,1,1))
-	barplot(hist2$counts, axes=FALSE, space=0, horiz=TRUE, col=NA)
-
-	par(mar=c(6,6,1,1))
-	plotCytogram(opp, 'fsc_small', 'pe', pop.def=pop.def)
-	par(mar=c(0,6,1,1))
-	barplot(hist1$counts, axes=FALSE, space=0, col=NA)
-	par(mar=c(6,0,1,1))
-	barplot(hist3$counts, axes=FALSE, space=0, horiz=TRUE, col=NA)
-		
-	par(mar=c(6,6,1,1))
-	plotCytogram(opp, 'chl_small', 'pe', pop.def=pop.def)
-	par(mar=c(0,6,1,1))
-	barplot(hist2$counts, axes=FALSE, space=0, col=NA)
-	par(mar=c(6,0,1,1))
-	barplot(hist3$counts, axes=FALSE, space=0, horiz=TRUE, col=NA)
-	
-	par(mar=c(6,6,1,1))
-	plotCytogram(opp, 'fsc_small', 'green', pop.def=pop.def)
-	par(mar=c(0,6,1,1))
-	barplot(hist1$counts, axes=FALSE, space=0, col=NA)
-	par(mar=c(6,0,1,1))
-	barplot(hist4$counts, axes=FALSE, space=0, horiz=TRUE, col=NA)
-	
-	par(mar=c(6,6,1,1))
-	plotCytogram(opp, 'ssc', 'green_lin', pop.def=pop.def)
-	par(mar=c(0,6,1,1))
-	barplot(hist6$counts, axes=FALSE, space=0, col=NA)
-	par(mar=c(6,0,1,1))
-	barplot(hist5$counts, axes=FALSE, space=0, horiz=TRUE, col=NA)
-	
-	par(mar=c(6,6,1,1))
-	plot(1,1,bty='n', type='n', xaxt='n', yaxt='n',xlab=NA, ylab=NA, main=paste("filename:",basename(file)))
-	addtable2plot(x=0.5,y=1, table=stat.table)
-	
-	
-	par(def.par)
+par(mfrow=c(2,2))
+plot.vct.cytogram(opp, "fsc_small", "chl_small",main=basename(file))
+plot.vct.cytogram(opp, "fsc_small", "pe")
+plot.vct.cytogram(opp, "chl_small", "pe")
 
 	dev.off()
 
