@@ -209,7 +209,7 @@ write.csv(summary.table,file=paste(savepath,"summary_2.csv", sep=""), row.names=
 ##############
 
 file.list
-file <- file.list[16]
+file <- file.list[58]
 
 fcs <- read.FCS(paste(path,"/",file,sep=""), transformation= FALSE)
 opp <- caroline:::tab2df(exprs(fcs)) 
