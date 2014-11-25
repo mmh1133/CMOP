@@ -365,7 +365,7 @@ stat.table <- NULL
 				chl <- round(mean(p$chl_small))
 				pe <- round(mean(p$pe))
 			}
-		var <- cbind(basename(file),info, n,fsc,chl,pe)
+		var <- data.frame(cbind(file=basename(file),info, pop=i, n,fsc,chl,pe))
 		stat.table <- rbind(stat.table, var)
 	}
 
