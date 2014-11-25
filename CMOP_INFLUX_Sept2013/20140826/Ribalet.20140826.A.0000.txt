@@ -2,7 +2,7 @@ Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\CMOP_Sept2
 Comments:
 
 Institution:	UW		Operator:	Schatz		Investigator:	Ribalet
-Project:	CMOP		Sample Number:	13M		Cells:		
+Project:	CMOP		Sample Number:	13 M		Cells:		
 Date:		26-AUG-14	System time:	Tue Aug 26 14:35:44 2014
 ========================================================================================
 
@@ -11,7 +11,7 @@ Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\CMOP_Sept2
 Comments:
 
 Institution:	UW		Operator:	Schatz		Investigator:	Ribalet
-Project:	CMOP		Sample Number:	43M		Cells:		
+Project:	CMOP		Sample Number:	43 M		Cells:		
 Date:		26-AUG-14	System time:	Tue Aug 26 14:50:58 2014
 ========================================================================================
 
@@ -20,7 +20,7 @@ Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\CMOP_Sept2
 Comments:
 
 Institution:	UW		Operator:	Schatz		Investigator:	Ribalet
-Project:	CMOP		Sample Number:	45S		Cells:		
+Project:	CMOP		Sample Number:	45 S		Cells:		
 Date:		26-AUG-14	System time:	Tue Aug 26 15:02:39 2014
 ========================================================================================
 
@@ -29,7 +29,7 @@ Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\CMOP_Sept2
 Comments:
 
 Institution:	UW		Operator:	Schatz		Investigator:	Ribalet
-Project:	CMOP		Sample Number:	49M		Cells:		
+Project:	CMOP		Sample Number:	49 M		Cells:		
 Date:		26-AUG-14	System time:	Tue Aug 26 15:13:23 2014
 ========================================================================================
 
@@ -38,7 +38,7 @@ Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\CMOP_Sept2
 Comments:
 
 Institution:	UW		Operator:	Schatz		Investigator:	Ribalet
-Project:	CMOP		Sample Number:	53B		Cells:		
+Project:	CMOP		Sample Number:	53 B		Cells:		
 Date:		26-AUG-14	System time:	Tue Aug 26 15:25:14 2014
 ========================================================================================
 
@@ -47,7 +47,7 @@ Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\CMOP_Sept2
 Comments:
 
 Institution:	UW		Operator:	Schatz		Investigator:	Ribalet
-Project:	CMOP		Sample Number:	71B		Cells:		
+Project:	CMOP		Sample Number:	71 B		Cells:		
 Date:		26-AUG-14	System time:	Tue Aug 26 15:34:59 2014
 ========================================================================================
 
@@ -56,7 +56,7 @@ Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\CMOP_Sept2
 Comments:
 
 Institution:	UW		Operator:	Schatz		Investigator:	Ribalet
-Project:	CMOP		Sample Number:	105S		Cells:		
+Project:	CMOP		Sample Number:	105 S		Cells:		
 Date:		26-AUG-14	System time:	Tue Aug 26 15:45:01 2014
 ========================================================================================
 

@@ -23,22 +23,25 @@ savepath<- "/Users/francois/CMOP/results"
 
 ## fun stuff for later 
 
-# table <- NULL
-# for(file in file.list){
-	# print(file)
-	# fcs <- read.FCS(paste(path,"/",file,sep=""), transformation= FALSE)
-	# info <- fcs@description$`$SMNO`
-	# strsplit(info, " ")
-	# t <- c(file, info)
-	# table <- data.frame(rbind(table, t))
-# }
+table <- NULL
+for(file in file.list){
+	print(file)
+	fcs <- read.FCS(paste(path,"/",file,sep=""), transformation= FALSE)
+	info <- try(fcs@description$`$SMNO`)
+	#strsplit(info, " ")
+	t <- c(file, info)
+	table <- rbind(table, t)
+}
 
-# table <- table[order(table$info),]
+table <- table[order(table$info),]
+
+write.csv(table,file=paste(savepath,"file_names.csv", sep=""), row.names=FALSE)
+
+file.names<-read.csv("/Users/francois/CMOP/CMOP_INFLUX_Sept2013/file_names.csv", header=TRUE)
 
 
 
-
-# file <- file.list[9]
+file <- file.list[2]
 
 #files that are strange:40, 5, 12, 35
 #files that have only 1 crypto:10, 7
@@ -346,7 +349,7 @@ opp$pop <- pop.id
 
 ### SUMMARY ###
 
-info <- fcs@description$`$SMNO`
+info <- try(fcs@description$`$SMNO`)
 
 stat.table <- summary.table <- NULL
 for(i in c("beads", "synecho","crypto1","crypto2")){
@@ -361,7 +364,7 @@ fsc <- round(mean(p$fsc_small))
 chl <- round(mean(p$chl_small))
 pe <- round(mean(p$pe))
 }
-var <- data.frame(cbind(basename(file),info, n,fsc,chl,pe))
+var <- cbind(basename(file),info, n,fsc,chl,pe)
 stat.table <- rbind(stat.table, var)
 }
 
