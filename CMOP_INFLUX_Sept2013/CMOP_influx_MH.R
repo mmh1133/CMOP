@@ -325,6 +325,7 @@ dev.off()
 ### STEP 3 ###
 ##############
 
+summary.table <- NULL
 
 for (file in file.list) {
 	print(paste("processing file:",file))
@@ -351,22 +352,22 @@ opp$pop <- pop.id
 
 info <- try(fcs@description$`$SMNO`)
 
-stat.table <- summary.table <- NULL
-for(i in c("beads", "synecho","crypto1","crypto2")){
-#print(i)
-p <- subset(opp, pop == i)
-n <- nrow(p)
-if(n ==0) {
-fsc <- 0
-chl <- 0
-	}else{
-fsc <- round(mean(p$fsc_small))
-chl <- round(mean(p$chl_small))
-pe <- round(mean(p$pe))
-}
-var <- cbind(basename(file),info, n,fsc,chl,pe)
-stat.table <- rbind(stat.table, var)
-}
+stat.table <- NULL
+	for(i in c("beads", "synecho","crypto1","crypto2")){
+	#print(i)
+		p <- subset(opp, pop == i)
+		n <- nrow(p)
+			if(n ==0) {
+				fsc <- 0
+				chl <- 0
+			}else{
+				fsc <- round(mean(p$fsc_small))
+				chl <- round(mean(p$chl_small))
+				pe <- round(mean(p$pe))
+			}
+		var <- cbind(basename(file),info, n,fsc,chl,pe)
+		stat.table <- rbind(stat.table, var)
+	}
 
 summary.table <- rbind(summary.table, stat.table)
 
