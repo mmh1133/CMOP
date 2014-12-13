@@ -38,8 +38,13 @@ table <- table[order(table$info),]
 write.csv(table,file=paste(savepath,"file_names.csv", sep=""), row.names=FALSE)
 
 file.names<-read.csv("/Users/francois/CMOP/CMOP_INFLUX_Sept2013/file_names.csv", header=TRUE)
+summary.table<-read.csv("/Users/francois/CMOP/resultssummary_2.csv", header=TRUE)
 
+file.names <- data.frame(file.names)
+summary.table <- data.frame(summary.table)
+summary.table.final <- merge(file.names, summary.table, by = "file")
 
+write.csv(summary.table.final, file=paste(savepath, "IFsummary_table_vol", sep=""), row.names=FALSE)
 
 file <- file.list[2]
 
@@ -212,7 +217,7 @@ write.csv(summary.table,file=paste(savepath,"summary_2.csv", sep=""), row.names=
 ##############
 
 file.list
-file <- file.list[58]
+file <- file.list[42]
 
 fcs <- read.FCS(paste(path,"/",file,sep=""), transformation= FALSE)
 opp <- caroline:::tab2df(exprs(fcs)) 
@@ -238,55 +243,65 @@ print("Gating Noise")
 poly.noise <- getpoly(quiet=TRUE)
 print("Gating Beads")
 poly.beads <- getpoly(quiet=TRUE)
-print("Gating Pre-Crypto1")
-poly.pre.crypto1 <- getpoly(quiet=TRUE)
-print("Gating Pre-Crypto2")
-poly.pre.crypto2 <- getpoly(quiet=TRUE)
+print("Gating Pre-other1")
+poly.pre.other1 <- getpoly(quiet=TRUE)
+print("Gating Pre-other2")
+poly.pre.other2 <- getpoly(quiet=TRUE)
+print("Gating Pre-crypto")
+poly.pre.crypto <- getpoly(quiet=TRUE)
 
 polygon(poly.noise, lwd=2,border=2, col=NA)
 polygon(poly.beads, lwd=2,border=2, col=NA)
-polygon(poly.pre.crypto1, lwd=2,border=2, col=NA)
-polygon(poly.pre.crypto2, lwd=2,border=2, col=NA)
+polygon(poly.pre.other1, lwd=2,border=2, col=NA)
+polygon(poly.pre.other2, lwd=2,border=2, col=NA)
+polygon(poly.pre.crypto, lwd=2,border=2, col=NA)
 
 noise <- subset(x,inout(x[,c("chl_small","pe")],poly=poly.noise, bound=TRUE, quiet=TRUE))
 opp[row.names(noise),'pop'] <- "noise"
 beads <- subset(x,inout(x[,c("chl_small","pe")],poly=poly.beads, bound=TRUE, quiet=TRUE))
 opp[row.names(beads),'pop'] <- "beads"
-pre.crypto1 <- subset(x,inout(x[,c("chl_small","pe")],poly=poly.pre.crypto1, bound=TRUE, quiet=TRUE))
-pre.crypto2 <- subset(x,inout(x[,c("chl_small","pe")],poly=poly.pre.crypto2, bound=TRUE, quiet=TRUE))
+pre.other1 <- subset(x,inout(x[,c("chl_small","pe")],poly=poly.pre.other1, bound=TRUE, quiet=TRUE))
+pre.other2 <- subset(x,inout(x[,c("chl_small","pe")],poly=poly.pre.other2, bound=TRUE, quiet=TRUE))
+pre.crypto <- subset(x,inout(x[,c("chl_small","pe")],poly=poly.pre.crypto, bound=TRUE, quiet=TRUE))
 
 
-# SYN & HETERO
+# OTHER & CRYPTO 
 x <- subset(opp, pop==0)
 plot(x[,"fsc_small"], x[,"pe"], pch=NA, xlim=c(0,2^16), ylim=c(0,2^16), main="Gating PRO, SYNECHO & BACT")
 points(beads$fsc_small, beads$pe, col="grey")
-points(pre.crypto1$fsc_small, pre.crypto1$pe, col=2)
-points(pre.crypto2$fsc_small, pre.crypto2$pe, col=3)
+points(pre.other1$fsc_small, pre.other1$pe, col=2)
+points(pre.other2$fsc_small, pre.other2$pe, col=3)
+points(pre.crypto$fsc_small, pre.crypto$pe, col="lightslateblue")
 points(x[,"fsc_small"], x[,"pe"], pch=16, cex=0.4, col = densCols(x[,"fsc_small"], x[,"pe"], colramp = .rainbow.cols), xlim=c(0,2^16), ylim=c(0,2^16))
 
 print("Gating Noise2")
 poly.noise2 <- getpoly(quiet=TRUE)
 print("gating SYN")
 poly.syn <- getpoly(quiet=TRUE)
-print("gating CRYPTO1")
-poly.crypto1 <- getpoly(quiet=TRUE)
-print("gating CRYPTO2")
-poly.crypto2 <- getpoly(quiet=TRUE)
+print("gating OTHER1")
+poly.other1 <- getpoly(quiet=TRUE)
+print("gating OTHER2")
+poly.other2 <- getpoly(quiet=TRUE)
+print("gating CRYPTO")
+poly.crypto <- getpoly(quiet=TRUE)
 
 polygon(poly.noise2, lwd=2,border=2, col=NA)
 polygon(poly.syn, lwd=2,border=2, col=NA)
-polygon(poly.crypto1, lwd=2,border=2, col=NA)
-polygon(poly.crypto2, lwd=2,border=2, col=NA)
+polygon(poly.other1, lwd=2,border=2, col=NA)
+polygon(poly.other2, lwd=2,border=2, col=NA)
+polygon(poly.crypto, lwd=2,border=2, col=NA)
 
 
 noise <- subset(x,inout(x[,c("fsc_small","pe")],poly=poly.noise2, bound=TRUE, quiet=TRUE))
 opp[row.names(noise),'pop'] <- "noise"
 syn <- subset(x,inout(x[,c("fsc_small","pe")],poly=poly.syn, bound=TRUE, quiet=TRUE))
 opp[row.names(syn),'pop'] <- "synecho"
-crypto1 <- subset(x,inout(x[,c("fsc_small","pe")],poly=poly.crypto1, bound=TRUE, quiet=TRUE))
-opp[row.names(crypto1),'pop'] <- "crypto1"
-crypto2 <- subset(x,inout(x[,c("fsc_small","pe")],poly=poly.crypto2, bound=TRUE, quiet=TRUE))
-opp[row.names(crypto2),'pop'] <- "crypto2"
+other1 <- subset(x,inout(x[,c("fsc_small","pe")],poly=poly.other1, bound=TRUE, quiet=TRUE))
+opp[row.names(other1),'pop'] <- "other1"
+other2 <- subset(x,inout(x[,c("fsc_small","pe")],poly=poly.other2, bound=TRUE, quiet=TRUE))
+opp[row.names(other2),'pop'] <- "other2"
+crypto <- subset(x,inout(x[,c("fsc_small","pe")],poly=poly.crypto, bound=TRUE, quiet=TRUE))
+opp[row.names(crypto),'pop'] <- "crypto"
 
 
 ### SAVE .VCT ###
@@ -378,6 +393,16 @@ write.csv(summary.table,file=paste(savepath,"summary_2.csv", sep=""), row.names=
 
 
 
+
+
+
+
+
+
+
+###################
+## PLOTTING DATA ##
+###################
 
 
 

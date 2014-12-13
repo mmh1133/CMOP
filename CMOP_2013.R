@@ -5,7 +5,7 @@ library(popcycle)
 set.evt.location("/Volumes/seaflow/CMOP_6")
 set.project.location("~/CMOP_2013_f2")
 
-evt.location<-"/Volumes/seaflow/CMOP_6"
+#evt.location<-"/Volumes/seaflow/CMOP_6"
 #file.name <-get.latest.evt.with.day() #name of the latest evt file collected
 file.list <-list.files(evt.location, recursive=T,pattern='.evt')
 file.list <- file.list[!grepl('.opp', file.list)]
@@ -13,7 +13,7 @@ file.list <- file.list[!grepl('.png', file.list)]
 #getting only .evt files
 
 i<-3960
-evt1 <- readSeaflow(paste(evt.location, file.list[i], sep='/')) #load evt file
+evt1 <- readSeaflow(paste(file.list[i])) #load evt file
 evt2 <- readSeaflow(paste(evt.location, file.list[i+1], sep='/'))
 evt3 <- readSeaflow(paste(evt.location, file.list[i+2], sep='/'))
 evt <- rbind(evt1,evt2,evt3)
@@ -49,8 +49,8 @@ evt$D1b <- evt$D1 + 0
 plot.cytogram(evt[1:10000,],"D1b","D2")
 
 # SELECT an OPP file
-opp.list <- get.opp.files()
-opp.name <- opp.list[247,] # to select the opp file (e.g., the 10th opp file in the list)
+opp.list <- get.opp.list()
+opp.name <- opp.list[100] # to select the opp file (e.g., the 10th opp file in the list)
 
 opp<-get.opp.by.file(opp.name)
 
@@ -62,8 +62,19 @@ setGateParams(opp, popname='synecho', para.x='fsc_small', para.y='pe')
 setGateParams(opp, popname='prochloro', para.x='fsc_small', para.y='chl_small')
 #picoeukaryotes
 setGateParams(opp, popname='picoeuk', para.x='fsc_small', para.y='chl_small')
+#crypto
+setGateParams(opp, popname='crypto', para.x='chl_small', para.y='pe')
+#other
+setGateParams(opp, popname='other', para.x='fsc_small', para.y='chl_small')
 
-plot.cytogram(opp, para.x='chl_small', para.y='pe')
+plot.cytogram(opp, para.x='fsc_small', para.y='pe')
+
+vct <- classify.opp(opp, ManualGating)
+opp$pop <- vct
+par(mfrow=c(1,2))
+plot.vct.cytogram(opp, para.x='fsc_small', para.y='chl_small')
+plot.vct.cytogram(opp, para.x='fsc_small', para.y='pe')
+plot.vct.cytogram(opp, para.x='chl_small', para.y='pe')
 
 
 set.evt.location("/Volumes/seaflow/CMOP_6")
@@ -73,6 +84,38 @@ set.cruise.id("CMOP_6")
 evt.files <- get.evt.list()
 evt.files.without.opp <- filter.evt.files.parallel(evt.files, notch=0.8, width=0.5, cores=2)
 
+run.gating("2013_253", "2013-09-10T16:49:35+0000", "2013_275", "2013-10-02T23:58:48+0000")
+run.gating(opp.list)
 
 run.filter.v1('/Volumes/seaflow/CMOP_6')
+
+
+stat <- get.stat.table() # to load the aggregate statistics
+plot.map(stat, pop='crypto', param='abundance') 
+plot.time(stat, pop='crypto', param='abundance')
+
+
+
+for(opp.file in opp.list) {
+	tryCatch({
+		print("updating stat")
+		insert.stats.for.file(opp.file, db = db.name)
+		}, error = function(e) {
+            print(paste("Encountered error with file", opp.file))
+        }, finally = {
+            print(paste("Finished with file", opp.file))
+        })
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
