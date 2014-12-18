@@ -44,7 +44,9 @@ file.names <- data.frame(file.names)
 summary.table <- data.frame(summary.table)
 summary.table.final <- merge(file.names, summary.table, by = "file")
 
-write.csv(summary.table.final, file=paste(savepath, "IFsummary_table_vol", sep=""), row.names=FALSE)
+
+
+write.csv(summary.table.final, file=paste(savepath, "IFsummary_table_vol.csv", sep=""), row.names=FALSE)
 
 file <- file.list[2]
 
@@ -401,20 +403,66 @@ write.csv(summary.table,file=paste(savepath,"summary_2.csv", sep=""), row.names=
 
 
 ###################
-## PLOTTING DATA ##
+## DATA ANALYSIS ##
 ###################
 
+summary.table<-read.csv("/Users/francois/CMOP/IFsummary_table_vol.csv", header=TRUE)
+
+summary.table$concentration <- (summary.table$n/summary.table$vol)
+
+summary.table$hours <- summary.table$time
+
+summary.table$time <- paste(summary.table$date, summary.table$hours)
+summary.table$time <- strptime(summary.table$time, format="%m/%d/%Y %H:%M:%S")
+
+summary.table$time <- as.POSIXct(summary.table$time, format="%FT%T")
+summary.table <- summary.table[order(summary.table$time),]
 
 
 
+### PLOTTING ###
+
+stat <- subset(summary.table, info.x == "S")
+
+plot.time(stat, "synecho", "concentration")
+
+pop1 <- subset(stat, pop == "crypto1")
+pop2 <- subset(stat, pop == "crypto2")
+pop3 <- subset(stat, pop == "synecho")
+
+param <-"concentration"
+
+
+plot(pop3$time, pop3[,"concentration"], xlab="Time", ylab=paste("concentration"),main=paste("synecho"), pch=16, type='o')
+
+points(pop1$time, pop1[,param]+pop2[,param], xlab="Time", ylab=paste(param), col="red", pch=16, type='o')
+
+#points(pop1$time, pop1[, "concentration"] + pop2[, "concentration"], col="red", pch=16, type='o')
 
 
 
+stat2 <- subset(summary.table, info.x == "M")
 
 
+pop4 <- subset(stat2, pop == "crypto1")
+pop5 <- subset(stat2, pop == "crypto2")
+pop6 <- subset(stat2, pop == "synecho")
+
+points(pop6$time, pop6[,"concentration"], xlab="Time", ylab=paste("concentration"),main=paste("synecho"), pch=16, type='o', col="blue")
+
+points(pop4$time, pop4[,param]+pop5[,param], xlab="Time", ylab=paste(param), col="orange", pch=16, type='o')
 
 
+stat3 <- subset(summary.table, info.x == "B")
 
+
+pop7 <- subset(stat3, pop == "crypto1")
+pop8 <- subset(stat3, pop == "crypto2")
+pop9 <- subset(stat3, pop == "synecho")
+
+points(pop9$time, pop9[,"concentration"], xlab="Time", ylab=paste("concentration"),main=paste("synecho"), pch=16, type='o', col="darkgreen")
+
+points(pop7$time, pop7[,param]+pop8[,param], xlab="Time", ylab=paste(param), col="hotpink", pch=16, type='o')
 
 
 
