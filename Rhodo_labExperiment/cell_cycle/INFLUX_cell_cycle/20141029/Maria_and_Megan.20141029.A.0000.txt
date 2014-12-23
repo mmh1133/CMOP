@@ -1,0 +1,153 @@
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Maria_and_Megan\20141029\Maria_and_Megan.20141029.A.0001.fcs
+Comments:
+
+Institution:	UW		Operator:	Maria_and_Megan		Investigator:	Maria_and_Megan
+Project:	rhodo_cell_cycle		Sample Number:	049		Cells:		rhodo
+Date:		29-OCT-14	System time:	Wed Oct 29 12:34:27 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Maria_and_Megan\20141029\Maria_and_Megan.20141029.A.0002.fcs
+Comments:
+
+Institution:	UW		Operator:	Maria_and_Megan		Investigator:	Maria_and_Megan
+Project:	rhodo_cell_cycle		Sample Number:	052		Cells:		rhodo
+Date:		29-OCT-14	System time:	Wed Oct 29 12:42:41 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Maria_and_Megan\20141029\Maria_and_Megan.20141029.A.0003.fcs
+Comments:
+
+Institution:	UW		Operator:	Maria_and_Megan		Investigator:	Maria_and_Megan
+Project:	rhodo_cell_cycle		Sample Number:	011		Cells:		rhodo
+Date:		29-OCT-14	System time:	Wed Oct 29 12:51:54 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Maria_and_Megan\20141029\Maria_and_Megan.20141029.A.0004.fcs
+Comments:
+
+Institution:	UW		Operator:	Maria_and_Megan		Investigator:	Maria_and_Megan
+Project:	rhodo_cell_cycle		Sample Number:	014		Cells:		rhodo
+Date:		29-OCT-14	System time:	Wed Oct 29 13:00:22 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Maria_and_Megan\20141029\Maria_and_Megan.20141029.A.0005.fcs
+Comments:
+
+Institution:	UW		Operator:	Maria_and_Megan		Investigator:	Maria_and_Megan
+Project:	rhodo_cell_cycle		Sample Number:	017		Cells:		rhodo
+Date:		29-OCT-14	System time:	Wed Oct 29 13:09:23 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Maria_and_Megan\20141029\Maria_and_Megan.20141029.A.0006.fcs
+Comments:
+
+Institution:	UW		Operator:	Maria_and_Megan		Investigator:	Maria_and_Megan
+Project:	rhodo_cell_cycle		Sample Number:	020		Cells:		rhodo
+Date:		29-OCT-14	System time:	Wed Oct 29 13:44:23 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Maria_and_Megan\20141029\Maria_and_Megan.20141029.A.0007.fcs
+Comments:
+
+Institution:	UW		Operator:	Maria_and_Megan		Investigator:	Maria_and_Megan
+Project:	rhodo_cell_cycle		Sample Number:	023		Cells:		rhodo
+Date:		29-OCT-14	System time:	Wed Oct 29 13:52:37 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Maria_and_Megan\20141029\Maria_and_Megan.20141029.A.0008.fcs
+Comments:
+
+Institution:	UW		Operator:	Maria_and_Megan		Investigator:	Maria_and_Megan
+Project:	rhodo_cell_cycle		Sample Number:	026		Cells:		rhodo
+Date:		29-OCT-14	System time:	Wed Oct 29 14:06:44 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Maria_and_Megan\20141029\Maria_and_Megan.20141029.A.0009.fcs
+Comments:
+
+Institution:	UW		Operator:	Maria_and_Megan		Investigator:	Maria_and_Megan
+Project:	rhodo_cell_cycle		Sample Number:	029		Cells:		rhodo
+Date:		29-OCT-14	System time:	Wed Oct 29 14:16:19 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Maria_and_Megan\20141029\Maria_and_Megan.20141029.A.0010.fcs
+Comments:
+
+Institution:	UW		Operator:	Maria_and_Megan		Investigator:	Maria_and_Megan
+Project:	rhodo_cell_cycle		Sample Number:	032		Cells:		rhodo
+Date:		29-OCT-14	System time:	Wed Oct 29 14:26:59 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Maria_and_Megan\20141029\Maria_and_Megan.20141029.A.0011.fcs
+Comments:
+
+Institution:	UW		Operator:	Maria_and_Megan		Investigator:	Maria_and_Megan
+Project:	rhodo_cell_cycle		Sample Number:	035		Cells:		rhodo
+Date:		29-OCT-14	System time:	Wed Oct 29 14:42:56 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Maria_and_Megan\20141029\Maria_and_Megan.20141029.A.0012.fcs
+Comments:
+
+Institution:	UW		Operator:	Maria_and_Megan		Investigator:	Maria_and_Megan
+Project:	rhodo_cell_cycle		Sample Number:	038		Cells:		rhodo
+Date:		29-OCT-14	System time:	Wed Oct 29 15:24:54 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Maria_and_Megan\20141029\Maria_and_Megan.20141029.A.0013.fcs
+Comments:
+
+Institution:	UW		Operator:	Maria_and_Megan		Investigator:	Maria_and_Megan
+Project:	rhodo_cell_cycle		Sample Number:	041		Cells:		rhodo
+Date:		29-OCT-14	System time:	Wed Oct 29 15:39:33 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Maria_and_Megan\20141029\Maria_and_Megan.20141029.A.0014.fcs
+Comments:
+
+Institution:	UW		Operator:	Maria_and_Megan		Investigator:	Maria_and_Megan
+Project:	rhodo_cell_cycle		Sample Number:	044		Cells:		rhodo
+Date:		29-OCT-14	System time:	Wed Oct 29 16:01:36 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Maria_and_Megan\20141029\Maria_and_Megan.20141029.A.0015.fcs
+Comments:
+
+Institution:	UW		Operator:	Maria_and_Megan		Investigator:	Maria_and_Megan
+Project:	rhodo_cell_cycle		Sample Number:	047		Cells:		rhodo
+Date:		29-OCT-14	System time:	Wed Oct 29 16:12:23 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Maria_and_Megan\20141029\Maria_and_Megan.20141029.A.0016.fcs
+Comments:
+
+Institution:	UW		Operator:	Maria_and_Megan		Investigator:	Maria_and_Megan
+Project:	rhodo_cell_cycle		Sample Number:	050		Cells:		rhodo
+Date:		29-OCT-14	System time:	Wed Oct 29 16:23:22 2014
+========================================================================================
+
+
+Output file:	C:\Documents and Settings\Administrator\Desktop\Francois\Maria_and_Megan\20141029\Maria_and_Megan.20141029.A.0017.fcs
+Comments:
+
+Institution:	UW		Operator:	Maria_and_Megan		Investigator:	Maria_and_Megan
+Project:	rhodo_cell_cycle		Sample Number:	053		Cells:		rhodo
+Date:		29-OCT-14	System time:	Wed Oct 29 16:31:28 2014
+========================================================================================
+
+
