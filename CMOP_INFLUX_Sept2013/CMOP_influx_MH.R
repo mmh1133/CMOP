@@ -464,6 +464,8 @@ points(pop9$time, pop9[,"concentration"], xlab="Time", ylab=paste("concentration
 
 points(pop7$time, pop7[,param]+pop8[,param], xlab="Time", ylab=paste(param), col="hotpink", pch=16, type='o')
 
+legend("topleft", inset=0.1, c("surface synecho","surface crypto?","mid-depth synecho", "mid-depth crypto?", "bottom synecho", "bottom crypto?"), lty=c(1,1,1,1,1,1), col=c("black", "red", "blue", "orange", "darkgreen", "hotpink"))
 
-
+png(filename="/Users/francois/CMOP/CMOP_INFLUX_Sept2013/prelim_synecho1")
+dev.off()
 
