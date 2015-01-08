@@ -17,7 +17,8 @@ evt1 <- readSeaflow(paste(file.list[i])) #load evt file
 evt2 <- readSeaflow(paste(evt.location, file.list[i+1], sep='/'))
 evt3 <- readSeaflow(paste(evt.location, file.list[i+2], sep='/'))
 evt <- rbind(evt1,evt2,evt3)
-evt <- readSeaflow(paste(evt.location, file.list[100], sep='/')) 
+
+evt <- readSeaflow(paste(evt.location, file.list[500], sep='/')) 
 #files tested(oct)- gating:3980, 2700, 2900,3000(for synecho), 3100(beads), 3500(beads), 3900, 500
 #no beads- 3600, 1680, 1690
 #opp1 stronger sig- 3900, 1500, 1660
@@ -51,8 +52,11 @@ plot.cytogram(evt[1:10000,],"D1b","D2")
 # SELECT an OPP file
 opp.list <- get.opp.list()
 opp.name <- opp.list[100] # to select the opp file (e.g., the 10th opp file in the list)
+# USE 100!! #
 
 opp<-get.opp.by.file(opp.name)
+
+plot.cytogram(opp, para.x='chl_small', para.y='pe')
 
 #beads
 setGateParams(opp, popname='beads', para.x='chl_small', para.y='pe')
@@ -67,7 +71,6 @@ setGateParams(opp, popname='crypto', para.x='chl_small', para.y='pe')
 #other
 setGateParams(opp, popname='other', para.x='fsc_small', para.y='chl_small')
 
-plot.cytogram(opp, para.x='fsc_small', para.y='pe')
 
 vct <- classify.opp(opp, ManualGating)
 opp$pop <- vct
