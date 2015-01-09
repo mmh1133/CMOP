@@ -1,27 +1,37 @@
- ##### CMOP 2013 #####
-
+ 
+         #########################
+         ####### CMOP 2013 #######
+         #########################
 
 library(popcycle)
 set.evt.location("/Volumes/seaflow/CMOP_6")
 set.project.location("~/CMOP_2013_f2")
+
+
+
+#############################################
+###### VIEWING EVT FILES AND FILTERING ######
+#############################################
+
 
 #evt.location<-"/Volumes/seaflow/CMOP_6"
 #file.name <-get.latest.evt.with.day() #name of the latest evt file collected
 file.list <-list.files(evt.location, recursive=T,pattern='.evt')
 file.list <- file.list[!grepl('.opp', file.list)]
 file.list <- file.list[!grepl('.png', file.list)]
-#getting only .evt files
+# getting only .evt files
 
 i<-3960
 evt1 <- readSeaflow(paste(file.list[i])) #load evt file
 evt2 <- readSeaflow(paste(evt.location, file.list[i+1], sep='/'))
 evt3 <- readSeaflow(paste(evt.location, file.list[i+2], sep='/'))
 evt <- rbind(evt1,evt2,evt3)
+# for when you want to smoosh files together when there is little data
 
 evt <- readSeaflow(paste(evt.location, file.list[500], sep='/')) 
-#files tested(oct)- gating:3980, 2700, 2900,3000(for synecho), 3100(beads), 3500(beads), 3900, 500
-#no beads- 3600, 1680, 1690
-#opp1 stronger sig- 3900, 1500, 1660
+# files tested(oct)- gating:3980, 2700, 2900,3000(for synecho), 3100(beads), 3500(beads), 3900, 500
+# no beads- 3600, 1680, 1690
+# opp1 stronger sig- 3900, 1500, 1660
 
 #files tested(nov 4/7)- 2550(?), 2000(meh but no real beads- needed 0.9), 3500(beadsish- 0.9), 3900(maybe?), 3980(yay for crypt, no beads), 1080(bleh), 1680(bleh)
 #"good" files- (0.8 and 0.5 for most)3960, 3950, 3965, 100("best.filter.notch" tells me 1), 500
@@ -48,6 +58,13 @@ setFilterParams(notch=0.8, width=0.5) #saves filter parameters
 
 evt$D1b <- evt$D1 + 0
 plot.cytogram(evt[1:10000,],"D1b","D2")
+
+
+
+###############################
+###### SETTING UP GATING ######
+###############################
+
 
 # SELECT an OPP file
 opp.list <- get.opp.list()
@@ -80,6 +97,12 @@ plot.vct.cytogram(opp, para.x='fsc_small', para.y='pe')
 plot.vct.cytogram(opp, para.x='chl_small', para.y='pe')
 
 
+
+###########################################
+###### ACTUALLY FILTERING AND GATING ######
+###########################################
+
+
 set.evt.location("/Volumes/seaflow/CMOP_6")
 set.project.location("~/CMOP_2013_f2")
 set.cruise.id("CMOP_6")
@@ -95,7 +118,10 @@ run.filter.v1('/Volumes/seaflow/CMOP_6')
 
 stat <- get.stat.table() # to load the aggregate statistics
 plot.map(stat, pop='crypto', param='abundance') 
-plot.time(stat, pop='crypto', param='abundance')
+plot.time(stat, pop='crypto', param='abundance', pch=16)
+
+png(filename="/Users/francois/CMOP/Preliminary_plots/prelim_crypto_Jan2015")
+dev.off()
 
 
 
@@ -109,6 +135,7 @@ for(opp.file in opp.list) {
             print(paste("Finished with file", opp.file))
         })
 }
+
 
 
 
