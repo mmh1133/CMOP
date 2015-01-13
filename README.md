@@ -8,22 +8,18 @@ CMOP data analysis :computer:  :dolphin:  :boat:
 
 **Field Data**
 
-(all before Thanksgiving) 
+CMOP SeaFlow data- run model 
 
-CMOP SeaFlow data, gating- Maria
-
-CMOP influx gating- Maria
 
 
 **Lab Data**
 
-Rhodomonas culture SeaFlow data, filtering and gating- Maria (by Jan-ish)
+Rhodomonas culture SeaFlow data- filtering, gating, and run model
 
-cell-cycle analysis- Francois (before x-mas break)
+cell-cycle analysis- finish 
 
 SeaFlow file clean-up- everybody 
 
-THE MODEL- Francois and Gwenn (Jan)
 
 
 Aux data analysis (Jan) 
