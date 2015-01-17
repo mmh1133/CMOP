@@ -31,7 +31,7 @@ setFilterParams(notch=1, width=0.5)
 
 # SELECT an OPP file
 opp.list <- get.opp.list()
-opp.name <- opp.list[385] # to select the opp file (e.g., the 10th opp file in the list)
+opp.name <- opp.list[280] # to select the opp file (e.g., the 10th opp file in the list)
 #100
 
 opp<-get.opp.by.file(opp.name)
