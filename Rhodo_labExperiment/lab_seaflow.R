@@ -74,3 +74,19 @@ evt.files <- get.evt.list()
 evt.files.without.opp <- filter.evt.files.parallel(evt.files, notch=1, width=0.5, cores=1)
 
 run.gating(opp.list)
+
+
+
+stat <- get.stat.table()
+stat$time <- as.POSIXct(stat$time,format="%FT%T",tz='GMT')
+pre.crypto <- subset(stat, pop == 'crypto')
+pre.crypto <- pre.crypto[order(pre.crypto$time),]
+pre.crypto2 <- pre.crypto[60:nrow(pre.crypto),]
+id <- which(diff(pre.crypto2$time) > 4)
+crypto <- pre.crypto2[-c(id, 308:nrow(pre.crypto2)),]
+
+plot(crypto$time, crypto$abundance,ylim=c(10,40))
+plot(crypto$time, crypto$fsc_small, ylim=c(300,500))
+
+
+
