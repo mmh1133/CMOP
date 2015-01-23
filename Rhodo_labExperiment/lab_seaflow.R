@@ -78,15 +78,34 @@ run.gating(opp.list)
 
 
 stat <- get.stat.table()
-stat$time <- as.POSIXct(stat$time,format="%FT%T",tz='GMT')
-pre.crypto <- subset(stat, pop == 'crypto')
-pre.crypto <- pre.crypto[order(pre.crypto$time),]
-pre.crypto2 <- pre.crypto[60:nrow(pre.crypto),]
-id <- which(diff(pre.crypto2$time) > 4)
-crypto <- pre.crypto2[-c(id, 308:nrow(pre.crypto2)),]
 
-plot(crypto$time, crypto$abundance,ylim=c(10,40))
-plot(crypto$time, crypto$fsc_small, ylim=c(300,500))
+time <- as.POSIXct(stat$time,format="%FT%T",tz='GMT')
+
+# subseting files #
+pre.crypto <- subset(stat, pop == 'crypto') 
+pre.crypto <- pre.crypto[order(pre.crypto$time),] #orders by time
+pre.crypto2 <- pre.crypto[60:308,] #just keep good days
+id <- which(diff(pre.crypto2$time) > 4) #subset files that are too short
+pre.crypto3 <- pre.crypto2[-id,] 
+id2 <- which(pre.crypto3$flow_rate < 2400) #subset files that have low flow rate
+crypto <- pre.crypto3[-id2,]
+
+
+plot(crypto$time2, crypto$abundance,ylim=c(10,40))
+plot(crypto$time2, crypto$fsc_small, ylim=c(300,500))
+
+
+id.good.file <- na.rm(match(stat$file, crypto$file))
+stat[id.good.file, "flag"] <- 0
+
+unique(crypto$file)
+
+
+stat$flag <- 1
+
+
+savepath<-"Users/francois/CMOP/Rhodo_labexperiment"
+write.delim(stat,file=paste(savepath,"stat.tab", sep="/"))
 
 
 
