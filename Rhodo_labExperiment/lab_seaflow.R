@@ -1,10 +1,18 @@
+#################################################################
+###### Rhodomonas SeaFlow culture experiment data analysis ######
+#################################################################
 
 library(popcycle)
 set.evt.location("/Volumes/seaflow/Rhodomonas_Sept2014")
 set.project.location("~/Rhodo_lab")
-
+set.cruise.id("Rhodo_lab")
 
 evt.location<-"/Volumes/seaflow/Rhodomonas_Sept2014"
+
+#####################
+##### filtering #####
+#####################
+
 
 file.list <-list.files(evt.location, recursive=T,pattern='.evt')
 file.list <- file.list[!grepl('.opp', file.list)]
@@ -27,6 +35,10 @@ dev.off()
 
 setFilterParams(notch=1, width=0.5)
 
+
+##################
+##### gating #####
+##################
 
 
 # SELECT an OPP file
@@ -61,6 +73,9 @@ plot.vct.cytogram(opp, para.x='chl_small', para.y='pe')
 
 
 
+#################################################
+##### actually running filtering and gating #####
+#################################################
 
 
 set.evt.location("/Volumes/seaflow/Rhodomonas_Sept2014")
@@ -77,35 +92,46 @@ run.gating(opp.list)
 
 
 
-stat <- get.stat.table()
+#############################################################
+##### looking at stats and making flagged stat.tab file #####
+#############################################################
 
-time <- as.POSIXct(stat$time,format="%FT%T",tz='GMT')
+
+stat <- get.stat.table() #already odered by time
+
+stat$time <- as.POSIXct(stat$time,format="%FT%T",tz='GMT')
 
 # subseting files #
 pre.crypto <- subset(stat, pop == 'crypto') 
-pre.crypto <- pre.crypto[order(pre.crypto$time),] #orders by time
-pre.crypto2 <- pre.crypto[60:308,] #just keep good days
+pre.crypto2 <- subset(pre.crypto, time > as.POSIXct("2014-09-22 19:30:00") & time < as.POSIXct("2014-09-24 13:10:00")) #just keep good days
 id <- which(diff(pre.crypto2$time) > 4) #subset files that are too short
 pre.crypto3 <- pre.crypto2[-id,] 
 id2 <- which(pre.crypto3$flow_rate < 2400) #subset files that have low flow rate
 crypto <- pre.crypto3[-id2,]
 
 
-plot(crypto$time2, crypto$abundance,ylim=c(10,40))
-plot(crypto$time2, crypto$fsc_small, ylim=c(300,500))
+plot(crypto$time, crypto$abundance,ylim=c(0,40))
+plot(crypto$time, crypto$fsc_small, ylim=c(300,500))
 
 
-id.good.file <- na.rm(match(stat$file, crypto$file))
+# flagging files #
+id.good.file <- match(stat$file, crypto$file)
+id.good.file <- which(!is.na(id.good.file))
+stat$flag <- 1
 stat[id.good.file, "flag"] <- 0
 
-unique(crypto$file)
+#unique(crypto$file)
 
-
-stat$flag <- 1
-
-
-savepath<-"Users/francois/CMOP/Rhodo_labexperiment"
-write.delim(stat,file=paste(savepath,"stat.tab", sep="/"))
+savepath<-"/Users/francois/CMOP/Rhodo_labExperiment"
+write.delim(stat,file=paste(savepath,"stat.tab", sep="/"), row.names=F)
 
 
 
+
+
+
+#weird.id <- which(crypto$abundance > 35)
+#weird.id
+#plot(crypto$time2, crypto$n_count)
+#points(crypto$time2[weird.id], crypto$abundance[weird.id], col=2)
+#diff(crypto[,"time2"])
