@@ -123,7 +123,7 @@ stat[id.good.file, "flag"] <- 0
 #unique(crypto$file)
 
 savepath<-"/Users/francois/CMOP/Rhodo_labExperiment"
-write.delim(stat,file=paste(savepath,"stat.tab", sep="/"), row.names=F)
+write.delim(stat,file=paste(savepath,"flag_file.txt", sep="/"), row.names=F)
 
 
 
@@ -135,3 +135,40 @@ write.delim(stat,file=paste(savepath,"stat.tab", sep="/"), row.names=F)
 #plot(crypto$time2, crypto$n_count)
 #points(crypto$time2[weird.id], crypto$abundance[weird.id], col=2)
 #diff(crypto[,"time2"])
+
+
+###############################
+##### making nice figures #####
+###############################
+
+stat <- get.stat.table() #already odered by time
+
+stat$time <- as.POSIXct(stat$time,format="%FT%T",tz='GMT')
+
+# subseting files #
+pre.crypto <- subset(stat, pop == 'crypto') 
+pre.crypto2 <- subset(pre.crypto, time > as.POSIXct("2014-09-22 19:30:00") & time < as.POSIXct("2014-09-24 13:10:00")) #just keep good days
+id <- which(diff(pre.crypto2$time) > 4) #subset files that are too short
+pre.crypto3 <- pre.crypto2[-id,] 
+id2 <- which(pre.crypto3$flow_rate < 2400) #subset files that have low flow rate
+crypto <- pre.crypto3[-id2,]
+
+
+#light cycle: GMT 21:00-15:00
+#dark cycle: GMT 15:00-21:00 
+
+light1<- subset(crypto, time > as.POSIXct("2014-09-22 21:00:00") & time < as.POSIXct("2014-09-23 15:00:00"))
+light2<- subset(crypto, time > as.POSIXct("2014-09-23 21:01:00") & time < as.POSIXct("2014-09-24 13:10:00"))
+
+#plotting abundance over time with light/dark cycle 
+plot(crypto$time, crypto$abundance,ylim=c(0,40), pch=16, xlab="time", ylab="abundance", main="Rhodomonas")
+points(light1$time, light1$abundance, col="gold", pch=16)
+points(light2$time, light2$abundance, col="gold", pch=16)
+
+
+
+
+
+
+
+
