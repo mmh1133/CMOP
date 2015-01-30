@@ -21,25 +21,30 @@ library(stats)
 ### BATCH FILE inputs ###
 #########################
 #globals necessary for running on bloom
-home <- '~/DeepDOM/Cell_Division/' #change to take from input, so not hardcoded in
-folder <- NULL
-root <- "/misc/seaflow/"
-db.location <- "~/popcycle" #change to make variable?
+# home <- '~/DeepDOM/Cell_Division/' #change to take from input, so not hardcoded in
+# folder <- NULL
+# root <- "/misc/seaflow/"
+# db.location <- "~/popcycle" #change to make variable?
 
 #globals necessary for running on local machine connected to bloom
-# home <- "/Users/gwen/Desktop/Cruises/DeepDOM_2013/seaflow/"
-# folder <- "Cell_Division/"
+home <- "/Users/francois/CMOP/Rhodo_labExperiment/"
+ folder <- ""
 # root <- "/Volumes/seaflow/"
-# db.location <- "/Volumes/gwennm/popcycle"
-# d1 <- 1 #start day
-# d2 <- 2 # end day
-# phyto <- 'prochloro'
-# cruise <- "DeepDOM"
+# db.location <- "/Users/francois/Rhodo_lab"
+d1 <- 1 #start day
+d2 <- 3 # end day
+phyto <- "crypto"
+cruise <- "Rhodo_lab"
 
 #Globals necessary for popcycle commands: consider making an input variable to the script
-set.evt.location(paste(root, cruise, sep=""))
-set.project.location(db.location)
-set.cruise.id("march2013")
+# set.evt.location(paste(root, cruise, sep=""))
+# set.project.location(db.location)
+# set.cruise.id("Rhodo_lab")
+
+set.evt.location("/Volumes/seaflow/Rhodomonas_Sept2014")
+set.project.location("~/Rhodo_lab")
+set.cruise.id("Rhodo_lab")
+
 
 #parameters for making smoothed distributions
 para <- "fsc_small"
@@ -74,10 +79,10 @@ get.param.by.pop <- function(file.name, para, phyto, db= db.name){
 ###########################
 #note: new input allows stats table to be loaded once and all days run in loop in R
 df <- get.stat.table()
-df$time <- strptime(df$time, "%Y-%m-%dT%H:%M:%S", tz="GMT")
+df$time <- as.POSIXct(df$time,format="%FT%T",tz='GMT')
 
 #load flag file and pare down stats to only good files
-flag <- read.table(paste(project.location,"/sqlite/flag_file.txt", sep=""), header=T)
+flag <- read.delim(paste(project.location,"flag_file.txt", sep="/"))
 flag.good <- subset(flag, flag ==0)
 all.stat <- subset(df, df$file %in% flag.good$file) 
 
@@ -94,10 +99,11 @@ julian.day <- unique(basename(dirname(all.files)))
 		#need this code to normalize to beads fsc_small across the whole cruise
 		#this also plots the bead distribution for the whole cruise with smoothed spline
 		
-		spar <- 0.45
+		spar <- 0.98
 		beads <- subset(all.stat, pop == "beads" & fsc_small < 60000)
 
-tiff(paste(home,folder,"/Beads_",cruise,".tiff",sep=""),compression="lzw", width=13.5, height=10, units='in',res=150)
+#tiff(paste(home,folder,"/Beads_",cruise,".tiff",sep=""),compression="lzw", width=13.5, height=10, units='in',res=150)
+	
 	
 		plot(beads[,"time"], beads[,para],pch=1,col='grey', ylim=c(1,10^3.5), xlab='time',ylab=paste("BEADS",para,"_median",sep=""), log='y')
 			smooth <- smooth.spline(beads[,"time"], beads[,para], spar=spar)
@@ -107,7 +113,7 @@ tiff(paste(home,folder,"/Beads_",cruise,".tiff",sep=""),compression="lzw", width
 			fsc_ref <- median(smooth.beads$y)
 		abline(h=fsc_ref, lwd=3, lty=2)
 
-dev.off()
+#dev.off()
 
 
 		#################################################
@@ -130,6 +136,7 @@ for(n in d1:d2){
 		time <- stat[which(stat$file== file),"time"]
 		id.match <- which(as.POSIXct(smooth.beads$x,origin="1970-01-01", tz="GMT") ==  time)
 		fsc_beads <- smooth.beads$y[id.match]
+	
 		if(length(fsc_beads) == 0){
 			fsc_beads <- fsc_ref
 			print("no beads found")
@@ -147,6 +154,7 @@ for(n in d1:d2){
 		stages <- round(10^dens$x,3)
 						
 		class <- data.frame(cbind(stages=as.numeric(stages), freq.dist=as.numeric(freq.dist), size.dist=as.numeric(size.dist), time=as.character(as.POSIXct(time.class, format="%Y-%m-%d %H:%M:%S",tz="GMT")), fsc_beads=as.numeric(round(fsc_beads))), stringsAsFactors = FALSE)
+		
 		size.class <- rbind(size.class, class)
 				
 	}
