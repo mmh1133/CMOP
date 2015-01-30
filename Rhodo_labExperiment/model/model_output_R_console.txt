@@ -1,0 +1,335 @@
+
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
+Copyright (C) 2014 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin10.8.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[R.app GUI 1.65 (6833) x86_64-apple-darwin10.8.0]
+
+[Workspace restored from /Users/francois/Desktop/.RData]
+> library(rgl)
+> library(DEoptim)
+Error in library(DEoptim) : there is no package called ‘DEoptim’
+> library(zoo)
+
+Attaching package: ‘zoo’
+
+The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+> 
+>  t = 1
+> phyto= "crypto"
+> cruise = "Rhodo_lab"
+> script.home <- "/Users/francois/CMOP/Rhodo_labExperiment/model"
+> in.dir <-"/Users/francois/CMOP/Rhodo_labExperiment/"
+> out.dir <- "/Users/francois/CMOP/Rhodo_labExperiment/"
+> 
+> source(paste(script.home,'functions_modelHD.R',sep="/"), chdir = TRUE)
+> jet.colors <- colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F", "yellow",	"#FF7F00", "red", "#7F0000"))
+> m <- 2^6 # number of size class
+> Par.path <- paste0(in.dir,"/PAR_",cruise)
+> 	Par <- read.csv(Par.path, sep=",")
+> 	Par$time <- as.POSIXct(Par$time, tz= "GMT")
+> 	Par$num.time <- as.numeric(Par$time)
+> 
+>  print(paste("time delay:", t))
+[1] "time delay: 1"
+> 	print(paste("phytoplankton population:",phyto))
+[1] "phytoplankton population: crypto"
+> 	
+> 	load(paste(in.dir,"/", phyto,"_dist_Ncat",m,"_",cruise,sep=""))
+> 	Vhists <- distribution[[1]]
+> 	#Vhists <- sweep(Vhists, 2, colSums(Vhists), '/') # Normalize each column of VHists to 1 #this caused a bug erasing the first section of my data, because colSums = NA	
+> 	N_dist <- distribution[[2]]
+> 
+> 	volbins <- as.numeric(row.names(Vhists))
+> 			sizebins <- 2*(volbins*3/(pi*4))^(1/3)# to check the actual diameter
+> 
+> 	time.numc <- as.numeric(colnames(Vhists))	
+> 	time <- as.POSIXct(time.numc, origin="1970-01-01" ,tz="GMT")	
+> 	n.day <- round(diff(range(na.omit(time)))); print(paste("Number of days in the dataset:",n.day))
+[1] "Number of days in the dataset: 2"
+> 
+> para <- Vhists; percentile <- cut(unlist(para), 100); plot3d(log(rep(as.numeric(row.names(para)), dim(para)[2])), rep(as.numeric(colnames(para)), each=dim(para)[1]) , Vhists , col=jet.colors(100)[percentile], type='l', lwd=6, xlab="size class", ylab="time", zlab="Frequency")
+> 	
+> 	
+> 
+> resol <-  60 # number of minutes per interval
+> 	breaks <- 25*60/resol
+> 
+> 	model <- array(NA, dim=c(4,1))
+> 
+> 	for(i in seq(1,length(time)-24, 24)){
++ 		print(paste("starting hour:",i+t))
++ 		#i <- 25
++ 		start <- time[i+t]
++ 		end <- time[(i+t)+24]
++ 		
++ 		if(is.na(end)){
++ 			print("cycle is less than 24h")
++ 			next
++ 			}
++ 		if(is.na(start)){
++ 			print("NA in start time, skip ahead")
++ 			next
++ 		}
++ 		if(sum(is.na(time[i:(i+24)+t]))>4){
++ 			print("more than 4 hours missing from time period, skip ahead")
++ 			next
++ 		}
++ 		print(paste("calculating growth projection from ",start , "to",end))
++ 
++ 	
++ }
+[1] "starting hour: 2"
+[1] "calculating growth projection from  2014-09-22 20:26:14 to 2014-09-23 20:45:34"
+> 	V.hists <- Vhists[,c(i:(i+24)+t)]
+> 		N.dist <- N_dist[,c(i:(i+24)+t)]
+> 		
+> 		# #NAs break this part and need to be made into zeros
+> 			mk.zero <- which(is.na(V.hists))
+> 			V.hists[mk.zero] <- 0
+> 			mk.zero <- which(is.na(N.dist))
+> 			N.dist[mk.zero] <- 0
+> 
+> para <- V.hists; percentile <- cut(unlist(para), 100); plot3d(log(rep(as.numeric(row.names(para))), dim(para)[2]), rep(as.numeric(colnames(para)), each=dim(para)[1]), para , col=jet.colors(100)[percentile], type='l', lwd=6, xlab="size class", ylab="time", zlab="Frequency")
+> 
+> 	light <- subset(Par, num.time > start & num.time < end)
+> 		h <- cut(light$num.time, breaks=breaks)
+> 		h.par <- tapply(light$par, h, mean)
+> 		t.Edata <- matrix(cbind(time[c(i:(i+24)+t)], h.par), ncol=2)
+>         
+> 	        ### NA interpolation
+> 	        Edata <- apply(t.Edata, 2, function(x) na.approx(x, na.rm=F))
+> 
+> plot(Par$time, Par$par, type='o'); points(c(start, end),c(0,0), col='red',pch=16, cex=2)
+> 		proj <- try(determine.opt.para(V.hists=V.hists,N.dist=N.dist,Edata=Edata,volbins=volbins))
+[1] "Optimizing model parameters"
+Error in determine.opt.para(V.hists = V.hists, N.dist = N.dist, Edata = Edata,  : 
+  could not find function "DEoptim"
+> library(rgl)
+> library(DEoptim)
+Error in library(DEoptim) : there is no package called ‘DEoptim’
+> library(zoo)
+also installing the dependencies ‘foreach’, ‘iterators’
+
+trying URL 'http://cran.cnr.Berkeley.edu/bin/macosx/contrib/3.1/foreach_1.4.2.tgz'
+Content type 'application/x-gzip' length 381592 bytes (372 Kb)
+opened URL
+==================================================
+downloaded 372 Kb
+
+trying URL 'http://cran.cnr.Berkeley.edu/bin/macosx/contrib/3.1/iterators_1.0.7.tgz'
+Content type 'application/x-gzip' length 308866 bytes (301 Kb)
+opened URL
+==================================================
+downloaded 301 Kb
+
+trying URL 'http://cran.cnr.Berkeley.edu/bin/macosx/contrib/3.1/DEoptim_2.2-3.tgz'
+Content type 'application/x-gzip' length 618723 bytes (604 Kb)
+opened URL
+==================================================
+downloaded 604 Kb
+
+
+The downloaded binary packages are in
+	/var/folders/kj/c5j5wf5n7m530ky9vmhn4vs80000gn/T//RtmpDiUCuK/downloaded_packages
+> library(rgl)
+> library(DEoptim)
+
+DEoptim package
+Differential Evolution algorithm in R
+Authors: D. Ardia, K. Mullen, B. Peterson and J. Ulrich
+
+> library(zoo)
+> 		proj <- try(determine.opt.para(V.hists=V.hists,N.dist=N.dist,Edata=Edata,volbins=volbins))
+[1] "Optimizing model parameters"
+Iteration: 10 bestvalit: 450.654456 bestmemit:    0.752659    0.001548    0.498050    9.335923  175.705324
+Iteration: 20 bestvalit: 447.879340 bestmemit:    0.592154    0.001486    8.739348    9.991924  216.872735
+Iteration: 30 bestvalit: 443.282560 bestmemit:    0.752659    0.002917    3.272567    2.569164  188.411072
+Iteration: 40 bestvalit: 442.930427 bestmemit:    0.893196    0.002688    3.379339    6.354982  197.900025
+Iteration: 50 bestvalit: 442.878521 bestmemit:    0.920839    0.002624    1.358230    0.786014  204.734145
+Iteration: 60 bestvalit: 442.127663 bestmemit:    0.939857    0.002924    1.043415    0.487801  205.644907
+Iteration: 70 bestvalit: 441.814032 bestmemit:    0.941841    0.003154    0.491352    0.374299  210.595725
+Iteration: 80 bestvalit: 440.576163 bestmemit:    0.884596    0.003276    0.219111    0.564434  198.584092
+Iteration: 90 bestvalit: 438.400031 bestmemit:    0.890836    0.003756    0.044551    0.843910  193.528648
+Iteration: 100 bestvalit: 438.054972 bestmemit:    0.989517    0.003874    0.044551    0.848269  196.003811
+Iteration: 110 bestvalit: 437.779240 bestmemit:    0.843267    0.003874    0.044551    0.848269  198.389437
+Iteration: 120 bestvalit: 437.120950 bestmemit:    0.894846    0.003585    0.009968    1.194314  200.523109
+Iteration: 130 bestvalit: 435.787704 bestmemit:    0.933149    0.004546    0.009968    1.194314  200.523109
+Iteration: 140 bestvalit: 435.717639 bestmemit:    0.909242    0.004546    0.009968    1.194314  200.523109
+Iteration: 150 bestvalit: 430.406980 bestmemit:    0.848245    0.006724    0.006697    1.057788  200.893803
+Iteration: 160 bestvalit: 424.162775 bestmemit:    0.868940    0.011782    0.002448    1.124420  204.383007
+Iteration: 170 bestvalit: 423.958672 bestmemit:    0.904729    0.011782    0.002448    1.124420  202.815901
+Iteration: 180 bestvalit: 422.360919 bestmemit:    0.931773    0.010677    0.001454    1.239656  200.291708
+Iteration: 190 bestvalit: 419.186456 bestmemit:    0.927697    0.015045    0.001164    1.216287  197.100971
+Iteration: 200 bestvalit: 413.425680 bestmemit:    0.882075    0.018212    0.000372    1.407251  196.338044
+Iteration: 210 bestvalit: 413.319272 bestmemit:    0.878059    0.018212    0.000372    1.407251  194.569078
+Iteration: 220 bestvalit: 409.839593 bestmemit:    0.979144    0.033656    0.000307    1.308801  185.559511
+Iteration: 230 bestvalit: 409.587177 bestmemit:    0.979144    0.034563    0.000307    1.308801  185.559511
+Iteration: 240 bestvalit: 404.825155 bestmemit:    0.995010    0.047015    0.000110    1.436629  181.697723
+Iteration: 250 bestvalit: 404.137299 bestmemit:    0.938056    0.036858    0.000135    1.513758  176.722705
+Iteration: 260 bestvalit: 403.519085 bestmemit:    0.924797    0.035406    0.000135    1.513758  171.093435
+Iteration: 270 bestvalit: 402.636638 bestmemit:    0.953848    0.035741    0.000102    1.543661  179.507684
+Iteration: 280 bestvalit: 393.152217 bestmemit:    0.957470    0.050105    0.000023    1.805222  184.519581
+Iteration: 290 bestvalit: 391.793834 bestmemit:    0.937120    0.050105    0.000023    1.805222  172.845598
+Iteration: 300 bestvalit: 391.690320 bestmemit:    0.947589    0.050105    0.000023    1.805222  150.061512
+Iteration: 310 bestvalit: 390.069102 bestmemit:    0.945874    0.051577    0.000021    1.846897  147.946616
+Iteration: 320 bestvalit: 390.069102 bestmemit:    0.945874    0.051577    0.000021    1.846897  147.946616
+Iteration: 330 bestvalit: 390.069102 bestmemit:    0.945874    0.051577    0.000021    1.846897  147.946616
+Iteration: 340 bestvalit: 389.818829 bestmemit:    0.951763    0.059097    0.000022    1.801568  155.485748
+Iteration: 350 bestvalit: 389.762665 bestmemit:    0.963600    0.059097    0.000022    1.801568  153.323964
+Iteration: 360 bestvalit: 387.729954 bestmemit:    0.951917    0.067823    0.000016    1.846897  147.946616
+Iteration: 370 bestvalit: 376.237035 bestmemit:    0.794199    0.059647    0.000003    2.231378  135.850803
+Iteration: 380 bestvalit: 376.002087 bestmemit:    0.803769    0.060135    0.000003    2.231378  139.384893
+Iteration: 390 bestvalit: 376.002087 bestmemit:    0.803769    0.060135    0.000003    2.231378  139.384893
+Iteration: 400 bestvalit: 376.002087 bestmemit:    0.803769    0.060135    0.000003    2.231378  139.384893
+Iteration: 410 bestvalit: 376.002087 bestmemit:    0.803769    0.060135    0.000003    2.231378  139.384893
+Iteration: 420 bestvalit: 376.002087 bestmemit:    0.803769    0.060135    0.000003    2.231378  139.384893
+Iteration: 430 bestvalit: 376.002087 bestmemit:    0.803769    0.060135    0.000003    2.231378  139.384893
+Iteration: 440 bestvalit: 375.357118 bestmemit:    0.841448    0.054772    0.000002    2.352438  143.440685
+Iteration: 450 bestvalit: 375.255840 bestmemit:    0.841448    0.054772    0.000002    2.352438  132.662389
+Iteration: 460 bestvalit: 375.251489 bestmemit:    0.841448    0.050090    0.000002    2.352438  132.662389
+Iteration: 470 bestvalit: 375.135201 bestmemit:    0.841448    0.050090    0.000002    2.352438  150.729184
+Iteration: 480 bestvalit: 374.973001 bestmemit:    0.841448    0.049134    0.000002    2.352438  150.729184
+Iteration: 490 bestvalit: 374.619098 bestmemit:    0.857700    0.049134    0.000002    2.352438  144.726441
+Iteration: 500 bestvalit: 374.619098 bestmemit:    0.857700    0.049134    0.000002    2.352438  144.726441
+Iteration: 510 bestvalit: 372.872213 bestmemit:    0.896181    0.043267    0.000001    2.504002  139.930459
+Iteration: 520 bestvalit: 372.791518 bestmemit:    0.896181    0.043267    0.000001    2.504002  140.071782
+Iteration: 530 bestvalit: 372.614690 bestmemit:    0.941220    0.073346    0.000002    2.285517  141.175837
+Iteration: 540 bestvalit: 370.817612 bestmemit:    0.818101    0.072531    0.000002    2.331738  145.116360
+Iteration: 550 bestvalit: 370.817612 bestmemit:    0.818101    0.072531    0.000002    2.331738  145.116360
+Iteration: 560 bestvalit: 370.690979 bestmemit:    0.832646    0.072531    0.000002    2.331738  142.396876
+Iteration: 570 bestvalit: 369.411013 bestmemit:    0.829071    0.078799    0.000001    2.379900  128.356837
+Iteration: 580 bestvalit: 369.126717 bestmemit:    0.814937    0.078799    0.000001    2.379900  130.160193
+Iteration: 590 bestvalit: 367.947263 bestmemit:    0.778527    0.084443    0.000001    2.378272  136.075882
+Iteration: 600 bestvalit: 367.894898 bestmemit:    0.683713    0.084443    0.000001    2.378272  136.075882
+Iteration: 610 bestvalit: 367.894898 bestmemit:    0.683713    0.084443    0.000001    2.378272  136.075882
+Iteration: 620 bestvalit: 367.894898 bestmemit:    0.683713    0.084443    0.000001    2.378272  136.075882
+Iteration: 630 bestvalit: 367.894898 bestmemit:    0.683713    0.084443    0.000001    2.378272  136.075882
+Iteration: 640 bestvalit: 367.894898 bestmemit:    0.683713    0.084443    0.000001    2.378272  136.075882
+Iteration: 650 bestvalit: 367.890592 bestmemit:    0.724771    0.123724    0.000001    2.305968  128.915926
+Iteration: 660 bestvalit: 367.882992 bestmemit:    0.766498    0.123724    0.000001    2.305968  128.915926
+Iteration: 670 bestvalit: 367.823309 bestmemit:    0.796534    0.084443    0.000001    2.378272  136.075882
+Iteration: 680 bestvalit: 367.429481 bestmemit:    0.886931    0.095735    0.000001    2.370228  133.203341
+Iteration: 690 bestvalit: 367.429481 bestmemit:    0.886931    0.095735    0.000001    2.370228  133.203341
+Iteration: 700 bestvalit: 367.305184 bestmemit:    0.870007    0.091135    0.000001    2.378272  136.083457
+Iteration: 710 bestvalit: 367.305184 bestmemit:    0.870007    0.091135    0.000001    2.378272  136.083457
+Iteration: 720 bestvalit: 367.305184 bestmemit:    0.870007    0.091135    0.000001    2.378272  136.083457
+Iteration: 730 bestvalit: 367.305184 bestmemit:    0.870007    0.091135    0.000001    2.378272  136.083457
+Iteration: 740 bestvalit: 367.281777 bestmemit:    0.938811    0.098795    0.000001    2.360241  138.451621
+Iteration: 750 bestvalit: 367.269687 bestmemit:    0.971757    0.104067    0.000001    2.338871  140.730961
+Iteration: 760 bestvalit: 367.170921 bestmemit:    0.996993    0.102025    0.000001    2.350559  140.104234
+Iteration: 770 bestvalit: 367.170921 bestmemit:    0.996993    0.102025    0.000001    2.350559  140.104234
+Iteration: 780 bestvalit: 367.170921 bestmemit:    0.996993    0.102025    0.000001    2.350559  140.104234
+Iteration: 790 bestvalit: 367.116445 bestmemit:    0.993546    0.104508    0.000001    2.343591  140.247601
+Iteration: 800 bestvalit: 367.116445 bestmemit:    0.993546    0.104508    0.000001    2.343591  140.247601
+Iteration: 810 bestvalit: 367.116445 bestmemit:    0.993546    0.104508    0.000001    2.343591  140.247601
+Iteration: 820 bestvalit: 367.116445 bestmemit:    0.993546    0.104508    0.000001    2.343591  140.247601
+Iteration: 830 bestvalit: 367.071142 bestmemit:    0.973281    0.102405    0.000001    2.353791  139.982737
+Iteration: 840 bestvalit: 367.039515 bestmemit:    0.993932    0.102405    0.000001    2.353791  139.982737
+Iteration: 850 bestvalit: 367.039515 bestmemit:    0.993932    0.102405    0.000001    2.353791  139.982737
+Iteration: 860 bestvalit: 367.039515 bestmemit:    0.993932    0.102405    0.000001    2.353791  139.982737
+Iteration: 870 bestvalit: 367.014981 bestmemit:    0.997927    0.101532    0.000001    2.352379  141.037419
+Iteration: 880 bestvalit: 367.014981 bestmemit:    0.997927    0.101532    0.000001    2.352379  141.037419
+Iteration: 890 bestvalit: 367.013951 bestmemit:    0.997927    0.101532    0.000001    2.352379  141.110631
+Iteration: 900 bestvalit: 367.013951 bestmemit:    0.997927    0.101532    0.000001    2.352379  141.110631
+Iteration: 910 bestvalit: 367.013951 bestmemit:    0.997927    0.101532    0.000001    2.352379  141.110631
+Iteration: 920 bestvalit: 366.964696 bestmemit:    0.998811    0.090109    0.000001    2.378118  141.366339
+Iteration: 930 bestvalit: 366.964696 bestmemit:    0.998811    0.090109    0.000001    2.378118  141.366339
+Iteration: 940 bestvalit: 366.964696 bestmemit:    0.998811    0.090109    0.000001    2.378118  141.366339
+Iteration: 950 bestvalit: 366.964696 bestmemit:    0.998811    0.090109    0.000001    2.378118  141.366339
+Iteration: 960 bestvalit: 366.964696 bestmemit:    0.998811    0.090109    0.000001    2.378118  141.366339
+Iteration: 970 bestvalit: 366.964696 bestmemit:    0.998811    0.090109    0.000001    2.378118  141.366339
+Iteration: 980 bestvalit: 366.964696 bestmemit:    0.998811    0.090109    0.000001    2.378118  141.366339
+Iteration: 990 bestvalit: 366.964696 bestmemit:    0.998811    0.090109    0.000001    2.378118  141.366339
+Iteration: 1000 bestvalit: 366.964696 bestmemit:    0.998811    0.090109    0.000001    2.378118  141.366339
+        par1         par2         par3         par4         par5 
+9.988105e-01 9.010888e-02 1.000703e-06 2.378118e+00 1.413663e+02 
+[1] "daily growth rate= 0.6"
+> para <- proj$Vproj; percentile <- cut(unlist(para), 100); plot3d(log(rep(volbins, 24)), rep(1:ncol(para), each=nrow(para)), z=matrix(para), col=jet.colors(100)[percentile], type='l', lwd=6, xlab="size class", ylab="time", zlab="Frequency")
+> if(class(proj) !='try-error'){
++ 		model <- matrix(cbind(as.array(model), as.array(proj)), nrow=4,ncol=ncol(model)+1)
++ 	    save(model, file=paste(out.dir,"/",phyto,"_modelHD_growth_",cruise,"_Ncat",m,"_t",t, sep=""))
++ 
++ 	  }else{print("error during optimization")}
+> }
+Error: unexpected '}' in "}"
+> if(class(proj) !='try-error'){
++ 		model <- matrix(cbind(as.array(model), as.array(proj)), nrow=4,ncol=ncol(model)+1)
++ 	    save(model, file=paste(out.dir,"/",phyto,"_modelHD_growth_",cruise,"_Ncat",m,"_t",t, sep=""))
++ 
++ 	  }else{print("error during optimization")}
+> cruise <- "Rhodo_lab"
+> location.model <- "/Users/francois/CMOP/Rhodo_labExperiment/model"
+> phyto <- "crypto"
+> out.dir <- "Users/francois/CMOP/Rhodo_labExperiment/"
+> cat <- 2^6 # number of size bin
+> n.day <- 2 #number of days in dataset, need for below because it did not find in loading model, may be a bug somewhere?
+> 
+> library(rgl)
+> library(ggplot2)
+> all.filelist <- list.files(paste0(location.model,"/"),pattern=paste0(phyto,"_modelHD_growth_",cruise,"_Ncat",cat))
+> filelist <- all.filelist[grep(pattern=paste(phyto), all.filelist)]
+> 
+> n <- c <- 1
+> Conc.all <- N.proj.all <- V.hist.all <- div.rate <- para.all <- Col <- NULL
+> for(file in filelist){
++     #file <- filelist[2]
++     load(paste(location.model,file, sep="/"))
++     print(file)
++     print(n)
++         dim <- conc.proj.all <- n.proj.all <- v.hist.all <- dr.all <- p.all <- NULL
++             for(i in seq(2,as.numeric(n.day),by=1)){
++                 try(n.proj <- model[4,i][[1]])
++                 n.proj.all <- cbind(n.proj.all, n.proj)         
++                             
++                 conc.proj <- cbind(as.numeric(colnames(n.proj)), as.numeric(colSums(n.proj)))
++                 conc.proj.all <- rbind(conc.proj.all, conc.proj)
++                 
++                 try(dr <- model[2,i][[1]])
++                 h.dr <- cbind(as.numeric(colnames(dr)), as.numeric(dr))
++                 dr.all <- rbind(dr.all, h.dr)
++                 
++                try(v.proj <- model[3,i][[1]])   
++                 v.hist.all <- cbind(v.hist.all, v.proj)         
++ 
++                try(para <- model[1,i][[1]])
++                 param <- cbind(time=as.numeric(colnames(n.proj)), para)
++                 p.all <- rbind(p.all, param)
++             }
++         
++ }
+>  div.rate <- rbind(div.rate, dr.all)
+Error in rbind(div.rate, dr.all) : object 'dr.all' not found
+>         N.proj.all <- cbind(N.proj.all, n.proj.all)
+Error in cbind(N.proj.all, n.proj.all) : object 'n.proj.all' not found
+>         Conc.all <- rbind(Conc.all, conc.proj.all)
+Error in rbind(Conc.all, conc.proj.all) : 
+  object 'conc.proj.all' not found
+>         V.hist.all <- cbind(V.hist.all, v.hist.all)
+Error in cbind(V.hist.all, v.hist.all) : object 'v.hist.all' not found
+>         para.all <- rbind(para.all, p.all)
+Error in rbind(para.all, p.all) : object 'p.all' not found
+> 
+>         col <- rep(c, nrow(dr.all))
+Error in nrow(dr.all) : object 'dr.all' not found
+>         Col <- c(Col,col)
+> 
+>         leg <- unlist(list(strsplit(filelist,"_t")))[seq(2,length(filelist[1:n])*2,2)]
+> 
