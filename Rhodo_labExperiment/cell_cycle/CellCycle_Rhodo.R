@@ -32,8 +32,8 @@ write.csv(results, "Rhodo_labExperiment/cell_cycle/RHODOcell_cycle.csv", quote=F
 
 
 
-log <- read.csv("/Users/francois/Documents/DATA/SeaFlow/CMOP/CMOP_git/Rhodo_labExperiment/cell_cycle/RHODOcell_cycle_time.csv")
-G1 <- read.csv("/Users/francois/Documents/DATA/SeaFlow/CMOP/CMOP_git/Rhodo_labExperiment/cell_cycle/RHODOcell_cycle.csv")
+log <- read.csv("/Users/francois/CMOP/Rhodo_labExperiment/cell_cycle/RHODOcell_cycle_time.csv")
+G1 <- read.csv("/Users/francois/CMOP/Rhodo_labExperiment/cell_cycle/RHODOcell_cycle.csv")
 
 results <- merge(log, G1, by='filename')
 
@@ -41,7 +41,7 @@ raw.time <- paste(results$date, results$time)
 results$date.time <- as.POSIXct(strptime(raw.time, "%m/%d/%y %H:%M:%S", tz='GMT'))
 results <- results[order(results$date.time),]
 # plot(tiff[,2], ylim=c(0,100))
-time <- unique(results$date.time)
+time2 <- unique(results$date.time)
 
 
 mean.f.G1 <- tapply(results$percent_G1, results$date.time, function(x) mean(x, na.rm=T))/100
@@ -52,10 +52,14 @@ GR <- function(freq, t.div=4,n=12){
     return(mu)
 }
 
-div <- GR(1-mean.f.G1, t.div=2, n=1)
+div <- GR(1-mean.f.G1, t.div=4, n=1)
 
-daily.div <- sum(div) / as.numeric(diff(range(time)))
+daily.div <- sum(div) / as.numeric(diff(range(time2)))
 print(paste("Daily Growth Rate =",round(daily.div,2), "d-1"))
 
 
-plot(time, div, type='o')
+plot(time2, div, type='o', ylim=c(0,0.1))
+points(time, Div.rate[,2], col=2)
+
+ png(filename="/Users/francois/CMOP/Rhodo_labExperiment/modelandcc")
+dev.off()
