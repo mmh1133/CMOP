@@ -140,6 +140,34 @@ for(opp.file in opp.list) {
 
 
 
+#############################################################
+##### looking at stats and making flagged stat.tab file #####
+#############################################################
+
+stat <- get.stat.table() # to load the aggregate statistics
+#plot.map(stat, pop='crypto', param='abundance') 
+plot.time(stat, pop='crypto', param='abundance', pch=16)
+
+
+
+stat$time <- as.POSIXct(stat$time,format="%FT%T",tz='GMT')
+
+# subseting files #
+pre.crypto <- subset(stat, pop == 'crypto') 
+id <- which(pre.crypto$flow_rate < 2400) #subset files that have low flow rate
+crypto <- pre.crypto[-id,]
+
+
+# flagging files #
+id.good.file <- match(stat$file, crypto$file)
+id.good.file <- which(!is.na(id.good.file))
+stat$flag <- 1
+stat[id.good.file, "flag"] <- 0
+
+#unique(crypto$file)
+
+savepath<-"/Users/francois/CMOP/CMOP_field"
+write.delim(stat,file=paste(savepath,"stat.tab", sep="/"), row.names=F)
 
 
 
