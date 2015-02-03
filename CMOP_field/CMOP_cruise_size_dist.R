@@ -149,7 +149,7 @@ for(n in d1:d2){
 		
 		#shouldn't this range be dependent on the phyto we are trying to model?
 		#could add an if statement, if phyto = prochloro then this range for dens
-		dens <- density(log10(slice[,para]), n=n.breaks,from=0, to=3.5, bw="SJ", kernel='gaussian',na.rm=T)
+		dens <- density(log10(slice[,para]), n=n.breaks,from=0, to=5, bw="SJ", kernel='gaussian',na.rm=T)
 		freq.dist <- dens$y*diff(dens$x)[1]
 		size.dist <- round(freq.dist * ntot)
 		stages <- round(10^dens$x,3)
@@ -165,7 +165,7 @@ for(n in d1:d2){
 }
 
 	
-
+plot(dens)
 	
 
 
