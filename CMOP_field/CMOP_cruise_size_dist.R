@@ -133,6 +133,11 @@ for(n in d1:d2){
 		#select parameter for phytoplankton from each file
 		slice <- get.param.by.pop(file, para, phyto)
 		
+		if(nrow(slice) < 3){
+			print(paste("skipping file", file))
+			next	
+		}
+		
 		#find smoothed beads from same time stamp to normalize param of interest
 		time <- stat[which(stat$file== file),"time"]
 		id.match <- which(as.POSIXct(smooth.beads$x,origin="1970-01-01", tz="GMT") ==  time)

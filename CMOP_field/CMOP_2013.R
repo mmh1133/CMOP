@@ -172,6 +172,19 @@ write.delim(stat,file=paste(savepath,"stat.tab", sep="/"), row.names=F)
 
 
 
+####################################
+#### making PAR table for model ####
+####################################
+
+pre.PAR1 <- read.csv("/Users/francois/CMOP/auxillary_data/dsdma.-1000.A.MET_2013_09_PD1.csv")
+pre.PAR2 <- read.csv("/Users/francois/CMOP/auxillary_data/dsdma.-1000.A.MET_2013_10_PD1.csv")
+pre.PAR1 <- as.data.frame(pre.PAR1, row.names=NULL)
+pre.PAR2 <- as.data.frame(pre.PAR2, row.names=NULL)
+pre.PAR<- rbind(pre.PAR1, pre.PAR2)
+
+pre.PAR$time <- as.POSIXct(strptime(sds$time, "%Y/%m/%d %H:%M:%S"), tz="GMT")
+
+
 
 
 
