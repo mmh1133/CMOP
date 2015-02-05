@@ -1,0 +1,270 @@
+
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
+Copyright (C) 2014 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin10.8.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[R.app GUI 1.65 (6833) x86_64-apple-darwin10.8.0]
+
+> library(rgl)
+> library(DEoptim)
+
+DEoptim package
+Differential Evolution algorithm in R
+Authors: D. Ardia, K. Mullen, B. Peterson and J. Ulrich
+
+> library(zoo)
+
+Attaching package: ‘zoo’
+
+The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+> t = 1
+> phyto= "crypto"
+> cruise = "Rhodo_lab"
+> script.home <- "/Users/francois/CMOP/Rhodo_labExperiment/model"
+> in.dir <-"/Users/francois/CMOP/Rhodo_labExperiment/"
+> out.dir <- "/Users/francois/CMOP/Rhodo_labExperiment/"
+> source(paste(script.home,'functions_modelHD.R',sep="/"), chdir = TRUE)
+> jet.colors <- colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F", "yellow",	"#FF7F00", "red", "#7F0000"))
+> Par.path <- paste0(in.dir,"/PAR_",cruise)
+> 	Par <- read.csv(Par.path, sep=",")
+> 	Par$time <- as.POSIXct(Par$time, tz= "GMT")
+> 	Par$num.time <- as.numeric(Par$time)
+> 
+> head(Par)
+                 time par   num.time
+1 2014-09-17 18:45:27   0 1410979527
+2 2014-09-17 21:02:43  40 1410987763
+3 2014-09-17 21:03:20  40 1410987800
+4 2014-09-17 21:03:31  40 1410987811
+5 2014-09-17 21:06:31  40 1410987991
+6 2014-09-17 21:09:31  40 1410988171
+>  print(paste("time delay:", t))
+[1] "time delay: 1"
+> 	print(paste("phytoplankton population:",phyto))
+[1] "phytoplankton population: crypto"
+> 	
+> 	load(paste(in.dir,"/", phyto,"_dist_Ncat",m,"_",cruise,sep=""))
+Error in paste(in.dir, "/", phyto, "_dist_Ncat", m, "_", cruise, sep = "") : 
+  object 'm' not found
+> 	Vhists <- distribution[[1]]
+Error: object 'distribution' not found
+> 	#Vhists <- sweep(Vhists, 2, colSums(Vhists), '/') # Normalize each column of VHists to 1 #this caused a bug erasing the first section of my data, because colSums = NA	
+> 	N_dist <- distribution[[2]]
+Error: object 'distribution' not found
+> 
+> 	volbins <- as.numeric(row.names(Vhists))
+Error in row.names(Vhists) : object 'Vhists' not found
+> 			sizebins <- 2*(volbins*3/(pi*4))^(1/3)# to check the actual diameter
+Error: object 'volbins' not found
+> 
+> 	time.numc <- as.numeric(colnames(Vhists))	
+Error in is.data.frame(x) : object 'Vhists' not found
+> 	time <- as.POSIXct(time.numc, origin="1970-01-01" ,tz="GMT")	
+Error in as.POSIXct(time.numc, origin = "1970-01-01", tz = "GMT") : 
+  object 'time.numc' not found
+> 	n.day <- round(diff(range(na.omit(time)))); print(paste("Number of days in the dataset:",n.day))
+Error in min(x, na.rm = na.rm) : invalid 'type' (list) of argument
+> 
+> 	para <- Vhists; percentile <- cut(unlist(para), 100); plot3d(log(rep(as.numeric(row.names(para)), dim(para)[2])), rep(as.numeric(colnames(para)), each=dim(para)[1]) , Vhists , col=jet.colors(100)[percentile], type='l', lwd=6, xlab="size class", ylab="time", zlab="Frequency")
+Error: object 'Vhists' not found
+> 	
+> m <- 2^6 # number of size class
+> load(paste(in.dir,"/", phyto,"_dist_Ncat",m,"_",cruise,sep=""))
+> 	Vhists <- distribution[[1]]
+> N_dist <- distribution[[2]]
+> 
+> 	volbins <- as.numeric(row.names(Vhists))
+> 			sizebins <- 2*(volbins*3/(pi*4))^(1/3)# to check the actual diameter
+> 
+> 	time.numc <- as.numeric(colnames(Vhists))	
+> 	time <- as.POSIXct(time.numc, origin="1970-01-01" ,tz="GMT")	
+> 	n.day <- round(diff(range(na.omit(time)))); print(paste("Number of days in the dataset:",n.day))
+[1] "Number of days in the dataset: 2"
+> 
+> 	para <- Vhists; percentile <- cut(unlist(para), 100); plot3d(log(rep(as.numeric(row.names(para)), dim(para)[2])), rep(as.numeric(colnames(para)), each=dim(para)[1]) , Vhists , col=jet.colors(100)[percentile], type='l', lwd=6, xlab="size class", ylab="time", zlab="Frequency")
+> 	
+> resol <-  60 # number of minutes per interval
+> 	breaks <- 25*60/resol
+> 
+> 	model <- array(NA, dim=c(4,1))
+> for(i in seq(1,length(time)-24, 24)){
++ 		print(paste("starting hour:",i+t))
++ 		#i <- 25
++ 		start <- time[i+t]
++ 		end <- time[(i+t)+24]
++ 		
++ 		if(is.na(end)){
++ 			print("cycle is less than 24h")
++ 			next
++ 			}
++ 		if(is.na(start)){
++ 			print("NA in start time, skip ahead")
++ 			next
++ 		}
++ 		if(sum(is.na(time[i:(i+24)+t]))>4){
++ 			print("more than 4 hours missing from time period, skip ahead")
++ 			next
++ 		}
++ 		print(paste("calculating growth projection from ",start , "to",end))
++ 
++ 	
++ 	#plot(Par$time, Par$par, type='o'); points(c(start, end),c(0,0), col='red',pch=16, cex=2)
++ 
++ 		### SELECT SIZE DISTRIBUTION for DAY i
++ 		V.hists <- Vhists[,c(i:(i+24)+t)]
++ 		N.dist <- N_dist[,c(i:(i+24)+t)]
++ 		
++ 		# #NAs break this part and need to be made into zeros
++ 			mk.zero <- which(is.na(V.hists))
++ 			V.hists[mk.zero] <- 0
++ 			mk.zero <- which(is.na(N.dist))
++ 			N.dist[mk.zero] <- 0
++ 
++ 	    # para <- V.hists; percentile <- cut(unlist(para), 100); plot3d(log(rep(as.numeric(row.names(para))), dim(para)[2]), rep(as.numeric(colnames(para)), each=dim(para)[1]), para , col=jet.colors(100)[percentile], type='l', lwd=6, xlab="size class", ylab="time", zlab="Frequency")
++ 
++ 
++ 		### SELECT PAR corresponding to each sample
++ 		light <- subset(Par, num.time > start & num.time < end)
++ 		h <- cut(light$num.time, breaks=breaks)
++ 		h.par <- tapply(light$par, h, mean)
++ 		t.Edata <- matrix(cbind(time[c(i:(i+24)+t)], h.par), ncol=2)
++         
++ 	        ### NA interpolation
++ 	        Edata <- apply(t.Edata, 2, function(x) na.approx(x, na.rm=F))
++ 
++ 		
++ 		### RUN size.class.model_functions
++ 		proj <- try(determine.opt.para(V.hists=V.hists,N.dist=N.dist,Edata=Edata,volbins=volbins))
++ 		
++ 		para <- proj$Vproj; percentile <- cut(unlist(para), 100); plot3d(log(rep(volbins, 24)), rep(1:ncol(para), each=nrow(para)), z=matrix(para), col=jet.colors(100)[percentile], type='l', lwd=6, xlab="size class", ylab="time", zlab="Frequency")
++ 		
++ 		if(class(proj) !='try-error'){
++ 		model <- matrix(cbind(as.array(model), as.array(proj)), nrow=4,ncol=ncol(model)+1)
++ 	    save(model, file=paste(out.dir,"/",phyto,"_modelHD_growth_",cruise,"_Ncat",m,"_t",t, sep=""))
++ 
++ 	  }else{print("error during optimization")}
++ }
+[1] "starting hour: 2"
+[1] "calculating growth projection from  2014-09-22 20:26:14 to 2014-09-23 20:45:34"
+[1] "Optimizing model parameters"
+Iteration: 10 bestvalit: 478.127212 bestmemit:    0.588936    0.000124    2.456704   13.909430  271.020385
+Iteration: 20 bestvalit: 447.327879 bestmemit:    0.488759    0.003623    3.563048    2.725413  120.900025
+Iteration: 30 bestvalit: 436.188959 bestmemit:    0.705967    0.007184    0.019093    0.674541  151.973661
+Iteration: 40 bestvalit: 433.400079 bestmemit:    0.695939    0.009167    0.019093    0.674541  140.017786
+Iteration: 50 bestvalit: 431.857904 bestmemit:    0.695939    0.010320    0.019093    0.674541  140.017786
+Iteration: 60 bestvalit: 431.556484 bestmemit:    0.807778    0.010320    0.019093    0.674541  166.858391
+Iteration: 70 bestvalit: 430.747482 bestmemit:    0.807778    0.011496    0.019093    0.674541  166.858391
+Iteration: 80 bestvalit: 430.747482 bestmemit:    0.807778    0.011496    0.019093    0.674541  166.858391
+Iteration: 90 bestvalit: 430.747482 bestmemit:    0.807778    0.011496    0.019093    0.674541  166.858391
+Iteration: 100 bestvalit: 430.747482 bestmemit:    0.807778    0.011496    0.019093    0.674541  166.858391
+Iteration: 110 bestvalit: 430.747482 bestmemit:    0.807778    0.011496    0.019093    0.674541  166.858391
+Iteration: 120 bestvalit: 429.992316 bestmemit:    0.801608    0.009354    0.013857    0.802388  165.353711
+Iteration: 130 bestvalit: 429.908152 bestmemit:    0.801608    0.009354    0.013857    0.802388  173.033278
+Iteration: 140 bestvalit: 429.908152 bestmemit:    0.801608    0.009354    0.013857    0.802388  173.033278
+Iteration: 150 bestvalit: 426.855801 bestmemit:    0.557174    0.016626    0.007467    0.792099  121.017213
+Iteration: 160 bestvalit: 426.855801 bestmemit:    0.557174    0.016626    0.007467    0.792099  121.017213
+Iteration: 170 bestvalit: 426.645899 bestmemit:    0.569306    0.016626    0.007467    0.792099  121.017213
+Iteration: 180 bestvalit: 426.645899 bestmemit:    0.569306    0.016626    0.007467    0.792099  121.017213
+Iteration: 190 bestvalit: 426.645899 bestmemit:    0.569306    0.016626    0.007467    0.792099  121.017213
+Iteration: 200 bestvalit: 426.645899 bestmemit:    0.569306    0.016626    0.007467    0.792099  121.017213
+Iteration: 210 bestvalit: 424.569026 bestmemit:    0.703868    0.014116    0.004122    0.950773  155.911901
+Iteration: 220 bestvalit: 424.569026 bestmemit:    0.703868    0.014116    0.004122    0.950773  155.911901
+Iteration: 230 bestvalit: 424.131668 bestmemit:    0.930885    0.014116    0.004122    0.950773  196.684522
+Iteration: 240 bestvalit: 423.685819 bestmemit:    0.918372    0.019473    0.003388    0.902196  177.513468
+Iteration: 250 bestvalit: 423.161243 bestmemit:    0.918372    0.019473    0.003388    0.902196  189.408321
+Iteration: 260 bestvalit: 422.566873 bestmemit:    0.890102    0.018899    0.002960    0.984342  189.892356
+Iteration: 270 bestvalit: 422.178301 bestmemit:    0.940005    0.014490    0.002576    1.061121  203.721862
+Iteration: 280 bestvalit: 412.270858 bestmemit:    0.783407    0.028139    0.000408    1.264694  160.228584
+Iteration: 290 bestvalit: 411.545955 bestmemit:    0.970351    0.027699    0.000424    1.333749  196.237164
+Iteration: 300 bestvalit: 407.977221 bestmemit:    0.845775    0.020856    0.000125    1.592202  185.382885
+Iteration: 310 bestvalit: 405.121769 bestmemit:    0.985546    0.025203    0.000125    1.592202  209.388845
+Iteration: 320 bestvalit: 405.121769 bestmemit:    0.985546    0.025203    0.000125    1.592202  209.388845
+Iteration: 330 bestvalit: 404.444098 bestmemit:    0.969139    0.035744    0.000168    1.479185  178.657623
+Iteration: 340 bestvalit: 404.233333 bestmemit:    0.969139    0.035306    0.000168    1.479185  178.657623
+Iteration: 350 bestvalit: 402.621830 bestmemit:    0.842354    0.031254    0.000126    1.554303  160.064967
+Iteration: 360 bestvalit: 401.971552 bestmemit:    0.734374    0.021662    0.000067    1.750654  145.632802
+Iteration: 370 bestvalit: 399.747979 bestmemit:    0.801072    0.028823    0.000071    1.713966  146.219918
+Iteration: 380 bestvalit: 399.747979 bestmemit:    0.801072    0.028823    0.000071    1.713966  146.219918
+Iteration: 390 bestvalit: 393.289847 bestmemit:    0.833590    0.036004    0.000031    1.830995  145.632802
+Iteration: 400 bestvalit: 393.214093 bestmemit:    0.729641    0.036004    0.000031    1.830995  130.659875
+Iteration: 410 bestvalit: 392.054721 bestmemit:    0.675892    0.022890    0.000007    2.226016  113.619875
+Iteration: 420 bestvalit: 391.753364 bestmemit:    0.675892    0.022890    0.000007    2.264342  139.445091
+Iteration: 430 bestvalit: 391.753364 bestmemit:    0.675892    0.022890    0.000007    2.264342  139.445091
+Iteration: 440 bestvalit: 390.313374 bestmemit:    0.712306    0.022890    0.000007    2.264342  139.445091
+Iteration: 450 bestvalit: 390.313374 bestmemit:    0.712306    0.022890    0.000007    2.264342  139.445091
+Iteration: 460 bestvalit: 389.161229 bestmemit:    0.815343    0.026546    0.000007    2.264342  139.445091
+Iteration: 470 bestvalit: 389.161229 bestmemit:    0.815343    0.026546    0.000007    2.264342  139.445091
+Iteration: 480 bestvalit: 389.161229 bestmemit:    0.815343    0.026546    0.000007    2.264342  139.445091
+Iteration: 490 bestvalit: 388.670041 bestmemit:    0.729186    0.033726    0.000011    2.119703  125.023942
+Iteration: 500 bestvalit: 388.079681 bestmemit:    0.937270    0.030760    0.000007    2.229470  180.436631
+Iteration: 510 bestvalit: 388.079681 bestmemit:    0.937270    0.030760    0.000007    2.229470  180.436631
+Iteration: 520 bestvalit: 383.218261 bestmemit:    0.878524    0.044723    0.000008    2.090836  157.524787
+Iteration: 530 bestvalit: 383.218261 bestmemit:    0.878524    0.044723    0.000008    2.090836  157.524787
+Iteration: 540 bestvalit: 383.218261 bestmemit:    0.878524    0.044723    0.000008    2.090836  157.524787
+Iteration: 550 bestvalit: 383.151247 bestmemit:    0.773665    0.044723    0.000008    2.090836  128.202264
+Iteration: 560 bestvalit: 383.151247 bestmemit:    0.773665    0.044723    0.000008    2.090836  128.202264
+Iteration: 570 bestvalit: 381.735128 bestmemit:    0.990954    0.046788    0.000006    2.107427  170.224003
+Iteration: 580 bestvalit: 381.735128 bestmemit:    0.990954    0.046788    0.000006    2.107427  170.224003
+Iteration: 590 bestvalit: 381.735128 bestmemit:    0.990954    0.046788    0.000006    2.107427  170.224003
+Iteration: 600 bestvalit: 381.735128 bestmemit:    0.990954    0.046788    0.000006    2.107427  170.224003
+Iteration: 610 bestvalit: 380.950922 bestmemit:    0.990954    0.051062    0.000006    2.107427  170.224003
+Iteration: 620 bestvalit: 378.878285 bestmemit:    0.771568    0.074321    0.000004    2.076780  139.498870
+Iteration: 630 bestvalit: 377.701508 bestmemit:    0.826149    0.074060    0.000004    2.128374  128.867634
+Iteration: 640 bestvalit: 376.482184 bestmemit:    0.725938    0.074060    0.000004    2.128374  128.867634
+Iteration: 650 bestvalit: 374.451363 bestmemit:    0.922929    0.061617    0.000003    2.257642  152.426425
+Iteration: 660 bestvalit: 374.451363 bestmemit:    0.922929    0.061617    0.000003    2.257642  152.426425
+Iteration: 670 bestvalit: 374.451363 bestmemit:    0.922929    0.061617    0.000003    2.257642  152.426425
+Iteration: 680 bestvalit: 374.451363 bestmemit:    0.922929    0.061617    0.000003    2.257642  152.426425
+Iteration: 690 bestvalit: 371.676277 bestmemit:    0.953487    0.074321    0.000002    2.332244  153.682366
+Iteration: 700 bestvalit: 371.676277 bestmemit:    0.953487    0.074321    0.000002    2.332244  153.682366
+Iteration: 710 bestvalit: 369.529467 bestmemit:    0.866375    0.089547    0.000001    2.325473  130.278860
+Iteration: 720 bestvalit: 369.529467 bestmemit:    0.866375    0.089547    0.000001    2.325473  130.278860
+Iteration: 730 bestvalit: 369.529467 bestmemit:    0.866375    0.089547    0.000001    2.325473  130.278860
+Iteration: 740 bestvalit: 369.529467 bestmemit:    0.866375    0.089547    0.000001    2.325473  130.278860
+Iteration: 750 bestvalit: 368.299243 bestmemit:    0.788545    0.089547    0.000001    2.325473  130.278860
+Iteration: 760 bestvalit: 368.289343 bestmemit:    0.788545    0.089337    0.000001    2.325473  130.278860
+Iteration: 770 bestvalit: 366.807701 bestmemit:    0.752617    0.105035    0.000001    2.348472  117.987957
+Iteration: 780 bestvalit: 366.807701 bestmemit:    0.752617    0.105035    0.000001    2.348472  117.987957
+Iteration: 790 bestvalit: 366.718488 bestmemit:    0.736790    0.105035    0.000001    2.348472  116.296044
+Iteration: 800 bestvalit: 366.718488 bestmemit:    0.736790    0.105035    0.000001    2.348472  116.296044
+Iteration: 810 bestvalit: 366.718488 bestmemit:    0.736790    0.105035    0.000001    2.348472  116.296044
+Iteration: 820 bestvalit: 366.718488 bestmemit:    0.736790    0.105035    0.000001    2.348472  116.296044
+Iteration: 830 bestvalit: 366.666065 bestmemit:    0.731286    0.105035    0.000001    2.348472  116.296044
+Iteration: 840 bestvalit: 366.666065 bestmemit:    0.731286    0.105035    0.000001    2.348472  116.296044
+Iteration: 850 bestvalit: 366.666065 bestmemit:    0.731286    0.105035    0.000001    2.348472  116.296044
+Iteration: 860 bestvalit: 366.666065 bestmemit:    0.731286    0.105035    0.000001    2.348472  116.296044
+Iteration: 870 bestvalit: 366.666065 bestmemit:    0.731286    0.105035    0.000001    2.348472  116.296044
+Iteration: 880 bestvalit: 366.581890 bestmemit:    0.852944    0.090801    0.000001    2.373901  135.211491
+Iteration: 890 bestvalit: 366.581890 bestmemit:    0.852944    0.090801    0.000001    2.373901  135.211491
+Iteration: 900 bestvalit: 366.581890 bestmemit:    0.852944    0.090801    0.000001    2.373901  135.211491
+Iteration: 910 bestvalit: 366.581890 bestmemit:    0.852944    0.090801    0.000001    2.373901  135.211491
+Iteration: 920 bestvalit: 366.553894 bestmemit:    0.852944    0.092164    0.000001    2.373901  135.211491
+Iteration: 930 bestvalit: 366.553894 bestmemit:    0.852944    0.092164    0.000001    2.373901  135.211491
+Iteration: 940 bestvalit: 366.553894 bestmemit:    0.852944    0.092164    0.000001    2.373901  135.211491
+Iteration: 950 bestvalit: 366.551335 bestmemit:    0.946884    0.092164    0.000001    2.373901  149.539574
+Iteration: 960 bestvalit: 366.551335 bestmemit:    0.946884    0.092164    0.000001    2.373901  149.539574
+Iteration: 970 bestvalit: 366.551335 bestmemit:    0.946884    0.092164    0.000001    2.373901  149.539574
+Iteration: 980 bestvalit: 366.551335 bestmemit:    0.946884    0.092164    0.000001    2.373901  149.539574
+Iteration: 990 bestvalit: 366.475515 bestmemit:    0.944411    0.092164    0.000001    2.373901  148.868153
+Iteration: 1000 bestvalit: 366.473465 bestmemit:    0.944411    0.092164    0.000001    2.373901  155.045826
+        par1         par2         par3         par4         par5 
+9.444107e-01 9.216418e-02 1.003290e-06 2.373901e+00 1.550458e+02 
+[1] "daily growth rate= 0.6"
+> 

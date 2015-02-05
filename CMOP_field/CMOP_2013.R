@@ -182,7 +182,7 @@ pre.PAR1 <- as.data.frame(pre.PAR1, row.names=NULL)
 pre.PAR2 <- as.data.frame(pre.PAR2, row.names=NULL)
 pre.PAR<- rbind(pre.PAR1, pre.PAR2)
 
-pre.PAR$time <- as.POSIXct(strptime(sds$time, "%Y/%m/%d %H:%M:%S"), tz="GMT")
+pre.PAR$time <- as.POSIXct(strptime(pre.PAR$time, "%Y/%m/%d %H:%M:%S"), tz="GMT")
 
 
 
