@@ -57,7 +57,7 @@ m <- 2^6 # number of size class
 	##############
 	## PAR DATA ##
 	##############
-	Par.path <- paste0(in.dir,"/PAR_",cruise)
+	Par.path <- paste0(in.dir,"/Par_",cruise)
 	Par <- read.csv(Par.path, sep=",")
 	Par$time <- as.POSIXct(Par$time, tz= "GMT")
 	Par$num.time <- as.numeric(Par$time)
@@ -119,7 +119,7 @@ m <- 2^6 # number of size class
 		print(paste("calculating growth projection from ",start , "to",end))
 
 	
-	#plot(Par$time, Par$par, type='o'); points(c(start, end),c(0,0), col='red',pch=16, cex=2)
+	plot(Par$time, Par$par, type='o'); points(c(start, end),c(0,0), col='red',pch=16, cex=2)
 
 		### SELECT SIZE DISTRIBUTION for DAY i
 		V.hists <- Vhists[,c(i:(i+24)+t)]
