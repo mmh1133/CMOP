@@ -46,8 +46,8 @@ matrix.conct.fast <- function(hr, Einterp, volbins, gmax, dmax, b, E_star){
 		################################
 		## CONSTRUCTION SPARSE MATRIX ##
 		################################
-		stasis_ind <- seq(m+2,m^2-1,by=m+1) # Diagonal stasis (0)
-		growth_ind <- seq(2,(m-1)^2,by=m+1) # Subdiagonal growth (-1)
+		stasis_ind <- seq(1,m^2,by=m+1) # Diagonal stasis (0)
+		growth_ind <- seq(2,m^2,by=m+1) # Subdiagonal growth (-1)
 		div_ind <- seq((((j-1)*m)+1), m^2, by=m+1) # Superdiagonal division (j-1)
 		
 		for(t in 1:(1/dt)){

@@ -21,7 +21,8 @@ library(plot3D)
 # cruise <- "DeepDOM"
 # phyto <- "prochloro"
 
-home <- "/Users/francois/CMOP/Rhodo_labExperiment/"
+home <- "/Users/francois/Documents/DATA/SeaFlow/CMOP/CMOP_git/Rhodo_labExperiment/"
+#home <- "/Users/francois/CMOP/Rhodo_labExperiment/"
 cruise <- "Rhodo_lab"
 phyto <- "crypto"
 cat<-6
@@ -108,7 +109,7 @@ jet.colors <- colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F"
 #cat <- 6
 	
 	###############################
-	m <- 2^cat # number of Size class
+	m <- 57# 2^cat # number of Size class
 	###############################
 	
 	## where to cut Size class
@@ -157,8 +158,8 @@ jet.colors <- colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F"
 		N_dist <- t(tapply(Size.volume$HD.size, list(h,Size.volume$HD.volume), mean))
 		
 	        ### NA interpolation
-	        # Vhists <- try(t(apply(Vhists, 1, function(x) na.approx(x, na.rm=F))))
-	        # N_dist <- try(t(apply(N_dist, 1, function(x) na.approx(x, na.rm=F))))
+	        Vhists <- try(t(apply(Vhists, 1, function(x) na.approx(x, na.rm=F))))
+	        N_dist <- try(t(apply(N_dist, 1, function(x) na.approx(x, na.rm=F))))
 	     	
 	     	# id <- findInterval(h.time, na.approx(time, na.rm=F))
 
@@ -175,3 +176,5 @@ jet.colors <- colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F"
 		
 	    save(distribution, file=paste(home,"",phyto,"_dist_Ncat",m,"_",cruise,sep=""))
 	    print(paste("saving ", home,"",phyto,"_dist_Ncat",m,"_",cruise,sep=""))
+
+	    

@@ -32,7 +32,7 @@ matrix.conct.fast <- function(hr, Einterp, volbins, gmax, dmax, a, b, E_star){
 		## DELTA FUNCTION ## fraction of cells that divide between t and t + dt
 		#################### 
 		del <- dmax * a*(volbins)^b / (1 + a*(volbins)^b)
-		del[1:(j-1)] <- 0		
+		# del[1:(j-1)] <- 0		
 				# if(hr <= t.nodiv){delta <- matrix(data=0, 1, m)
 					# }else{delta <- matrix(del, 1, m)}
 		delta <- matrix(del, 1, m)
@@ -45,25 +45,25 @@ matrix.conct.fast <- function(hr, Einterp, volbins, gmax, dmax, a, b, E_star){
 		################################
 		## CONSTRUCTION SPARSE MATRIX ##
 		################################
-		stasis_ind <- seq(m+2,m^2-1,by=m+1) # Diagonal stasis (0)
-		growth_ind <- seq(2,(m-1)^2,by=m+1) # Subdiagonal growth (-1)
+		stasis_ind <- seq(1,m^2,by=m+1) # Diagonal stasis (0)
+		growth_ind <- seq(2,m^2,by=m+1) # Subdiagonal growth (-1)
 		div_ind <- seq((((j-1)*m)+1), m^2, by=m+1) # Superdiagonal division (j-1)
 		
 		for(t in 1:(1/dt)){
 			A <- matrix(data=0,nrow=m, ncol=m)
 			
+			# Stasis (main diagonal)
+			A[stasis_ind] <- (1-delta)*(1-y[t+hr/dt])	# the hr/dt part in the indexing is because each hour is broken up into dt segments for the irradiance spline
+			A[m,m] <- 1-delta[m]
+			
 			# Cell growth (subdiagonal region of the matrix)
-			A[growth_ind] <- y[t+hr/dt]*(1-delta[1:(m-2)])	
+			A[growth_ind] <- y[t+hr/dt]*(1-delta[1,1:(m-1)])	
 
 			# Division (first row and superdiagonal j-1)
-			A[1,2:(j-1)] <- 2 * delta[2:(j-1)] # Top row; Small phytoplanktoin (i=1,..., j-1) are less than twice as big as the smallest size class, and so newly divided are put in the smallest size class.
+			A[1,1:(j-1)] <- A[1,1:(j-1)] + 2 * delta[2:(j-1)] # Top row; Small phytoplanktoin (i=1,..., j-1) are less than twice as big as the smallest size class, and so newly divided are put in the smallest size class.
 			A[div_ind] <- 2 * delta[j:m] # The cell division terms for large (i > = j) phytoplankton
 		
-			# Stasis (main diagonal)
-			A[stasis_ind] <- (1-delta[2:(m-1)])*(1-y[t+hr/dt])	# the hr/dt part in the indexing is because each hour is broken up into dt segments for the irradiance spline
-			A[1,1] <- (1-delta[1])*(1-y[t+hr/dt]) + 2 * delta[1]
-			A[m,m] <- 1-delta[m]
-
+			
 
 			# A[m,m] <- 1-colSums(A)[m]
 			# A[1,1] <- 1-colSums(A)[1]
