@@ -184,6 +184,7 @@ pre.PAR<- rbind(pre.PAR1, pre.PAR2)
 
 pre.PAR$time <- as.POSIXct(strptime(pre.PAR$time, "%Y/%m/%d %H:%M:%S"), tz="GMT")
 
+write.csv(pre.PAR, paste("/Users/francois/CMOP/CMOP_field/Par_",cruise, sep=""), quote=F, row.names=F)
 
 
 
