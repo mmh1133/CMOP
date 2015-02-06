@@ -161,7 +161,7 @@ light1<- subset(crypto, time > as.POSIXct("2014-09-22 21:00:00") & time < as.POS
 light2<- subset(crypto, time > as.POSIXct("2014-09-23 21:01:00") & time < as.POSIXct("2014-09-24 13:10:00"))
 
 #plotting abundance over time with light/dark cycle 
-plot(crypto$time, crypto$abundance,ylim=c(0,40), pch=16, xlab="time", ylab="abundance", main="Rhodomonas")
+plot(crypto$time, crypto$abundance,ylim=c(5,30), pch=16, xlab="time", ylab="abundance", main="Rhodomonas", cex.main=2, cex.lab=1.5)
 points(light1$time, light1$abundance, col="gold", pch=16)
 points(light2$time, light2$abundance, col="gold", pch=16)
 

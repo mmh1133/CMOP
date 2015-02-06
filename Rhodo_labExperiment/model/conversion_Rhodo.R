@@ -89,7 +89,9 @@ jet.colors <- colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F"
 
 		# percentile <- cut(Size[,"freq.dist"], 100); plot3d(x=log10(Size$volume), y=Size$num.time, z=Size$freq.dist, col=jet.colors(100)[percentile], type='l', lwd=2)
 	
-		volume.range <- c(mean.volume/10, mean.volume*5); print(volume.range)
+		## SET UP THE BOUNDARIES OF THE SIZE DISTRIBUTION
+		volume.range <- c(mean.volume/10, mean.volume*5); print(volume.range) #### 
+
 		diameter.range <- 2*((volume.range *3)/(pi*4))^(1/3) ; print(diameter.range)
 		
 	Size.phyto <- subset(Size, volume > volume.range[1] & volume < volume.range[2])

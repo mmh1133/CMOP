@@ -6,7 +6,7 @@
 library(popcycle)
 set.evt.location("/Volumes/seaflow/CMOP_6")
 set.project.location("~/CMOP_2013_f2")
-
+set.cruise.id("CMOP_6")
 
 
 #############################################
@@ -169,6 +169,7 @@ stat[id.good.file, "flag"] <- 0
 savepath<-"/Users/francois/CMOP/CMOP_field"
 write.delim(stat,file=paste(savepath,"stat.tab", sep="/"), row.names=F)
 
+plot(crypto$time, crypto$abundance,ylim=c(0,20), pch=16, xlab="time", ylab="abundance", main="Cryptophyte", cex.main=2, cex.lab=1.5)
 
 
 
