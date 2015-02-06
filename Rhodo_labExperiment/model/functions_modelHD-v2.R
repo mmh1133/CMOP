@@ -6,7 +6,7 @@
 
 
 
-matrix.conct.fast <- function(hr, Einterp, volbins, gmax, dmax, b, E_star){
+matrix.const <- function(hr, Einterp, volbins, gmax, dmax, b, E_star){
 	
 		########################
 		## INITIAL PARAMETERS ##
@@ -33,7 +33,7 @@ matrix.conct.fast <- function(hr, Einterp, volbins, gmax, dmax, b, E_star){
 		# del <- dmax * (a*volbins)^b / (1 + (a*volbins)^b) #OLD VERSION
 
 		del <- dmax * (volbins^b / (1 + volbins^b)) # NEW VERSION
-		del[1:(j-1)] <- 0		
+
 				# if(hr <= t.nodiv){delta <- matrix(data=0, 1, m)
 					# }else{delta <- matrix(del, 1, m)}
 		delta <- matrix(del, 1, m)
@@ -46,31 +46,32 @@ matrix.conct.fast <- function(hr, Einterp, volbins, gmax, dmax, b, E_star){
 		################################
 		## CONSTRUCTION SPARSE MATRIX ##
 		################################
+		A <- matrix(data=0,nrow=m, ncol=m)
 		stasis_ind <- seq(1,m^2,by=m+1) # Diagonal stasis (0)
 		growth_ind <- seq(2,m^2,by=m+1) # Subdiagonal growth (-1)
 		div_ind <- seq((((j-1)*m)+1), m^2, by=m+1) # Superdiagonal division (j-1)
 		
 		for(t in 1:(1/dt)){
-			A <- matrix(data=0,nrow=m, ncol=m)
+			
+			# Stasis (main diagonal)
+			A[stasis_ind] <- (1-delta)*(1-y[t+hr/dt])	# the hr/dt part in the indexing is because each hour is broken up into dt segments for the irradiance spline
+			A[m,m] <- 1-delta[m]
 			
 			# Cell growth (subdiagonal region of the matrix)
-			A[growth_ind] <- y[t+hr/dt]*(1-delta[1:(m-2)])	
+			A[growth_ind] <- y[t+hr/dt]*(1-delta[1,1:m-1])	
 
 			# Division (first row and superdiagonal j-1)
-			A[1,2:(j-1)] <- 2 * delta[2:(j-1)] # Top row; Small phytoplanktoin (i=1,..., j-1) are less than twice as big as the smallest size class, and so newly divided are put in the smallest size class.
+			A[1,1:j-1] <- A[1,1:j-1] + 2 * delta[1:j-1] # Top row; Small phytoplanktoin (i=1,..., j-1) are less than twice as big as the smallest size class, and so newly divided are put in the smallest size class.
 			A[div_ind] <- 2 * delta[j:m] # The cell division terms for large (i > = j) phytoplankton
 		
-			# Stasis (main diagonal)
-			A[stasis_ind] <- (1-delta[2:(m-1)])*(1-y[t+hr/dt])	# the hr/dt part in the indexing is because each hour is broken up into dt segments for the irradiance spline
-			A[1,1] <- (1-delta[1])*(1-y[t+hr/dt]) + 2 * delta[1]
-			A[m,m] <- 1-delta[m]
-
+			
 
 			# A[m,m] <- 1-colSums(A)[m]
 			# A[1,1] <- 1-colSums(A)[1]
 			# A[stasis_ind] <- 1-colSums(A)[-c(1,m)]	
 		
 					if(t == 1){B <- A}else{B <- A %*% B}
+			A <- A*0
 			}
 
 		return(B)
@@ -98,7 +99,7 @@ matrix.conct.fast <- function(hr, Einterp, volbins, gmax, dmax, b, E_star){
 			
 					
 			for(hr in 1:24){
-					B <- matrix.conct.fast(hr=hr-1, Einterp=Einterp, volbins=volbins, gmax=as.numeric(params[1]), dmax=as.numeric(params[2]), b=as.numeric(params[3]), E_star=as.numeric(params[4]))	
+					B <- matrix.const(hr=hr-1, Einterp=Einterp, volbins=volbins, gmax=as.numeric(params[1]), dmax=as.numeric(params[2]), b=as.numeric(params[3]), E_star=as.numeric(params[4]))	
 					wt <- B %*% V.hists[,hr] # calculate the projected size-frequency distribution 
 					wt.norm <- wt/sum(wt, na.rm=T) # normalize distribution
 					sigma[,hr] <- (round(N.dist[, hr+1] - TotN[hr+1]*wt.norm)^2) #observed value - fitted value
@@ -139,7 +140,7 @@ determine.opt.para <- function(V.hists,N.dist,Edata,volbins){
 		
 		f <- function(params) sigma.lsq(params=params, Einterp=Einterp, N.dist=N.dist, V.hists=V.hists, TotN=TotN, volbins=volbins)
 			
-		opt <- DEoptim(f, lower=c(1e-6,1e-6,1e-6,1), upper=c(1,1,15,max(Einterp)), control=DEoptim.control(itermax=1000, reltol=1e-6, trace=10, steptol=100))
+		opt <- DEoptim(f, lower=c(1e-6,1e-6,1e-6,1), upper=c(1,1,15,max(Einterp)), control=DEoptim.control(itermax=1000, reltol=1e-3, trace=10, steptol=100))
 		
 		params <- opt$optim$bestmem
 		gmax <- params[1]
@@ -158,7 +159,7 @@ determine.opt.para <- function(V.hists,N.dist,Edata,volbins){
 		mu_N <- matrix(nrow=1,ncol=dim(V.hists)[2])
 
 			for(hr in 1:24){
-					B <- matrix.conct.fast(hr=hr-1, Einterp=Einterp, volbins=volbins, gmax=gmax, b=b, E_star=E_star,dmax=dmax)
+					B <- matrix.const(hr=hr-1, Einterp=Einterp, volbins=volbins, gmax=gmax, b=b, E_star=E_star,dmax=dmax)
 					Nproj[,hr+1] <- round(B %*% Nproj[,hr]) # calculate numbers of individuals
 					Vproj[,hr+1] <- B %*% Vproj[,hr] # calculate the projected size-frequency distribution
 					Vproj[,hr+1] <- Vproj[,hr+1]/sum(Vproj[,hr+1]) # normalize distribution

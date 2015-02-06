@@ -28,6 +28,10 @@ script.home <- "/Users/francois/CMOP/Rhodo_labExperiment/model"
 in.dir <-"/Users/francois/CMOP/Rhodo_labExperiment/"
 out.dir <- "/Users/francois/CMOP/Rhodo_labExperiment/"
 
+script.home <- "/Users/francois/Documents/DATA/SeaFlow/CMOP/CMOP_git/Rhodo_labExperiment/model"
+in.dir <- out.dir <- "/Users/francois/Documents/DATA/SeaFlow/CMOP/CMOP_git/Rhodo_labExperiment"
+
+
 source(paste(script.home,'functions_modelHD.R',sep="/"), chdir = TRUE)
 
 jet.colors <- colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F", "yellow",	"#FF7F00", "red", "#7F0000"))
@@ -36,7 +40,7 @@ jet.colors <- colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F"
 
 
 ###############################
-m <- 2^6 # number of size class
+m <- 57#2^6 # number of size class
 ###############################
 
 
@@ -126,10 +130,10 @@ m <- 2^6 # number of size class
 		N.dist <- N_dist[,c(i:(i+24)+t)]
 		
 		# #NAs break this part and need to be made into zeros
-			mk.zero <- which(is.na(V.hists))
-			V.hists[mk.zero] <- 0
-			mk.zero <- which(is.na(N.dist))
-			N.dist[mk.zero] <- 0
+			# mk.zero <- which(is.na(V.hists))
+			# V.hists[mk.zero] <- 0
+			# mk.zero <- which(is.na(N.dist))
+			# N.dist[mk.zero] <- 0
 
 	    # para <- V.hists; percentile <- cut(unlist(para), 100); plot3d(log(rep(as.numeric(row.names(para))), dim(para)[2]), rep(as.numeric(colnames(para)), each=dim(para)[1]), para , col=jet.colors(100)[percentile], type='l', lwd=6, xlab="size class", ylab="time", zlab="Frequency")
 
@@ -151,7 +155,8 @@ m <- 2^6 # number of size class
 		
 		if(class(proj) !='try-error'){
 		model <- matrix(cbind(as.array(model), as.array(proj)), nrow=4,ncol=ncol(model)+1)
-	    save(model, file=paste(out.dir,"/",phyto,"_modelHD_growth_",cruise,"_Ncat",m,"_t",t, sep=""))
+	    	
+	    	save(model, file=paste(out.dir,"/",phyto,"_modelHD_growth_",cruise,"_Ncat",m,"_t-V2",t, sep=""))
 
 	  }else{print("error during optimization")}
 }

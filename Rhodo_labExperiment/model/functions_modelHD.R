@@ -45,22 +45,22 @@ matrix.conct.fast <- function(hr, Einterp, volbins, gmax, dmax, a, b, E_star){
 		################################
 		## CONSTRUCTION SPARSE MATRIX ##
 		################################
+		A <- matrix(data=0,nrow=m, ncol=m)
 		stasis_ind <- seq(1,m^2,by=m+1) # Diagonal stasis (0)
 		growth_ind <- seq(2,m^2,by=m+1) # Subdiagonal growth (-1)
 		div_ind <- seq((((j-1)*m)+1), m^2, by=m+1) # Superdiagonal division (j-1)
 		
 		for(t in 1:(1/dt)){
-			A <- matrix(data=0,nrow=m, ncol=m)
 			
 			# Stasis (main diagonal)
 			A[stasis_ind] <- (1-delta)*(1-y[t+hr/dt])	# the hr/dt part in the indexing is because each hour is broken up into dt segments for the irradiance spline
 			A[m,m] <- 1-delta[m]
 			
 			# Cell growth (subdiagonal region of the matrix)
-			A[growth_ind] <- y[t+hr/dt]*(1-delta[1,1:(m-1)])	
+			A[growth_ind] <- y[t+hr/dt]*(1-delta[1,1:m-1])	
 
 			# Division (first row and superdiagonal j-1)
-			A[1,1:(j-1)] <- A[1,1:(j-1)] + 2 * delta[2:(j-1)] # Top row; Small phytoplanktoin (i=1,..., j-1) are less than twice as big as the smallest size class, and so newly divided are put in the smallest size class.
+			A[1,1:j-1] <- A[1,1:j-1] + 2 * delta[1:j-1] # Top row; Small phytoplanktoin (i=1,..., j-1) are less than twice as big as the smallest size class, and so newly divided are put in the smallest size class.
 			A[div_ind] <- 2 * delta[j:m] # The cell division terms for large (i > = j) phytoplankton
 		
 			
@@ -70,6 +70,7 @@ matrix.conct.fast <- function(hr, Einterp, volbins, gmax, dmax, a, b, E_star){
 			# A[stasis_ind] <- 1-colSums(A)[-c(1,m)]	
 		
 					if(t == 1){B <- A}else{B <- A %*% B}
+			A <- A*0
 			}
 
 		return(B)
@@ -98,13 +99,12 @@ matrix.conct.fast <- function(hr, Einterp, volbins, gmax, dmax, a, b, E_star){
 					
 			for(hr in 1:24){
 					B <- matrix.conct.fast(hr=hr-1, Einterp=Einterp, volbins=volbins, gmax=as.numeric(params[1]), dmax=as.numeric(params[2]), a=as.numeric(params[3]),b=as.numeric(params[4]), E_star=as.numeric(params[5]))
-						
 					wt <- B %*% V.hists[,hr] # calculate the projected size-frequency distribution 
 					wt.norm <- wt/sum(wt, na.rm=T) # normalize distribution
-					sigma[,hr] <- (round(N.dist[, hr+1] - TotN[hr+1]*wt.norm)^2) #observed value - fitted value
+					sigma[,hr] <- abs(N.dist[, hr+1] - TotN[hr+1]*wt.norm) #observed value - fitted value
 					#sigma[,hr] <- abs(V.hists[, hr+1] - wt.norm) #observed value - fitted value
 					}
-			sigma <- colSums(sigma)/colSums(na.omit(N.dist[,-1]))
+			sigma <- colSums(sigma)/sum(colSums(N.dist))*1000
 			sigma <- sum(sigma, na.rm=T)
 			return(sigma)
 
