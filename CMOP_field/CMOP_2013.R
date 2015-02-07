@@ -169,7 +169,7 @@ stat[id.good.file, "flag"] <- 0
 savepath<-"/Users/francois/CMOP/CMOP_field"
 write.delim(stat,file=paste(savepath,"stat.tab", sep="/"), row.names=F)
 
-plot(crypto$time, crypto$fsc_small,ylim=c(0,1500), pch=16, xlab="time", ylab="abundance", main="Cryptophyte")
+plot(crypto$time, crypto$abundance,ylim=c(0,20), pch=16, xlab="time", ylab="abundance", main="Cryptophyte", cex.main=2, cex.lab=1.5)
 
 
 
