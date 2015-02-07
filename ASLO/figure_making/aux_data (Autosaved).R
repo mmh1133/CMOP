@@ -146,14 +146,15 @@ crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-23 22:50:00") & time < 
 #week4: 2013-09-30 18:55:00 - 2013-10-03 23:58:00
 
 
-plot(pre.crypto2$time, pre.crypto2$abundance,ylim=c(0,20), pch=16, xlab="time", ylab="abundance", main="Cryptophyte", cex.main=2, cex.lab=1.5)
+plot(pre.crypto2$time, pre.crypto2$abundance,ylim=c(0,5), pch=16, xlab="time", ylab="abundance", main="Cryptophyte", cex.main=2, cex.lab=1.5)
 
 
-read.csv("/Users/francois/CMOP/auxillary_data/CDOM_fluorescenceCMOP_6.csv")
+pre.flu <- read.csv("/Users/francois/CMOP/auxillary_data/CDOM_fluorescenceCMOP_6")
+pre.flu2 <- as.data.frame(pre.flu, row.names=NULL)
+pre.flu2$time <- as.POSIXct(strptime(pre.flu2$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
+flu <- subset(pre.flu2, time > as.POSIXct("2013-09-23 22:50:00") & time < as.POSIXct("2013-09-27 10:10:00"))
 
-
-
-
+plot(pre.flu2$time, pre.flu2$cdom, col="green", pch=16, ylim=c(0,40))
 
 
 
