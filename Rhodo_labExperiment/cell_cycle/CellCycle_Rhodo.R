@@ -137,8 +137,13 @@ GR <- function(freqG2S, t.div=4,n=12){
 }
 
 div <- GR(100*(mean.f.G2+mean.f.S), t.div=t.div, n=length(mean.f.G1))
-table <- data.frame(cbind(time=time2,h.div=div, mean.f.G1, mean.f.S, mean.f.G2, sd.f.G1, sd.f.S, sd.f.G2))
+div.sd <- div*sqrt((sd.f.G2/(mean.f.G2*log(10)))^2+(sd.f.S/(mean.f.S*log(10)))^2+(sd.f.G1/(mean.f.G1*log(10)))^2)
+div.se <- div.sd/sqrt(2)
+table <- data.frame(cbind(time=time2, div=div, div.sd=div.sd, div.se=div.se, mean.f.G1, mean.f.S, mean.f.G2, sd.f.G1, sd.f.S, sd.f.G2))
 write.csv(table, "RHODO_div-rate.csv", quote=F, row.names=T)
 
 daily.div <- sum(div) / as.numeric(diff(range(time2)))
 print(paste("Daily Growth Rate =",round(daily.div,2), "d-1"))
+
+
+
