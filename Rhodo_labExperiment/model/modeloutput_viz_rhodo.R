@@ -130,6 +130,8 @@ write.csv(Div.rate.ave, file=paste0(out.dir,"model_output-V2.csv"), row.names=F)
 library(lmodel2)
 
 home <- "/Users/francois/Documents/DATA/SeaFlow/CMOP/CMOP_git/"
+home <- "/Users/francois/CMOP/"
+
 out.dir <- paste0(home, "Rhodo_labExperiment/")
 
 m <- read.csv(paste0(out.dir,"model_output-V2.csv"))
@@ -155,4 +157,3 @@ print(z$rsquare)
 abline(b=z$regression.results[4,3],a=z$regression.results[4,2], lty=2, lwd=2,col=2)
 mtext(substitute(paste("DNA-based Division (h"^{-1},")")), side=2, line=3, cex=1)
 mtext(substitute(paste("Size-based Division (h"^{-1},")")), side=1, line=3, cex=1)
-

@@ -21,7 +21,7 @@ file.list <- file.list[!grepl('.png', file.list)]
 
 #evt <- readSeaflow(paste(evt.location, file.list[500], sep='/'))
 
-evt <- readSeaflow(paste(file.list[107]))
+evt <- readSeaflow(paste(file.list[300]))
 
 notch <- find.filter.notch(evt, notch=seq(0.1, 1.4, by=0.1),width=0.2, do.plot=TRUE) #finds notch  
 plot.filter.cytogram(evt, notch=1, width=0.5) #plots filteration
@@ -30,7 +30,7 @@ opp<-filter.notch(evt, notch=1, width=0.5)
 
 plot.cytogram(opp, para.x='fsc_small', para.y='chl_small')
 
-png(filename="/Users/francois/CMOP/Rhodo_labExperiment/filter_400.png")
+png(filename="/Users/francois/CMOP/ASLO/figure_making/rough_plots.png")
 dev.off()
 
 setFilterParams(notch=1, width=0.5)
