@@ -127,12 +127,32 @@ write.csv(Div.rate.ave, file=paste0(out.dir,"model_output-V2.csv"), row.names=F)
 ###################################
 ### COMPARISON WITH CELL CYCLE ###
 ###################################
+library(lmodel2)
+
 home <- "/Users/francois/Documents/DATA/SeaFlow/CMOP/CMOP_git/"
 out.dir <- paste0(home, "Rhodo_labExperiment/")
 
 m <- read.csv(paste0(out.dir,"model_output-V2.csv"))
-cc <- read.csv(paste0(out.dir,"RHODO_div-rate.csv"))
+cc <- read.csv(paste0(out.dir,"RHODO_div-rate.csv"))[-1,]
 
-plotCI(cc$time, cc$div, cc$div.se, ylim=c(0,0.05), sfrac=0, pch=1, lwd=2)
-plotCI(m$time, m$div.ave, m$div.sd, col=2,add=T, sfrac=0, pch=1, lwd=2)
+par(mfrow=c(2,1))
+par(pty='m')
+plotCI(as.POSIXct(cc$time, origin="1970-01-01"), cc$div, cc$div.se, ylim=c(0,0.05), sfrac=0, lwd=2, pch=16, cex=2,ylab=NA, xlab=NA)
+plotCI(m$time, m$div.ave, m$div.sd, col=2,add=T, sfrac=0, lwd=2, pch=16,cex=2)
+mtext(substitute(paste("Division (h"^{-1},")")), side=2, line=3, cex=1)
+mtext("time", side=1, line=3, cex=1)
+
+
+par(pty='s')
+id <- findInterval(cc$time, m$time)
+t <- data.frame(cbind(cc[,"div"], m[id,'div.ave'],cc[,"div.se"], m[id,'div.sd']))
+names(t) <- c("cc","m", "cc.se","m.sd")
+plotCI(t[,1], t[,2],uiw=t[,3], ylim=c(0,0.05),xlim=c(0,0.05), sfrac=0, ylab=NA, xlab=NA, pch=16, cex=2)
+plotCI(t[,1], t[,2],, uiw=t[,4], add=T, err='x', sfrac=0)
+#abline(a=0,b=1)
+z <- lmodel2(m~cc, data=t, "relative","relative")
+print(z$rsquare)
+abline(b=z$regression.results[4,3],a=z$regression.results[4,2], lty=2, lwd=2,col=2)
+mtext(substitute(paste("DNA-based Division (h"^{-1},")")), side=2, line=3, cex=1)
+mtext(substitute(paste("Size-based Division (h"^{-1},")")), side=1, line=3, cex=1)
 
