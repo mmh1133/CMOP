@@ -24,17 +24,17 @@ out.dir <- as.character(args[6])
  t = 1
 phyto= "crypto"
 cruise = "Rhodo_lab"
+
 script.home <- "/Users/francois/CMOP/Rhodo_labExperiment/model"
-in.dir <-"/Users/francois/CMOP/Rhodo_labExperiment/"
-out.dir <- "/Users/francois/CMOP/Rhodo_labExperiment/"
+in.dir <- out.dir <- "/Users/francois/CMOP/Rhodo_labExperiment/model"
 
 script.home <- "/Users/francois/Documents/DATA/SeaFlow/CMOP/CMOP_git/Rhodo_labExperiment/model"
-in.dir <- out.dir <- "/Users/francois/Documents/DATA/SeaFlow/CMOP/CMOP_git/Rhodo_labExperiment"
+in.dir <- out.dir <- "/Users/francois/Documents/DATA/SeaFlow/CMOP/CMOP_git/Rhodo_labExperiment/model"
 
 
 source(paste(script.home,'functions_modelHD.R',sep="/"), chdir = TRUE)
 
-jet.colors <- colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F", "yellow",	"#FF7F00", "red", "#7F0000"))
+jet.colors <- colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000"))
 
 
 
@@ -79,7 +79,7 @@ m <- 57#2^6 # number of size class
 	
 	load(paste(in.dir,"/", phyto,"_dist_Ncat",m,"_",cruise,sep=""))
 	Vhists <- distribution[[1]]
-	#Vhists <- sweep(Vhists, 2, colSums(Vhists), '/') # Normalize each column of VHists to 1 #this caused a bug erasing the first section of my data, because colSums = NA	
+	Vhists <- sweep(Vhists, 2, colSums(Vhists), '/') # Normalize each column of VHists to 1 
 	N_dist <- distribution[[2]]
 
 	volbins <- as.numeric(row.names(Vhists))
@@ -102,9 +102,11 @@ m <- 57#2^6 # number of size class
 
 	model <- array(NA, dim=c(4,1))
 
+for(t in 0:24){
+		#plot(Par$time, Par$par, type='o'); points(c(start, end),c(0,0), col='red',pch=16, cex=2)
 	for(i in seq(1,length(time)-24, 24)){
 		print(paste("starting hour:",i+t))
-		#i <- 25
+		#i <- 96
 		start <- time[i+t]
 		end <- time[(i+t)+24]
 		
@@ -112,19 +114,7 @@ m <- 57#2^6 # number of size class
 			print("cycle is less than 24h")
 			next
 			}
-		if(is.na(start)){
-			print("NA in start time, skip ahead")
-			next
-		}
-		if(sum(is.na(time[i:(i+24)+t]))>4){
-			print("more than 4 hours missing from time period, skip ahead")
-			next
-		}
 		print(paste("calculating growth projection from ",start , "to",end))
-
-	
-	#plot(Par$time, Par$par, type='o'); points(c(start, end),c(0,0), col='red',pch=16, cex=2)
-
 		### SELECT SIZE DISTRIBUTION for DAY i
 		V.hists <- Vhists[,c(i:(i+24)+t)]
 		N.dist <- N_dist[,c(i:(i+24)+t)]
@@ -156,7 +146,8 @@ m <- 57#2^6 # number of size class
 		if(class(proj) !='try-error'){
 		model <- matrix(cbind(as.array(model), as.array(proj)), nrow=4,ncol=ncol(model)+1)
 	    	
-	    	save(model, file=paste(out.dir,"/",phyto,"_modelHD_growth_",cruise,"_Ncat",m,"_t-V2",t, sep=""))
+	    	save(model, file=paste(out.dir,"/",phyto,"_modelHD_growth_",cruise,"_Ncat",m,"_t",t, sep=""))
 
-	  }else{print("error during optimization")}
+		}else{print("error during optimization")}
+	}
 }
