@@ -150,7 +150,7 @@ stat$time <- as.POSIXct(stat$time,format="%FT%T",tz='GMT')
 pre.crypto1 <- subset(stat, pop == 'crypto') 
 id <- which(pre.crypto1$flow_rate < 2400) #subset files that have low flow rate
 pre.crypto2 <- pre.crypto1[-id,]
-crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-23 22:50:00") & time < as.POSIXct("2013-09-27 10:10:00")) 
+crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-23 22:50:00") & time < as.POSIXct("2013-09-26 00:50:00")) 
 
 #week1: 2013-09-10 16:50:00 - 2013-09-13 16:00:00
 #week2: 2013-09-16 19:55:00 - 2013-09-20 00:00:00
@@ -158,7 +158,7 @@ crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-23 22:50:00") & time < 
 #week4: 2013-09-30 18:55:00 - 2013-10-03 23:58:00
 
 
-plot(pre.crypto2$time, pre.crypto2$abundance,ylim=c(0,20), pch=16, xlab="time", ylab="abundance", main="Cryptophyte", cex.main=2, cex.lab=1.5)
+plot(crypto$time, crypto$abundance,ylim=c(0,0.8), pch=16, xlab="time", ylab="abundance", main="Cryptophyte", cex.main=2, cex.lab=1.5)
 
 
 pre.flu <- read.csv("/Users/francois/CMOP/auxillary_data/bulk_orangeCMOP_6")
