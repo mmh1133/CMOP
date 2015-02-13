@@ -14,7 +14,7 @@ set.cruise.id("CMOP_6")
 #############################################
 
 
-#evt.location<-"/Volumes/seaflow/CMOP_6"
+evt.location<-"/Volumes/seaflow/CMOP_6"
 #file.name <-get.latest.evt.with.day() #name of the latest evt file collected
 file.list <-list.files(evt.location, recursive=T,pattern='.evt')
 file.list <- file.list[!grepl('.opp', file.list)]
@@ -28,7 +28,8 @@ evt3 <- readSeaflow(paste(evt.location, file.list[i+2], sep='/'))
 evt <- rbind(evt1,evt2,evt3)
 # for when you want to smoosh files together when there is little data
 
-evt <- readSeaflow(paste(evt.location, file.list[500], sep='/')) 
+evt <- readSeaflow(paste(file.list[3950]))
+evt <- readSeaflow(paste(evt.location, file.list[3965], sep='/')) 
 # files tested(oct)- gating:3980, 2700, 2900,3000(for synecho), 3100(beads), 3500(beads), 3900, 500
 # no beads- 3600, 1680, 1690
 # opp1 stronger sig- 3900, 1500, 1660

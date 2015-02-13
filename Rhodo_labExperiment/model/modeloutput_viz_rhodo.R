@@ -127,12 +127,18 @@ write.csv(Div.rate.ave, file=paste0(out.dir,"model_output-V2.csv"), row.names=F)
 ###################################
 ### COMPARISON WITH CELL CYCLE ###
 ###################################
-home <- "/Users/francois/Documents/DATA/SeaFlow/CMOP/CMOP_git/"
+home <- "/Users/francois/CMOP/"
 out.dir <- paste0(home, "Rhodo_labExperiment/")
 
-m <- read.csv(paste0(out.dir,"model_output-V2.csv"))
-cc <- read.csv(paste0(out.dir,"RHODO_div-rate.csv"))
+m <- as.data.frame(read.csv(paste0(out.dir,"model_output-V2.csv")), row.names=NULL)
+cc <- as.data.frame(read.csv(paste0(out.dir,"RHODO_div-rate.csv")), row.names=NULL)
 
-plotCI(cc$time, cc$div, cc$div.se, ylim=c(0,0.05), sfrac=0, pch=1, lwd=2)
-plotCI(m$time, m$div.ave, m$div.sd, col=2,add=T, sfrac=0, pch=1, lwd=2)
+
+
+cc$time <- as.POSIXct(cc$time, origin="1970-01-01" ,tz='GMT')
+m$time <- as.POSIXct(m$time, origin="1970-01-01" ,tz='GMT')
+
+
+plotCI(cc$time, cc$div, cc$div.se, ylim=c(0,0.05), sfrac=0, pch=1, lwd=2, xlab="time", ylab="division rate", main="model division rate vs. cell cycle", cex.main=2, cex.lab=1.5)
+plotCI(m$time, m$div.ave, m$div.sd, col=2,add=T, sfrac=0, pch=1, lwd=2, xlab="time", ylab="division rate", main="model division rate vs. cell cycle")
 
