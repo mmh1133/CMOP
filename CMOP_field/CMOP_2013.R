@@ -193,3 +193,18 @@ write.csv(pre.PAR, paste("/Users/francois/CMOP/CMOP_field/Par_",cruise, sep=""),
 
 
 
+for(file in stat) { 
+
+	sum(which(file=="file"), pe, na.rm=T)
+	
+}
+
+
+
+
+
+
+
+
+
+
