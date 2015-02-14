@@ -170,7 +170,7 @@ stat[id.good.file, "flag"] <- 0
 savepath<-"/Users/francois/CMOP/CMOP_field"
 write.delim(stat,file=paste(savepath,"stat.tab", sep="/"), row.names=F)
 
-plot(crypto$time, crypto$abundance,ylim=c(0,20), pch=16, xlab="time", ylab="abundance", main="Cryptophyte", cex.main=2, cex.lab=1.5)
+plot(crypto$time, crypto$abundance,ylim=c(0,20), pch=16, xlab="time", ylab="abundance (10^6 cells/L)", main="Cryptophyte", cex.main=2, cex.lab=1.5)
 
 
 
@@ -190,14 +190,36 @@ write.csv(pre.PAR, paste("/Users/francois/CMOP/CMOP_field/Par_",cruise, sep=""),
 
 
 
+##############################
+#### plotting bulk orange ####
+##############################
+
+# just crypto #
+crypto <- subset(stat, pop=='crypto')
+crypto$pe.cum <- crypto$pe * crypto$n_count
+
+# crypto + syn #
+id2 <-which(stat2$pop == 'other')
+stat3 <- stat2[-id2,]
+id3 <-which(stat3$pop == 'unknown')
+stat4 <- stat3[-id3,]
+stat4$pe.cum <- stat4$pe * stat4$n_count
+t2 <- tapply(stat4$pe.cum, stat4$file, sum)
+
+# everything - beads #
+id <-which(stat$pop == 'beads')
+stat2 <- stat[-id,]
+stat2$pe.cum <- stat2$pe * stat2$n_count
+t <- tapply(stat2$pe.cum, stat2$file, sum)
 
 
 
-for(file in stat) { 
 
-	sum(which(file=="file"), pe, na.rm=T)
-	
-}
+plot(unique(stat2$time), t, pch=16, col="black", xlab="time", ylab="bulk orange fluorescence", main="bulk orange fluorescence vs PE")
+
+points(crypto$time, crypto$pe.cum, col="orangered", pch=16)
+points(unique(stat4$time), t2, pch=16, col="orangered")
+
 
 
 
