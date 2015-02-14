@@ -166,7 +166,7 @@ pre.flu2 <- as.data.frame(pre.flu, row.names=NULL)
 pre.flu2$time <- as.POSIXct(strptime(pre.flu2$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
 flu <- subset(pre.flu2, time > as.POSIXct("2013-09-10 22:50:00") & time < as.POSIXct("2013-09-27 10:10:00"))
 
-plot(pre.flu2$time, pre.flu2$phycoeryth, col="orangered2", pch=16, ylim=c(0,8), xlab="time", ylab="bulk orange fluorescence", cex.lab=1.5)
+plot(pre.flu2$time, pre.flu2$phycoeryth, col="orangered2", pch=16, ylim=c(0,7.86), xlab="time", ylab="bulk orange fluorescence", cex.lab=1.5)
 
 
 png(filename="/Users/francois/CMOP/ASLO/figure_making/rough_plots/PE.png")
