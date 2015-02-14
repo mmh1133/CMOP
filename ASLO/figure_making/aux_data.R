@@ -158,7 +158,7 @@ crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-23 22:50:00") & time < 
 #week4: 2013-09-30 18:55:00 - 2013-10-03 23:58:00
 
 
-plot(crypto$time, crypto$abundance,ylim=c(0,0.8), pch=16, xlab="time", ylab="abundance", main="Cryptophyte", cex.main=2, cex.lab=1.5)
+plot(crypto$time, crypto$abundance,ylim=c(0,0.8), pch=16, xlab="time", ylab="abundance (10^6 cells/L)", main="Cryptophyte", cex.main=2, cex.lab=1.5)
 
 
 pre.flu <- read.csv("/Users/francois/CMOP/auxillary_data/bulk_orangeCMOP_6")
@@ -166,8 +166,8 @@ pre.flu2 <- as.data.frame(pre.flu, row.names=NULL)
 pre.flu2$time <- as.POSIXct(strptime(pre.flu2$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
 flu <- subset(pre.flu2, time > as.POSIXct("2013-09-10 22:50:00") & time < as.POSIXct("2013-09-27 10:10:00"))
 
-plot(pre.flu2$time, pre.flu2$phycoeryth, col="orangered2", pch=16, ylim=c(0,9), xlab="time", ylab="PE", cex.lab=1.5)
-
+plot(pre.flu2$time, pre.flu2$phycoeryth, col="orangered2", pch=16, ylim=c(0,7.86), xlab="time", ylab="bulk orange fluorescence", cex.lab=1.5)
+par(mai=c(1,1,1,1))
 
 png(filename="/Users/francois/CMOP/ASLO/figure_making/rough_plots/PE.png")
 dev.off()
