@@ -1,5 +1,5 @@
 # This script does model optimization on the phyto
-# for i in $(seq 0 1 24); do echo "Rscript ~/DeepDOM/ssPopModel/Model_HD_Division_Rate.R $i prochloro DeepDOM ~/DeepDOM/ssPopModel ~/DeepDOM/Cell_Division ~/DeepDOM/Cell_Division" | qsub -lwalltime=30:00:00,nodes=1:ppn=1 -N proGR$i -d.; done
+# for i in $(seq 0 1 24); do echo "Rscript ~/Cell_Division/CMOP_6/model_HD_div_rate_CMOP.R $i crypto CMOP_6" | qsub -lwalltime=30:00:00,nodes=1:ppn=1 -N proGR$i -d.; done
 
 
 library(rgl)
@@ -11,8 +11,7 @@ t <- as.numeric(args[1])
 phyto <- as.character(args[2])
 cruise <- as.character(args[3])
 script.home <- as.character(args[4])
-in.dir <-as.character(args[5])
-out.dir <- as.character(args[6])
+
 
 # t = 1
 # phyto= "prochloro"
@@ -21,12 +20,13 @@ out.dir <- as.character(args[6])
 # in.dir <-"/Volumes/gwennm/DeepDOM/Cell_Division"
 # out.dir <- "/Volumes/gwennm/DeepDOM/Cell_Division"
 
- t = 1
-phyto= "crypto"
-cruise = "CMOP_6"
-script.home <- "/Users/francois/CMOP/CMOP_field/"
-in.dir <-"/Users/francois/CMOP/CMOP_field/"
-out.dir <- "/Users/francois/CMOP/CMOP_field/"
+#  t = 1
+# phyto= "crypto"
+# cruise = "CMOP_6"
+# script.home <- "/Users/francois/CMOP/CMOP_field"
+# in.dir <- out.dir <- "/Users/francois/CMOP/CMOP_field"
+
+# in.dir <- out.dir <- script.home <- "/Users/francois/Documents/DATA/SeaFlow/CMOP/CMOP_git/CMOP_field"
 
 source(paste(script.home,'functions_modelHD.R',sep="/"), chdir = TRUE)
 
@@ -36,7 +36,7 @@ jet.colors <- colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F"
 
 
 ###############################
-m <- 2^6 # number of size class
+m <- 57#2^6 # number of size class
 ###############################
 
 
@@ -59,9 +59,11 @@ m <- 2^6 # number of size class
 	##############
 	Par.path <- paste0(in.dir,"/Par_",cruise)
 	Par <- read.csv(Par.path, sep=",")
-	Par$time <- as.POSIXct(Par$time, tz= "GMT")
+	Par$time <- as.POSIXct(Par$time, format="%Y/%m/%d %H:%M:%S",  tz= "GMT")
 	Par$num.time <- as.numeric(Par$time)
 
+## ONLY FOR CMOP_6 PAR
+	Par[which(Par$par < 1.5), "par"] <- 0
 
 	#######################	
 	## SIZE DISTRIBUTION ##
@@ -91,7 +93,7 @@ m <- 2^6 # number of size class
 	time <- as.POSIXct(time.numc, origin="1970-01-01" ,tz="GMT")	
 	n.day <- round(diff(range(na.omit(time)))); print(paste("Number of days in the dataset:",n.day))
 
-	para <- Vhists; percentile <- cut(unlist(para), 100); plot3d(log(rep(as.numeric(row.names(para)), dim(para)[2])), rep(as.numeric(colnames(para)), each=dim(para)[1]) , Vhists , col=jet.colors(100)[percentile], type='l', lwd=6, xlab="size class", ylab="time", zlab="Frequency")
+	para <- Vhists; percentile <- cut(unlist(para), 100); plot3d(log2(rep(as.numeric(row.names(para)), dim(para)[2])), rep(as.numeric(colnames(para)), each=dim(para)[1]) , Vhists , col=jet.colors(100)[percentile], type='l', lwd=6, xlab="size class", ylab="time", zlab="Frequency")
 	
 	
 
@@ -103,6 +105,7 @@ m <- 2^6 # number of size class
 	breaks <- 25*60/resol
 
 	model <- array(NA, dim=c(4,1))
+for(t in 0:24){
 
 	for(i in seq(1,length(time)-24, 24)){
 		print(paste("starting hour:",i+t))
@@ -140,19 +143,7 @@ m <- 2^6 # number of size class
 	    # para <- V.hists; percentile <- cut(unlist(para), 100); plot3d(log(rep(as.numeric(row.names(para))), dim(para)[2]), rep(as.numeric(colnames(para)), each=dim(para)[1]), para , col=jet.colors(100)[percentile], type='l', lwd=6, xlab="size class", ylab="time", zlab="Frequency")
 
 
-		### SELECT PAR corresponding to each sample
-		light <- subset(Par, num.time > start & num.time < end)
-		h <- cut(light$num.time, breaks=breaks)
-		h.par <- tapply(light$par, h, mean)
-		t.Edata <- matrix(cbind(time[c(i:(i+24)+t)], h.par), ncol=2)
-        
-	        ### NA interpolation
-	        Edata <- apply(t.Edata, 2, function(x) na.approx(x, na.rm=F))
-
-		
-		### RUN size.class.model_functions
-		proj <- try(determine.opt.para(V.hists=V.hists,N.dist=N.dist,Edata=Edata,volbins=volbins))
-		
+	 
 		para <- proj$Vproj; percentile <- cut(unlist(para), 100); plot3d(log(rep(volbins, 24)), rep(1:ncol(para), each=nrow(para)), z=matrix(para), col=jet.colors(100)[percentile], type='l', lwd=6, xlab="size class", ylab="time", zlab="Frequency")
 		
 		if(class(proj) !='try-error'){
