@@ -135,7 +135,19 @@ cruise <-"CMOP_6"
 
 
 
+## bulk orange ##
 
+pre.tur1 <- read.csv("/Users/francois/CMOP/auxillary_data/dsdma.-1000.A.MET_2013_09_PD1.csv")
+pre.tur2 <- read.csv("/Users/francois/CMOP/auxillary_data/dsdma.-1000.A.MET_2013_10_PD1.csv")
+pre.tur1 <- as.data.frame(pre.tur1, row.names=NULL)
+pre.tur2 <- as.data.frame(pre.tur2, row.names=NULL)
+tur<- rbind(pre.tur1, pre.tur2)
+
+tur$time <- as.POSIXct(strptime(tur$time, "%Y/%m/%d %H:%M:%S"), tz="GMT")
+
+write.csv(tur, paste("/Users/francois/CMOP/auxillary_data/par",cruise, sep=""), quote=F, row.names=F)
+
+cruise<-"CMOP_6"
 
 
 
@@ -150,7 +162,7 @@ stat$time <- as.POSIXct(stat$time,format="%FT%T",tz='GMT')
 pre.crypto1 <- subset(stat, pop == 'crypto') 
 id <- which(pre.crypto1$flow_rate < 2400) #subset files that have low flow rate
 pre.crypto2 <- pre.crypto1[-id,]
-crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-23 22:50:00") & time < as.POSIXct("2013-09-26 00:50:00")) 
+crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-16 19:55:00") & time < as.POSIXct("2013-09-26 00:50:00")) 
 
 #week1: 2013-09-10 16:50:00 - 2013-09-13 16:00:00
 #week2: 2013-09-16 19:55:00 - 2013-09-20 00:00:00
@@ -162,16 +174,25 @@ plot(crypto$time, crypto$abundance,ylim=c(0,0.8), pch=16, xlab="time", ylab="abu
 par(mai=c(1,1,1,1))
 
 
-pre.flu <- read.csv("/Users/francois/CMOP/auxillary_data/salinityCMOP_6")
+pre.flu <- read.csv("/Users/francois/CMOP/auxillary_data/parCMOP_6")
 pre.flu2 <- as.data.frame(pre.flu, row.names=NULL)
 pre.flu2$time <- as.POSIXct(strptime(pre.flu2$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
-flu <- subset(pre.flu2, time > as.POSIXct("2013-09-23 22:50:00") & time < as.POSIXct("2013-09-26 00:50:00"))
+flu <- subset(pre.flu2, time > as.POSIXct("2013-09-16 19:55:00") & time < as.POSIXct("2013-09-20 00:00:00"))
+#2013-09-26 00:50:00
 
 plot(flu$time, flu$water_salinity, col="blue", pch=16, xlab="time", ylab="bulk orange fluorescence", cex.lab=1.5)
 par(mai=c(1,1,1,1))
 
 png(filename="/Users/francois/CMOP/ASLO/figure_making/rough_plots/PE.png")
 dev.off()
+
+
+
+## special par stuff ## 
+
+flu <- subset(pre.flu2, time < as.POSIXct("2013-09-19 23:53:20"))
+flu$par.mean
+
 
 
 ## double plot ##
@@ -196,9 +217,35 @@ abline(h=0.4)
 
 
 
+#########################################
+##### plotting div rate with stuff ######
+#########################################
 
 
+library(rgl)
+library(ggplot2)
+library(zoo)
 
+yay <- read.csv("/Users/francois/CMOP/CMOP_field/crypto_HD_CMOP_6.binned.csv")
+
+yay$daily.GRmean <- rollapply(data=yay$h.dr.mean, width=24, FUN=mean, na.rm=T, fill=NA)*24
+yay$daily.GRsd <- rollapply(data=yay$h.dr.sd, width=24, FUN=mean, na.rm=T, fill=NA)*24
+
+
+plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, xlab="time", ylab="daily div rate", main="mean daily div rate", cex.main=2, cex.lab=1.5)
+
+
+par(new=T)
+plot(pre.flu2$time, pre.flu2$par, col="blue", pch=16, axes=F)
+
+
+## single week ##
+yay2 <- subset(yay, h.time > as.POSIXct("2013-09-16 19:55:00") & h.time < as.POSIXct("2013-09-20 00:00:00"))
+
+plotCI(as.POSIXct(yay2$h.time, origin="1970-01-01", tz='GMT'), yay2$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, xlab="time", ylab="daily div rate")
+
+par(new=T)
+plot(flu$time, flu$nitrate, col="blue", pch=16, axes=F)
 
 
 
