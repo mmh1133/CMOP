@@ -187,12 +187,6 @@ png(filename="/Users/francois/CMOP/ASLO/figure_making/rough_plots/PE.png")
 dev.off()
 
 
-
-## special par stuff ## 
-
-
-
-
 ## double plot ##
 
 plot(crypto$time, crypto$abundance,ylim=c(0,0.8), pch=16, xlab="time", ylab="abundance (10^6 cells/L)", main="Cryptophyte", cex.main=2, cex.lab=1.5)
@@ -229,12 +223,15 @@ yay <- read.csv("/Users/francois/CMOP/CMOP_field/crypto_HD_CMOP_6.binned.csv")
 yay$daily.GRmean <- rollapply(data=yay$h.dr.mean, width=24, FUN=mean, na.rm=T, fill=NA)*24
 yay$daily.GRsd <- rollapply(data=yay$h.dr.sd, width=24, FUN=mean, na.rm=T, fill=NA)*24
 
+	#############################################
+	plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, 	xlab="time", ylab="daily div rate", main="mean daily div rate", cex.main=2, cex.lab=1.5)
 
-plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, xlab="time", ylab="daily div rate", main="mean daily div rate", cex.main=2, cex.lab=1.5)
 
-
-par(new=T)
-plot(Par2$time, Par2$par, col="blue", pch=16, axes=F)
+	par(new=T)
+	plot(Par4$time2, Par4$par.max, col="blue", pch=16, axes=F, type="o", xlab="", ylab="", cex.lab=1.5)	
+	axis(4)
+	mtext("PAR", side=4, line=3)
+	###############################################
 
 
 ## single week ##
@@ -246,8 +243,10 @@ par(new=T)
 plot(flu$time, flu$nitrate, col="blue", pch=16, axes=F)
 
 
-
+#######################
 ## special par stuff ## 
+#######################
+
 
 Par.path <- paste0(in.dir,"/Par_",cruise)
 	Par <- read.csv(Par.path, sep=",")
@@ -255,31 +254,60 @@ Par.path <- paste0(in.dir,"/Par_",cruise)
 	Par$num.time <- as.numeric(Par$time)
 
 
-plot(Par2$time, Par2$par)
+## subset days ## 
 
 Par2 <- subset(Par, time > as.POSIXct("2013-09-10 16:50:00") & time < as.POSIXct("2013-10-03 23:58:00"))
 Par2$daily.mean <- rollmean(x=Par2$par, k=48, na.pad=T)
 
 
+## make empty data frames ## 
 
-start <- "2013-09-10 16:50:00"
+Par3 <- data.frame(Date=as.Date(character()),File=character(), User=character(),stringsAsFactors=FALSE) 
+Par3<- as.data.frame(matrix(data=NA, nrow=23, ncol=2))
+colnames(Par3) <- c("par.mean", "time")
+
+Par4<- as.data.frame(matrix(data=NA, nrow=23, ncol=2))
+colnames(Par4) <- c("par.max", "time")
+
+
+## get max PAR ## 
+
+start <- as.POSIXct("2013-09-10 16:50:00")
 
 for (i in 1:23)
 {
 	end <- start + 86400
-	sub <- subset(Par2$par[start:end])
+	sub <- subset(Par2, Par2$time > start & Par2$time < end)
 	
-	if(length(sub = 48){
-		Par3$par.mean <- mean(sub$par)
-	} 
+	if(nrow(sub) > 46){
+		Par4$par.max[i] <- max(sub$par)
+		}else print(paste("error"))
+	
+	Par4$time[i] <- end
+	start <- end 
 }
 
+Par4$time2 <- as.POSIXct(Par4$time, origin="1970-01-01", tz='GMT')
+
+plot(Par4$time2, Par4$par.max, pch=16, col="red")
+par(new=T)
+plot(Par2$time, Par2$par, pch=16)
 
 
 
+##################################
+#### plotting the div vs. PAR ####
+##################################
 
 
+par(mai=c(1,1,1,1))
+plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, 	xlab="time", ylab="daily div rate", main="mean daily div rate vs. max PAR", cex.main=2, cex.lab=1.5)
 
+
+	par(new=T)
+	plot(Par4$time2, Par4$par.max, col="blue", pch=16, axes=F, type="o", xlab="", ylab="", cex.lab=1.5)	
+	axis(4)
+	mtext("PAR", side=4, line=3)
 
 
 

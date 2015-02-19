@@ -24,7 +24,7 @@ script.home <- as.character(args[4])
 # phyto= "crypto"
 # cruise = "CMOP_6"
 # script.home <- "/Users/francois/CMOP/CMOP_field"
-# in.dir <- out.dir <- "/Users/francois/CMOP/CMOP_field"
+in.dir <- out.dir <- "/Users/francois/CMOP/CMOP_field"
 
 # in.dir <- out.dir <- script.home <- "/Users/francois/Documents/DATA/SeaFlow/CMOP/CMOP_git/CMOP_field"
 
