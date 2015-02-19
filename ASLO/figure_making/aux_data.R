@@ -217,6 +217,7 @@ abline(h=0.4)
 library(rgl)
 library(ggplot2)
 library(zoo)
+library(plotrix)
 
 yay <- read.csv("/Users/francois/CMOP/CMOP_field/crypto_HD_CMOP_6.binned.csv")
 
@@ -247,7 +248,7 @@ plot(flu$time, flu$nitrate, col="blue", pch=16, axes=F)
 ## special par stuff ## 
 #######################
 
-
+in.dir <- out.dir <- "/Users/francois/CMOP/CMOP_field"
 Par.path <- paste0(in.dir,"/Par_",cruise)
 	Par <- read.csv(Par.path, sep=",")
 	Par$time <- as.POSIXct(Par$time, format="%Y/%m/%d %H:%M:%S",  tz= "GMT")
@@ -257,7 +258,7 @@ Par.path <- paste0(in.dir,"/Par_",cruise)
 ## subset days ## 
 
 Par2 <- subset(Par, time > as.POSIXct("2013-09-10 16:50:00") & time < as.POSIXct("2013-10-03 23:58:00"))
-Par2$daily.mean <- rollmean(x=Par2$par, k=48, na.pad=T)
+#Par2$daily.mean <- rollmean(x=Par2$par, k=48, na.pad=T)
 
 
 ## make empty data frames ## 
@@ -276,14 +277,15 @@ start <- as.POSIXct("2013-09-10 16:50:00")
 
 for (i in 1:23)
 {
+	print(i)
 	end <- start + 86400
 	sub <- subset(Par2, Par2$time > start & Par2$time < end)
 	
 	if(nrow(sub) > 46){
-		Par4$par.max[i] <- max(sub$par)
+		Par4$par.max[i] <- max(sub$par, na.rm=T)
 		}else print(paste("error"))
 	
-	Par4$time[i] <- end
+		Par4$time[i] <- sub[which(sub$par == max(sub$par)), 'time']
 	start <- end 
 }
 
@@ -309,10 +311,15 @@ plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, 
 	axis(4)
 	mtext("PAR", side=4, line=3)
 
+par(new=T)
+plot(yay$h.time, yay$daily.par.mean, col="blue", pch=16, axes=F, type="o", xlab="", ylab="", cex.lab=1.5)
+
+yay$daily.par.mean <- rollapply(data=yay$h4.par.mean, width=24, FUN=mean, na.rm=T, fill=NA)*24
+yay$daily.par.sd <- rollapply(data=yay$h4.par.sd, width=24, FUN=mean, na.rm=T, fill=NA)*24
 
 
-
-
+par(mai=c(1,1,1,1))
+plot(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$h.dr.mean,  pch=16, 	xlab="time", ylab="daily div rate", main="mean daily div rate vs. max PAR", cex.main=2, cex.lab=1.5)
 
 
 
