@@ -171,14 +171,16 @@ crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-23 22:50:00") & time < 
 
 
 plot(crypto$time, crypto$abundance,ylim=c(0,0.8), pch=16, xlab="time", ylab="abundance (10^6 cells/L)", main="Cryptophyte", cex.main=2, cex.lab=3)
-par(mai=c(1,1.5,1,1))
+par(mai=c(1,1.1,1,1))
 
 
-pre.flu <- read.csv("/Users/francois/CMOP/auxillary_data/salinityCMOP_6")
+pre.flu <- read.csv("/Users/mariaham/CMOP/auxillary_data/salinityCMOP_6")
 pre.flu2 <- as.data.frame(pre.flu, row.names=NULL)
 pre.flu2$time <- as.POSIXct(strptime(pre.flu2$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
 flu <- subset(pre.flu2, time > as.POSIXct("2013-09-23 22:50:00") & time < as.POSIXct("2013-09-26 00:50:00"))
 #2013-09-26 00:50:00
+
+plot(pre.flu2$time, pre.flu2$turbidity, pch=16, ylab="turbidity", xlab="time", cex.lab=1.5)
 
 par(new=T, cex=1.5)
 plot(flu$time, flu$water_salinity, col="blue", pch=16, ylab="salinity units", axes=F)

@@ -38,7 +38,7 @@ flu <- subset(pre.flu2, time > as.POSIXct("2013-09-23 22:50:00") & time < as.POS
 
 #### setting up binned data ####
 
-yay <- read.csv("/Users/francois/CMOP/CMOP_field/crypto_HD_CMOP_6.binned.csv")
+yay <- read.csv("/Users/mariaham/CMOP/CMOP_field/crypto_HD_CMOP_6.binned.csv")
 
 yay$daily.GRmean <- rollapply(data=yay$h.dr.mean, width=24, FUN=mean, na.rm=T, fill=NA)*24
 yay$daily.GRsd <- rollapply(data=yay$h.dr.sd, width=24, FUN=mean, na.rm=T, fill=NA)*24
@@ -48,7 +48,7 @@ yay$daily.GRsd <- rollapply(data=yay$h.dr.sd, width=24, FUN=mean, na.rm=T, fill=
 
 #### setting up PAR data ####
 
-in.dir <- out.dir <- "/Users/francois/CMOP/CMOP_field"
+in.dir <- out.dir <- "/Users/mariaham/CMOP/CMOP_field"
 Par.path <- paste0(in.dir,"/Par_",cruise)
 	Par <- read.csv(Par.path, sep=",")
 	Par$time <- as.POSIXct(Par$time, format="%Y/%m/%d %H:%M:%S",  tz= "GMT")
@@ -118,7 +118,8 @@ legend(1380100000, 0.35, c("crypto abundance", "salinity"), lty=c(1,1), lwd=c(2.
 #### div rate plot ####
 #######################
 
-plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, 	xlab="time", ylab="daily div rate", main="mean daily div rate", cex.main=2, cex.lab=1.5)
+par(mai=c(1,1.1,1,1))
+plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, 	xlab="time", ylab="mean daily div rate", cex.main=2, cex.lab=1.5)
 ## IMPORTANT NOTE: I still can't figure out why the binned file is still the old one?
 ## the new div rate should be under 2.5 max 
 ## can you recommit the new file to git when you find it?
@@ -138,7 +139,7 @@ plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, 
 	par(new=T)
 	plot(Par4$time2, Par4$par.max, col="darkblue", pch=16, axes=F, type="o", xlab="", ylab="", cex.lab=1.5)	
 	axis(4)
-	mtext("PAR", side=4, line=3)
+	mtext("PAR", side=4, line=3, cex.lab=1.5)
 
 
 
