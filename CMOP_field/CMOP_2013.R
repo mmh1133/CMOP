@@ -23,9 +23,12 @@ file.list <- file.list[!grepl('.png', file.list)]
 
 i<-3960
 evt1 <- readSeaflow(paste(file.list[i])) #load evt file
-evt2 <- readSeaflow(paste(evt.location, file.list[i+1], sep='/'))
-evt3 <- readSeaflow(paste(evt.location, file.list[i+2], sep='/'))
-evt <- rbind(evt1,evt2,evt3)
+evt2 <- readSeaflow(paste(file.list[i+1], sep='/'))
+evt3 <- readSeaflow(paste(file.list[i+2], sep='/'))
+evt4 <- readSeaflow(paste(file.list[i+3], sep='/'))
+evt5 <- readSeaflow(paste(file.list[i+4], sep='/'))
+evt6 <- readSeaflow(paste(file.list[i+5], sep='/'))
+evt <- rbind(evt1,evt2,evt3,evt4,evt5,evt6)
 # for when you want to smoosh files together when there is little data
 
 evt <- readSeaflow(paste(file.list[3950]))
@@ -74,7 +77,7 @@ opp.name <- opp.list[100] # to select the opp file (e.g., the 10th opp file in t
 
 opp<-get.opp.by.file(opp.name)
 
-plot.cytogram(opp, para.x='chl_small', para.y='pe')
+plot.cytogram(opp, para.x='chl_small', para.y='pe', xlab="chlorophyll", ylab="phycoerythrin", cex.lab=2)
 
 #beads
 setGateParams(opp, popname='beads', para.x='chl_small', para.y='pe')
