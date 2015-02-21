@@ -48,7 +48,7 @@ opp.name <- opp.list[280] # to select the opp file (e.g., the 10th opp file in t
 
 opp<-get.opp.by.file(opp.name)
 
-plot.cytogram(opp, para.x='chl_small', para.y='pe')
+plot.cytogram(opp, para.x='fsc_small', para.y='chl_small', xlab="forward scatter", ylab="chlorophyll", cex.lab=2)
 
 #beads
 setGateParams(opp, popname='beads', para.x='chl_small', para.y='pe')
