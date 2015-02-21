@@ -101,9 +101,12 @@ plot(pre.crypto2$time, pre.crypto2$abundance, lwd=2, pch=16, xlab="time", ylab="
 #####################################
 
 par(mai=c(1,1.5,1,1))
-plot(smooth.spline(crypto$time, crypto$abundance, spar=0.5), lwd=2, col="darkred", pch=16, xlab="time", ylab="abundance (10^6 cells/L)")
+plot(crypto$time, crypto$abundance, type="n", ylab="abundance (10^6 cells/L)", xlab="time")
+points(smooth.spline(as.POSIXct(crypto$time, origin="1970-01-01", tz='GMT'), crypto$abundance, spar=0.5), lwd=2, pch=16, xlab="", ylab="", type="l", cex=5)
 par(new=T)
-plot(smooth.spline(flu$time, flu$water_salinity, spar=0.5), lwd=2, col="darkblue", pch=16, xlab="", ylab="", axes=F)
+plot(flu$time, flu$water_salinity, xlab="", ylab="", axes=F, type="n")
+points(smooth.spline(as.POSIXct(flu$time, origin="1970-01-01", tz='GMT'), flu$water_salinity, spar=0.5), lwd=2, col="cyan4", pch=16, xlab="", ylab="", axes=F)
+#type="l", cex=2, lty=2
 axis(4)
 mtext("salinity", side=4, line=3)
 legend(1380100000, 0.35, c("crypto abundance", "salinity"), lty=c(1,1), lwd=c(2.5,2.5), col=c("darkred", "darkblue"))
