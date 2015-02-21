@@ -91,9 +91,10 @@ Par4$time2 <- as.POSIXct(Par4$time, origin="1970-01-01", tz='GMT')
 ########################
 
 par(mai=c(1,1.5,1,1))
-plot(pre.crypto2$time, pre.crypto2$abundance, lwd=2, pch=16, xlab="time", ylab="abundance (10^6 cells/L)")
+plot(pre.crypto2$time, pre.crypto2$abundance, lwd=2, pch=16, xlab="", ylab="", cex.lab=2)
 ## how do I make an axis break (for y axis, so it doesn't look like a plot of nothing)?
 
+gap.plot(pre.crypto2$time, pre.crypto2$abundance, gap = c(5,17), lwd=2, pch=16, xlab="time", ylab="abundance (10^6 cells/L)", ylim=c(0,20))
 
 
 #####################################
@@ -108,7 +109,7 @@ plot(flu$time, flu$water_salinity, xlab="", ylab="", axes=F, type="n")
 points(smooth.spline(as.POSIXct(flu$time, origin="1970-01-01", tz='GMT'), flu$water_salinity, spar=0.5), lwd=2, col="cyan4", pch=16, xlab="", ylab="", axes=F)
 #type="l", cex=2, lty=2
 axis(4)
-mtext("salinity", side=4, line=3)
+mtext("salinity", side=4, line=3, cex=2)
 legend(1380100000, 0.35, c("crypto abundance", "salinity"), lty=c(1,1), lwd=c(2.5,2.5), col=c("darkred", "darkblue"))
 #legend not working probably due to time issue 
 
