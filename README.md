@@ -3,24 +3,12 @@ CMOP
 
 CMOP data analysis :computer:  :dolphin:  :boat:
 
-#### To Do List: 
+#### Next steps:
 
++ auxillary data analysis with new model results (general comparison + statistics) 
++ M. major counts (either from TP or DIY)
++ compare M.major counts to div rate 
++ but why is prey such small % ?? 
++ write paper
 
-**Field Data**
-
-CMOP SeaFlow data- run model 
-
-
-
-**Lab Data**
-
-Rhodomonas culture SeaFlow data- filtering, gating, and run model
-
-cell-cycle analysis- finish 
-
-SeaFlow file clean-up- everybody 
-
-
-
-Aux data analysis (Jan) 
 
