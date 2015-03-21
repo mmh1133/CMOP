@@ -81,9 +81,11 @@ Par4$time2 <- as.POSIXct(Par4$time, origin="1970-01-01", tz='GMT')
 
 
 
+#### setting up nutrient data ####
 
-
-
+pre.flu <- read.csv("/Users/francois/CMOP/auxillary_data/Ribalet_nutrients2.csv")
+pre.flu2 <- as.data.frame(pre.flu, row.names=NULL)
+pre.flu2$time2 <- as.POSIXct(strptime(pre.flu2$time, "%Y/%m/%d %H:%M:%S"), tz="GMT")
 
 ##########################################################################################################################
 
@@ -151,9 +153,7 @@ legend(1380100000, 0.35, c("crypto abundance", "salinity"), lty=c(1,1), lwd=c(2.
 
 par(mai=c(1,1.5,1,1))
 plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.5)
-## IMPORTANT NOTE: I still can't figure out why the binned file is still the old one?
-## the new div rate should be under 2.5 max 
-## can you recommit the new file to git when you find it?
+
 
 
 
@@ -199,6 +199,21 @@ plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, 
 plot(Par2$time, Par2$par, col="darkblue", pch=16, xlab="", cex.lab=1.5, ylab="", type="o", yaxt="n")
 axis(4)
 mtext("PAR", side=4, line=3, cex=1.5)
+
+
+################################
+#### div rate vs. nutrients ####
+################################
+
+par(mai=c(1,1.5,1,1))
+plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.5)
+#ylim=c(0,20)
+par(new=T)
+plot(pre.flu2$time2, pre.flu2$Nitrate, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=2,  axes=F, col="darkred", type="o")
+axis(4)
+mtext("Nitrate", side=4, lin=3, cex=1.5)
+
+
 
 
 #####################################################################################################
