@@ -31,7 +31,8 @@ matrix.conct.fast <- function(hr, Einterp, volbins, gmax, dmax, a, b, E_star){
 		####################		
 		## DELTA FUNCTION ## fraction of cells that divide between t and t + dt
 		#################### 
-		del <- dmax * a*(volbins)^b / (1 + a*(volbins)^b)
+		#del <- dmax * a*(volbins)^b / (1 + a*(volbins)^b)
+		del <- dmax * (volbins/max(volbins))^b / (1 + ((volbins/max(volbins))^b)) # NEW VERSION
 		# del[1:(j-1)] <- 0		
 				# if(hr <= t.nodiv){delta <- matrix(data=0, 1, m)
 					# }else{delta <- matrix(del, 1, m)}
