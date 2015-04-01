@@ -25,6 +25,9 @@ pre.crypto2 <- pre.crypto1[-id,]
 crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-23 22:50:00") & time < as.POSIXct("2013-09-26 00:50:00")) 
 
 
+# roll mean abundance #
+pre.crypto2$daily.mean <- rollapply(data=pre.crypto2$abundance, width=24, FUN=mean, na.rm=T, fill=NA)*24
+
 
 #### setting up salinity #### 
 
@@ -91,26 +94,52 @@ Par4$time2 <- as.POSIXct(Par4$time, origin="1970-01-01", tz='GMT')
 ########################
 
 par(mai=c(1,1.5,1,1))
-plot(pre.crypto2$time, pre.crypto2$abundance, lwd=2, pch=16, xlab="time", ylab="abundance (10^6 cells/L)")
+plot(pre.crypto2$time, pre.crypto2$abundance, lwd=2, pch=16, xlab="", ylab="abundance (10^6 cells/L)", cex.lab=2, ylim=c(0,1))
 ## how do I make an axis break (for y axis, so it doesn't look like a plot of nothing)?
 
+gap.plot(pre.crypto2$time, pre.crypto2$abundance, gap = c(5,17), lwd=2, pch=16, xlab="time", ylab="abundance (10^6 cells/L)", ylim=c(0,20))
 
+################################
+#### one day abundance plot ####
+################################
+
+plot(crypto$time, crypto$abundance, lwd=2, pch=16, xlab="", ylab="abundance (10^6 cells/L)", cex.lab=1.5)
 
 #####################################
 #### salinity vs. abundance plot ####
 #####################################
 
 par(mai=c(1,1.5,1,1))
-plot(crypto$time, crypto$abundance, type="n", ylab="abundance (10^6 cells/L)", xlab="time")
+plot(crypto$time, crypto$abundance, type="n", ylab="abundance (10^6 cells/L)", xlab="", cex.lab=1.5)
 points(smooth.spline(as.POSIXct(crypto$time, origin="1970-01-01", tz='GMT'), crypto$abundance, spar=0.5), lwd=2, pch=16, xlab="", ylab="", type="l", cex=5)
 par(new=T)
 plot(flu$time, flu$water_salinity, xlab="", ylab="", axes=F, type="n")
 points(smooth.spline(as.POSIXct(flu$time, origin="1970-01-01", tz='GMT'), flu$water_salinity, spar=0.5), lwd=2, col="cyan4", pch=16, xlab="", ylab="", axes=F)
 #type="l", cex=2, lty=2
 axis(4)
-mtext("salinity", side=4, line=3)
+mtext("salinity", side=4, line=3, cex=1.5)
 legend(1380100000, 0.35, c("crypto abundance", "salinity"), lty=c(1,1), lwd=c(2.5,2.5), col=c("darkred", "darkblue"))
 #legend not working probably due to time issue 
+
+
+
+###########################
+#### new sal vs. abund ####
+###########################
+
+
+
+plot(crypto$time, crypto$abundance, ylab="abundance (10^6 cells/L)", xlab="", cex.lab=1.5, pch=16)
+points(smooth.spline(as.POSIXct(crypto$time, origin="1970-01-01", tz='GMT'), crypto$abundance, spar=0.5), lwd=2, pch=16, xlab="", ylab="", type="l", cex=5, axes=F)
+par(new=T)
+plot(flu$time, flu$water_salinity, xlab="", ylab="", axes=F, type="n")
+points(smooth.spline(as.POSIXct(flu$time, origin="1970-01-01", tz='GMT'), flu$water_salinity, spar=0.5), lwd=2, col="cyan4", pch=16, xlab="", ylab="", axes=F)
+#type="l", cex=2, lty=2
+axis(4)
+mtext("salinity", side=4, line=3, cex=1.5)
+legend(1380100000, 0.35, c("crypto abundance", "salinity"), lty=c(1,1), lwd=c(2.5,2.5), col=c("darkred", "darkblue"))
+#legend not working probably due to time issue 
+
 
 
 
@@ -118,11 +147,35 @@ legend(1380100000, 0.35, c("crypto abundance", "salinity"), lty=c(1,1), lwd=c(2.
 #### div rate plot ####
 #######################
 
-plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, 	xlab="time", ylab="daily div rate", main="mean daily div rate", cex.main=2, cex.lab=1.5)
+par(mai=c(1,1.5,1,1))
+plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.5)
 ## IMPORTANT NOTE: I still can't figure out why the binned file is still the old one?
 ## the new div rate should be under 2.5 max 
 ## can you recommit the new file to git when you find it?
 
+
+
+#####################################
+#### div rate vs. abundance plot ####
+#####################################
+
+par(mai=c(1,1.5,1,1))
+plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.5)
+#ylim=c(0,20)
+par(new=T)
+plot(pre.crypto2$time, pre.crypto2$abundance, lwd=2, pch=16, xlab="", ylab="", cex.lab=2,  axes=F, cex=.75, col="darkred", ylim=c(0,1))
+axis(4)
+mtext("abundance (10^6 cells/L)", side=4, lin=3, cex=1.5)
+
+
+
+par(mai=c(1,1.5,1,1))
+plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.5)
+#ylim=c(0,20)
+par(new=T)
+plot(pre.crypto2$time, pre.crypto2$daily.mean, lwd=2, pch=16, xlab="", ylab="", cex.lab=2,  axes=F, cex=.75, col="darkred")
+axis(4)
+mtext("mean daily abundance (10^6 cells/L)", side=4, lin=3, cex=1.5)
 
 
 
@@ -132,13 +185,15 @@ plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, 
 
 
 par(mai=c(1,1,1,1))
-plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, 	xlab="time", ylab="daily div rate", main="mean daily div rate vs. max PAR", cex.main=2, cex.lab=1.5)
+plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.main=2, cex.lab=1.5, xaxis=F)
 
 
 	par(new=T)
 	plot(Par4$time2, Par4$par.max, col="darkblue", pch=16, axes=F, type="o", xlab="", ylab="", cex.lab=1.5)	
 	axis(4)
-	mtext("PAR", side=4, line=3)
+	mtext("PAR", side=4, line=3, cex=1.5)
+	
+plot(Par2$time, Par2$par, col="darkblue", pch=16, xlab="", ylab="", cex.lab=1.5)
 
 
 
