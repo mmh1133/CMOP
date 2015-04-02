@@ -13,7 +13,7 @@ library(rgl)
 library(ggplot2)
 
 
-all.filelist <- list.files(paste0(location.model,"/"),pattern=paste0(phyto,"_modelHD_growth_",cruise,"_Ncat",cat))
+all.filelist <- list.files(paste0(location.model,"/"),pattern=paste0("NEW",phyto,"_modelHD_growth_",cruise,"_Ncat",cat))
 filelist <- all.filelist[grep(pattern=paste(phyto), all.filelist)]
 
 n <- c <- 1
@@ -109,7 +109,7 @@ Div.rate.ave$time <- na.omit(unique(Div.rate[,1]))
 
 plotCI(as.POSIXct(Div.rate.ave$time, origin="1970-01-01" ,tz='GMT'), Div.rate.ave$div.ave, uiw=Div.rate.ave$div.se)
 
-write.csv(Div.rate.ave, file=paste0(out.dir,"model_output-V2.csv"), row.names=F)
+write.csv(Div.rate.ave, file=paste0(out.dir,"newmodel_output-V2.csv"), row.names=F)
 
 
 

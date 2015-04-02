@@ -41,7 +41,7 @@ flu <- subset(pre.flu2, time > as.POSIXct("2013-09-23 22:50:00") & time < as.POS
 
 #### setting up binned data ####
 
-yay <- read.csv("/Users/francois/CMOP/CMOP_field/crypto_HD_CMOP_6.binned.csv")
+yay <- read.csv("/Users/francois/CMOP/CMOP_field/NEWcrypto_HD_CMOP_6.binned.csv")
 
 yay$daily.GRmean <- rollapply(data=yay$h.dr.mean, width=24, FUN=mean, na.rm=T, fill=NA)*24
 yay$daily.GRsd <- rollapply(data=yay$h.dr.sd, width=24, FUN=mean, na.rm=T, fill=NA)*24
