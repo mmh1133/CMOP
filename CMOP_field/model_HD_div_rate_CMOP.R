@@ -105,6 +105,7 @@ m <- 57#2^6 # number of size class
 	breaks <- 25*60/resol
 
 	model <- array(NA, dim=c(4,1))
+	
 for(t in 0:24){
 
 	for(i in seq(1,length(time)-24, 24)){
@@ -142,13 +143,26 @@ for(t in 0:24){
 
 	    # para <- V.hists; percentile <- cut(unlist(para), 100); plot3d(log(rep(as.numeric(row.names(para))), dim(para)[2]), rep(as.numeric(colnames(para)), each=dim(para)[1]), para , col=jet.colors(100)[percentile], type='l', lwd=6, xlab="size class", ylab="time", zlab="Frequency")
 
+		### SELECT PAR corresponding to each sample
+		light <- subset(Par, num.time > start & num.time < end)
+		h <- cut(light$num.time, breaks=breaks)
+		h.par <- tapply(light$par, h, mean)
+		t.Edata <- matrix(cbind(time[c(i:(i+24)+t)], h.par), ncol=2)
+        
+	        ### NA interpolation
+	        Edata <- apply(t.Edata, 2, function(x) na.approx(x, na.rm=F))
 
+		
+		### RUN size.class.model_functions
+		proj <- try(determine.opt.para(V.hists=V.hists,N.dist=N.dist,Edata=Edata,volbins=volbins))
+		
 	 
 		para <- proj$Vproj; percentile <- cut(unlist(para), 100); plot3d(log(rep(volbins, 24)), rep(1:ncol(para), each=nrow(para)), z=matrix(para), col=jet.colors(100)[percentile], type='l', lwd=6, xlab="size class", ylab="time", zlab="Frequency")
 		
 		if(class(proj) !='try-error'){
 		model <- matrix(cbind(as.array(model), as.array(proj)), nrow=4,ncol=ncol(model)+1)
-	    save(model, file=paste(out.dir,"/",phyto,"_modelHD_growth_",cruise,"_Ncat",m,"_t",t, sep=""))
+	    save(model, file=paste(out.dir,"/NEW",phyto,"_modelHD_growth_",cruise,"_Ncat",m,"_t",t, sep=""))
 
 	  }else{print("error during optimization")}
+	}
 }
