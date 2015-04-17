@@ -20,17 +20,19 @@ script.home <- as.character(args[4])
 # in.dir <-"/Volumes/gwennm/DeepDOM/Cell_Division"
 # out.dir <- "/Volumes/gwennm/DeepDOM/Cell_Division"
 
-#  t = 1
-# phyto= "crypto"
-# cruise = "CMOP_6"
-# script.home <- "/Users/francois/CMOP/CMOP_field"
-in.dir <- out.dir <- "/Users/francois/CMOP/CMOP_field"
+ t = 1
+phyto= "crypto"
+cruise = "CMOP_6"
+script.home <- "/Users/francois/Documents/DATA/Codes/ssPopModel/"
+#in.dir <- out.dir <- "/Users/francois/CMOP/CMOP_field"
 
-# in.dir <- out.dir <- script.home <- "/Users/francois/Documents/DATA/SeaFlow/CMOP/CMOP_git/CMOP_field"
+in.dir <- out.dir <-  "/Users/francois/Documents/DATA/SeaFlow/CMOP/CMOP_git/CMOP_field"
 
-source(paste(script.home,'functions_modelHD.R',sep="/"), chdir = TRUE)
+#source(paste(script.home,'functions_modelHD.R',sep="/"), chdir = TRUE)
+source(paste(script.home,'functions_model.R',sep="/"), chdir = TRUE)
 
 jet.colors <- colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F", "yellow",	"#FF7F00", "red", "#7F0000"))
+
 
 
 
@@ -91,7 +93,6 @@ m <- 57#2^6 # number of size class
 
 	time.numc <- as.numeric(colnames(Vhists))	
 	time <- as.POSIXct(time.numc, origin="1970-01-01" ,tz="GMT")	
-	n.day <- round(diff(range(na.omit(time)))); print(paste("Number of days in the dataset:",n.day))
 
 	para <- Vhists; percentile <- cut(unlist(para), 100); plot3d(log2(rep(as.numeric(row.names(para)), dim(para)[2])), rep(as.numeric(colnames(para)), each=dim(para)[1]) , Vhists , col=jet.colors(100)[percentile], type='l', lwd=6, xlab="size class", ylab="time", zlab="Frequency")
 	
@@ -101,53 +102,44 @@ m <- 57#2^6 # number of size class
 	## RUN size.model.functions ##
 	##############################
 
+	time.series <- seq(range(time)[1], range(time)[2], 60*60*24)
+	print(paste("Number of days:",length(time.series)))
+
+
 	resol <-  60 # number of minutes per interval
 	breaks <- 25*60/resol
 
 	model <- array(NA, dim=c(4,1))
 	
-for(t in 0:24){
+for(t in 22:23){
 
-	for(i in seq(1,length(time)-24, 24)){
-		print(paste("starting hour:",i+t))
-		#i <- 25
-		start <- time[i+t]
-		end <- time[(i+t)+24]
-		
-		# if(is.na(end)){
-			# print("cycle is less than 24h")
-			# next
-			# }
-		# if(is.na(start)){
-			# print("NA in start time, skip ahead")
-			# next
-		# }
-		# if(sum(is.na(time[i:(i+24)+t]))>4){
-			# print("more than 4 hours missing from time period, skip ahead")
-			# next
-		# }
-		print(paste("calculating growth projection from ",start , "to",end))
+	for(i in time.series){
 
+		start <- as.POSIXct(i+t*60*60, origin="1970-01-01" ,tz="GMT")
+		end <-  as.POSIXct(start + 60*60*24, origin="1970-01-01" ,tz="GMT")
+			print(paste("calculating growth projection from ",start , "to",end))
 	
-	plot(Par$time, Par$par, type='o'); points(c(start, end),c(0,0), col='red',pch=16, cex=2)
+		#plot(Par$time, Par$par, type='o'); points(c(start, end),c(0,0), col='red',pch=16, cex=2)
 
 		### SELECT SIZE DISTRIBUTION for DAY i
-		V.hists <- Vhists[,c(i:(i+24)+t)]
-		N.dist <- N_dist[,c(i:(i+24)+t)]
-		
-		# #NAs break this part and need to be made into zeros
-			# mk.zero <- which(is.na(V.hists))
-			# V.hists[mk.zero] <- 0
-			# mk.zero <- which(is.na(N.dist))
-			# N.dist[mk.zero] <- 0
+		ti <- findInterval(start, as.numeric(colnames(Vhists)))
+		tf <- findInterval(end, as.numeric(colnames(Vhists)))
+
+		print(paste("the time series has ",tf-ti, "/24 data points"))
+		if(tf-ti < 12){
+			print(paste("Not enough data point, skipping to the next 24-h period"))
+			next
+		}
+		V.hists <- Vhists[,c(ti:tf)]
+		N.dist <- N_dist[,c(ti:tf)]
 
 	    # para <- V.hists; percentile <- cut(unlist(para), 100); plot3d(log(rep(as.numeric(row.names(para))), dim(para)[2]), rep(as.numeric(colnames(para)), each=dim(para)[1]), para , col=jet.colors(100)[percentile], type='l', lwd=6, xlab="size class", ylab="time", zlab="Frequency")
 
 		### SELECT PAR corresponding to each sample
-		light <- subset(Par, num.time > start & num.time < end)
+		light <- subset(Par, num.time >= start & num.time <= end)
 		h <- cut(light$num.time, breaks=breaks)
 		h.par <- tapply(light$par, h, mean)
-		t.Edata <- matrix(cbind(time[c(i:(i+24)+t)], h.par), ncol=2)
+		t.Edata <- matrix(cbind(seq(start, end, 60*60), h.par), ncol=2)
         
 	        ### NA interpolation
 	        Edata <- apply(t.Edata, 2, function(x) na.approx(x, na.rm=F))
@@ -157,11 +149,13 @@ for(t in 0:24){
 		proj <- try(determine.opt.para(V.hists=V.hists,N.dist=N.dist,Edata=Edata,volbins=volbins))
 		
 	 
-		para <- proj$Vproj; percentile <- cut(unlist(para), 100); plot3d(log(rep(volbins, 24)), rep(1:ncol(para), each=nrow(para)), z=matrix(para), col=jet.colors(100)[percentile], type='l', lwd=6, xlab="size class", ylab="time", zlab="Frequency")
+		para <- proj$Nproj; percentile <- cut(unlist(para), 100); plot3d(log2(rep(volbins, 24)), rep(as.numeric(colnames(para)), each=nrow(para)), z=matrix(para), col=jet.colors(100)[percentile], type='l', lwd=6, xlab="size class", ylab="time", zlab="Frequency")
 		
 		if(class(proj) !='try-error'){
 		model <- matrix(cbind(as.array(model), as.array(proj)), nrow=4,ncol=ncol(model)+1)
-	    save(model, file=paste(out.dir,"/NEW",phyto,"_modelHD_growth_",cruise,"_Ncat",m,"_t",t, sep=""))
+	    save(model, file=paste(out.dir,"/",phyto,"_modelHD_growth_",cruise,"_Ncat",m,"_t",t, sep=""))
+
+	    print(paste("Saving ", out.dir,"/",phyto,"_modelHD_growth_",cruise,"_Ncat",m,"_t",t, sep=""))
 
 	  }else{print("error during optimization")}
 	}
