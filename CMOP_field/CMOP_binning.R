@@ -18,14 +18,14 @@ phyto <- 'crypto'
 
 
 ## MODEL
-all.filelist <- list.files(paste("/Users/francois/CMOP/CMOP_field/",sep=""),pattern=paste("NEW",phyto,"_modelHD_growth_",cruise,"_Ncat",cat,sep=""))
+all.filelist <- list.files(paste("/Users/francois/CMOP/CMOP_field/",sep=""),pattern=paste(phyto,"_modelHD_growth_",cruise,"_Ncat",cat,sep=""))
 filelist <- all.filelist[grep(pattern=paste(phyto), all.filelist)]
 
 
 n <- c <- 1
 Conc.all <- N.proj.all <- V.hist.all <- div.rate <- para.all <- Col <- NULL
 for(file in filelist){
-	#file <- filelist[11]
+	file <- filelist[13]
 	load(paste("/Users/francois/CMOP/CMOP_field","/",file, sep=""))
 	print(file)
 	print(n)
