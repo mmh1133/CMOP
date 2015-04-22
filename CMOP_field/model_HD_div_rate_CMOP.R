@@ -111,7 +111,7 @@ m <- 57#2^6 # number of size class
 
 	model <- array(NA, dim=c(4,1))
 	
-for(t in 22:23){
+for(t in 1:23){
 
 	for(i in time.series){
 
