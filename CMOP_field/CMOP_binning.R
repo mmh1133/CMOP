@@ -9,7 +9,8 @@ library(popcycle)
 	set.cruise.id("CMOP_6")
 
 jet.colors <- colorRampPalette(c("blue4","royalblue4","deepskyblue3", "seagreen3", "yellow", "orangered2","darkred")) # Banas
-
+#palette(rainbow(24))
+palette("default")
 
 #### PARAMETERS
 cat <- 57#2^6
@@ -19,18 +20,20 @@ phyto <- 'crypto'
 
 
 ## MODEL
-all.filelist <- list.files(paste("/Users/francois/CMOP/CMOP_field/",sep=""),pattern=paste(phyto,"_modelHD_growth_",cruise,"_Ncat",cat,sep=""))
+all.filelist <- list.files(paste("/Users/francois/CMOP/CMOP_field/",sep=""),pattern=paste(phyto,"_modelHD_growthV3_",cruise,"_Ncat",cat,sep=""))
 filelist <- all.filelist[grep(pattern=paste(phyto), all.filelist)]
 
 
 n <- c <- 1
-Conc.all <- N.proj.all <- V.hist.all <- div.rate <- para.all <- Col <- NULL
+N.proj.all <- V.hist.all <- matrix(nrow=cat)
+Conc.all <- div.rate <- para.all <- Col <- NULL
 for(file in filelist){
-	#file <- filelist[13]
+	file <- filelist[4]
 	load(paste("/Users/francois/CMOP/CMOP_field","/",file, sep=""))
 	print(file)
 	print(n)
-		dim <- conc.proj.all <- n.proj.all <- v.hist.all <- dr.all <- p.all <- NULL
+		n.proj.all <- v.hist.all <- matrix(nrow=cat)
+		conc.proj.all <- dr.all <- p.all <- NULL
 			for(i in 2:dim(model)[2]){
 				n.proj <- model[4,i][[1]]
 				n.proj.all <- cbind(n.proj.all, n.proj)			
@@ -83,6 +86,27 @@ n <- n + 1
 c <- c + 1
 }
 
+## SPECIAL INTERJECTION FOR VISUALIZING ONE RUN ##
+	################################################################################################
+		col <- rep(c, nrow(dr.all))
+				Col <- c(Col,col)
+				Col <- "green"
+
+				leg <- unlist(list(strsplit(filelist,"_t")))[seq(2,length(filelist[1:n])*2,2)]
+
+				layout(matrix(c(1,1,2:7),4,2, byrow=T)) 
+				par(pty='m')	
+				plot(dr.all, ylab="Div Rate", xlab="time",col=Col)
+					#abline(v=night$UNIXtime,col='lightgrey');points(div.rate,col=Col)
+					legend("topleft",legend=leg, col=1:c, ncol=length(leg), pch=1)
+				plot(p.all[,"time"], p.all[,"gmax"], ylab="gmax", xlab="time",col = Col)
+				plot(p.all[,"time"], p.all[,"dmax"],ylab="dmax", xlab="time",col = Col)
+				#plot(para.all[,"time"], para.all[,"a"],ylab="a", xlab="time",col = Col)
+				plot(p.all[,"time"], p.all[,"b"],ylab="b", xlab="time",col = Col)
+				plot(p.all[,"time"], p.all[,"E_star"],ylab="E_star", xlab="time",col = Col)
+				plot(p.all[,"time"], p.all[,"resnorm"],ylab="resnorm", xlab="time",col = Col)
+
+	##################################################################################################
 
 
 	Div.rate <- div.rate[order(div.rate[,1]),]
