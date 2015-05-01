@@ -2,9 +2,10 @@ library(rgl)
 library(zoo)
 library(plotrix)
 library(popcycle)
-	library(popcycle)
+
+
 	set.evt.location("/Volumes/seaflow/CMOP_6")
-	set.project.location("~/CMOP_2013_f2")
+	set.project.location("/Volumes/seaflow/CMOP_6/CMOP_2013_f2")
 	set.cruise.id("CMOP_6")
 
 jet.colors <- colorRampPalette(c("blue4","royalblue4","deepskyblue3", "seagreen3", "yellow", "orangered2","darkred")) # Banas
@@ -99,8 +100,8 @@ c <- c + 1
 ###############
 ### BINNING ###
 ###############
-
-		breaks <- seq(as.numeric(colnames(Vproj)[1]),as.numeric(colnames(Vproj)[dim(Vproj)[2]]),by=60*60)
+		time.range <- range(as.numeric(colnames(Vproj)),na.rm=T)
+		breaks <- seq(time.range[1], time.range[2] ,by=60*60)
 
 	
 	# DIVISION 
@@ -111,7 +112,6 @@ c <- c + 1
 		#h.time <- as.POSIXct(h.time.numc,origin="1970-01-01",tz='GMT')
 		h.time <- as.POSIXct(breaks[findInterval(h.time.numc, breaks)],origin="1970-01-01",tz='GMT')
 
-		id <- findInterval(h.time, pop$time, rightmost.closed=F)
 		#h.lat <- pop[id,"lat"]
 		#h.lon<- pop[id,"long"]
 		
@@ -153,7 +153,7 @@ c <- c + 1
 	
 
 	## PAR
-	Par.path <- paste("/Users/francois/CMOP/CMOP_field","/Par_",cruise,sep="")
+	Par.path <- paste("/Users/francois/Documents/DATA/SeaFlow/CMOP/CMOP_git/CMOP_field","/Par_",cruise,sep="")
 	Par <- read.csv(Par.path, sep=",")
 	Par$time <- as.POSIXct(Par$time, tz='GMT')
 		h4 <- cut(as.numeric(Par$time), breaks=breaks, labels=F)
@@ -236,7 +236,7 @@ DSL[-na,"h.lr.sd"] <- abs(DSL[-na,'h2.lr.sd']/s.conc$y)
 par(mfrow=c(4,1))
 	for(p in c("h2.conc","h2.dr","h2.gr","h2.lr")){
 		plotCI(DSL$h.time, DSL[,paste(p,'.mean',sep="")], DSL[,paste(p,'.sd',sep="")], col=NA, ylab=NA, main=paste(p))
-		abline(v=night$UNIXtime,col='lightgrey')
+		#abline(v=night$UNIXtime,col='lightgrey')
 		plotCI(DSL$h.time, DSL[,paste(p,'.mean',sep="")], DSL[,paste(p,'.sd',sep="")],add=T)
 	}
 
@@ -246,6 +246,6 @@ plot(DSL$h.dr.mean, DSL$h.gr.mean, xlim=c(0,0.1), ylim=c(0,0.1))
 
 
 
-write.csv(DSL, paste("/Users/francois/CMOP/CMOP_field","/","NEW",phyto,"_HD_",cruise, ".binned.csv",sep=""),quote=F, row.names=F)
+write.csv(DSL, paste("/Users/francois/Documents/DATA/SeaFlow/CMOP/CMOP_git/CMOP_field","/",phyto,"_HD_",cruise, "V3.binned.csv",sep=""),quote=F, row.names=F)
 
 
