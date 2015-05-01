@@ -25,7 +25,7 @@ filelist <- all.filelist[grep(pattern=paste(phyto), all.filelist)]
 n <- c <- 1
 Conc.all <- N.proj.all <- V.hist.all <- div.rate <- para.all <- Col <- NULL
 for(file in filelist){
-	file <- filelist[13]
+	#file <- filelist[13]
 	load(paste("/Users/francois/CMOP/CMOP_field","/",file, sep=""))
 	print(file)
 	print(n)
@@ -68,7 +68,7 @@ for(file in filelist){
 			legend("topleft",legend=leg, col=1:c, ncol=length(leg), pch=1)
 		plot(para.all[,"time"], para.all[,"gmax"], ylab="gmax", xlab="time",col = Col)
 		plot(para.all[,"time"], para.all[,"dmax"],ylab="dmax", xlab="time",col = Col)
-		plot(para.all[,"time"], para.all[,"a"],ylab="a", xlab="time",col = Col)
+		#plot(para.all[,"time"], para.all[,"a"],ylab="a", xlab="time",col = Col)
 		plot(para.all[,"time"], para.all[,"b"],ylab="b", xlab="time",col = Col)
 		plot(para.all[,"time"], para.all[,"E_star"],ylab="E_star", xlab="time",col = Col)
 		plot(para.all[,"time"], para.all[,"resnorm"],ylab="resnorm", xlab="time",col = Col)
