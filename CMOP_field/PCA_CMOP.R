@@ -8,6 +8,10 @@ library(rgl)
 library(ggplot2)
 library(zoo)
 library(plotrix)
+library(ade4)
+library(vegan)
+library(gclus)
+library(ape)
 
 
 
@@ -43,7 +47,7 @@ d7m <- mean(day7$daily.GRmean, na.rm=T)
 d8m <- mean(day8$daily.GRmean, na.rm=T)
 d9m <- mean(day9$daily.GRmean, na.rm=T)
 
-dm <- c(d1m, d2m, d3m, d4m, d7m, d8m, d9m)
+dm <- c(d1m, d2m, d3m, d7m, d8m, d9m)
 
 #### setting up PAR data ####
 
@@ -78,7 +82,9 @@ Par4$time2 <- as.POSIXct(Par4$time, origin="1970-01-01", tz='GMT')
 Par5 <- subset(Par4, time > as.POSIXct("2013-09-10 16:50:00") & time < as.POSIXct("2013-09-20 00:00:00"))
 
 
-
+ p <- c(533.739, 272.192, 386.239, 722.297, 626.298, 661.172)
+ 
+ 
 
 
 #### setting up nutrient data ####
@@ -87,6 +93,32 @@ pre.flu <- read.csv("/Users/francois/CMOP/auxillary_data/Ribalet_nutrients2.csv"
 pre.flu2 <- as.data.frame(pre.flu, row.names=NULL)
 pre.flu2$time2 <- as.POSIXct(strptime(pre.flu2$time, "%Y/%m/%d %H:%M:%S"), tz="GMT")
 pre.flu3 <- subset(pre.flu2, time2 > as.POSIXct("2013-09-10 16:50:00") & time2 < as.POSIXct("2013-09-20 00:00:00")) 
+
+n <- c(12.7, 13.3, 13.2, 7.1, 8.6, 5.9)
+ph <- c(0.9, 1.1, 0.9, 0.9, 1.1, 0.6)
+
+
+
+#### combinding vectors into a data frame ####
+
+cmop <- data.frame(dm, p, n, ph)
+
+
+#########################
+#### actual PCA time ####
+#########################
+
+pca.cmop <- rda(cmop, scale=T)
+summary(pca.cmop)
+
+par(mfrow=c(1,2))
+#cleanplot.pca(pca.cmop, point=T)
+biplot(pca.cmop)
+
+
+
+
+
 
 
 
