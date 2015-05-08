@@ -177,12 +177,12 @@ mtext("abundance (10^6 cells/L)", side=4, lin=3, cex=1.7)
 
 
 par(mai=c(1,1.5,1,1))
-plotCI(as.POSIXct(yay2$h.time, origin="1970-01-01", tz='GMT'), yay2$daily.GRmean, uiw= yay2$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.5)
+plotCI(as.POSIXct(yay2$h.time, origin="1970-01-01", tz='GMT'), yay2$daily.GRmean, uiw= yay2$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
 #ylim=c(0,20)
 par(new=T)
 plot(crypto$time, crypto$daily.mean, lwd=2, pch=16, xlab="", ylab="", cex.lab=2,  axes=F, cex=.75, col="darkred")
 axis(4)
-mtext("mean daily abundance (10^6 cells/L)", side=4, lin=3, cex=1.5)
+mtext("mean daily abundance (10^6 cells/L)", side=4, lin=3, cex=1.7)
 
 
 

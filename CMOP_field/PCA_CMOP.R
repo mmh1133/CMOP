@@ -117,7 +117,7 @@ biplot(pca.cmop)
 
 
 par(mai=c(1,1,1,1))
-plot(cmop$n, cmop$dm, pch=16, xlab="nitrate", ylab="mean daily division rate", cex.lab=1.7, cex=1.5)
+plot(cmop$n, cmop$dm, pch=16, xlab="nitrate", ylab="mean daily division rate", cex.lab=1.7, cex=1.5, col="darkred")
 
 
 res=lm(cmop$dm~cmop$n)
