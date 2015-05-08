@@ -116,15 +116,10 @@ par(mfrow=c(1,2))
 biplot(pca.cmop)
 
 
+par(mai=c(1,1,1,1))
+plot(cmop$n, cmop$dm, pch=16, xlab="nitrate", ylab="mean daily division rate", cex.lab=1.7, cex=1.5)
 
 
-
-
-
-
-
-
-
-
-
+res=lm(cmop$dm~cmop$n)
+abline(res)
 

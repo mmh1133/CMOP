@@ -157,7 +157,7 @@ legend(1380100000, 0.35, c("crypto abundance", "salinity"), lty=c(1,1), lwd=c(2.
 #######################
 
 par(mai=c(1,1.5,1,1))
-plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.5)
+plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
 
 
 
@@ -167,12 +167,12 @@ plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, 
 #####################################
 
 par(mai=c(1,1.5,1,1))
-plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.5)
+plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
 #ylim=c(0,20)
 par(new=T)
-plot(pre.crypto2$time, pre.crypto2$abundance, lwd=2, pch=16, xlab="", ylab="", cex.lab=2,  axes=F, cex=.75, col="darkred", ylim=c(0,1))
+plot(pre.crypto2$time, pre.crypto2$abundance, lwd=2, pch=16, xlab="", ylab="", cex.lab=2,  axes=F, cex=.6, col="darkred", ylim=c(0,1))
 axis(4)
-mtext("abundance (10^6 cells/L)", side=4, lin=3, cex=1.5)
+mtext("abundance (10^6 cells/L)", side=4, lin=3, cex=1.7)
 
 
 
@@ -211,12 +211,12 @@ mtext("PAR", side=4, line=3, cex=1.5)
 ################################
 
 par(mai=c(1,1.5,1,1))
-plotCI(as.POSIXct(yay2$h.time, origin="1970-01-01", tz='GMT'), yay2$daily.GRmean, uiw= yay2$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.5)
+plotCI(as.POSIXct(yay2$h.time, origin="1970-01-01", tz='GMT'), yay2$daily.GRmean, uiw= yay2$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
 #ylim=c(0,20)
 par(new=T)
-plot(pre.flu3$time2, pre.flu3$Phosphate, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=2,  axes=F, col="darkred", type="o")
+plot(pre.flu3$time2, pre.flu3$Nitrate, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=2,  axes=F, col="darkred", type="o")
 axis(4)
-mtext("Phosphate", side=4, lin=3, cex=1.5)
+mtext("Nitrate", side=4, lin=3, cex=1.7)
 
 
 

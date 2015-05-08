@@ -38,6 +38,14 @@ pre.flu2$time <- as.POSIXct(strptime(pre.flu2$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y
 ts <- subset(pre.flu2, time > as.POSIXct("2013-09-10 16:50:00") & time < as.POSIXct("2013-09-20 00:00:00"))
 
 
+#### merging data frames ####
+
+data <- merge(pre.crypto2, pre.flu2, by="time", all=T)
+
+id2 <- which(data$abundance == NA)
+
+data.2 <- data[complete.cases(data[,11]),]
+data.new <- data.2[complete.cases(data.2[,17]),]
 
 
 
