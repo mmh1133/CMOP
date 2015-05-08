@@ -53,12 +53,12 @@ data.new <- data.2[complete.cases(data.2[,17]),]
  require(plotrix, quietly=T)
 
   cols <- colorRampPalette(c("blue4","royalblue4","deepskyblue3", "seagreen3", "yellow", "orangered2","darkred"))
-  sfl$date <- as.POSIXct(sfl$date,format="%FT%T",tz='GMT')
+  #sfl$date <- as.POSIXct(sfl$date,format="%FT%T",tz='GMT')
 
-plot(sfl$ocean_tmp, sfl$salinity, col=cols(100)[cut(sfl$date,100)],pch=16,xlab=expression(paste("Temp (",degree,"C)")), ylab="Salinity (psu)",...)
+plot(data.new$water_temperature, data.new$water_salinity, col=cols(100)[cut(data.new$abundance,100)],pch=16,xlab=expression(paste("Temp (",degree,"C)")), ylab="Salinity (psu)")
     ylim <- par('usr')[c(3,4)]
     xlim <- par('usr')[c(1,2)]
    color.legend(xlim[2], ylim[1], xlim[2] + 0.02*diff(xlim), ylim[2], 
-      legend=c("start","end"), rect.col=cols(100), gradient='y',align='rb',...)
-mtext("Time", side=4, line=2,...)  
+      legend=c("start","end"), rect.col=cols(100), gradient='y',align='rb')
+mtext("abundance", side=4, line=2)  
 
