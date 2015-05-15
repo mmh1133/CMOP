@@ -40,12 +40,21 @@ ts <- subset(pre.flu2, time > as.POSIXct("2013-09-10 16:50:00") & time < as.POSI
 
 #### merging data frames ####
 
-data <- merge(pre.crypto2, pre.flu2, by="time", all=T)
+#data <- merge(pre.crypto2, pre.flu2, by="time", all=T)
 
-id2 <- which(data$abundance == NA)
+#id2 <- which(data$abundance == NA)
 
-data.2 <- data[complete.cases(data[,11]),]
-data.new <- data.2[complete.cases(data.2[,17]),]
+#data.2 <- data[complete.cases(data[,11]),]
+#data.new <- data.2[complete.cases(data.2[,17]),]
+
+
+x<-pre.crypto2$time
+vec<-pre.flu2$time
+inter<-findInterval(x, vec, rightmost.closed=F, all.inside=F)
+
+test <- cbind.data.frame(pre.crypto2, pre.flu2[inter,])
+
+#flu.new<-subset(pre.flu2, row.names == inter)
 
 
 
@@ -55,10 +64,17 @@ data.new <- data.2[complete.cases(data.2[,17]),]
   cols <- colorRampPalette(c("blue4","royalblue4","deepskyblue3", "seagreen3", "yellow", "orangered2","darkred"))
   #sfl$date <- as.POSIXct(sfl$date,format="%FT%T",tz='GMT')
 
-plot(data.new$water_temperature, data.new$water_salinity, col=cols(100)[cut(data.new$abundance,100)],pch=16,xlab=expression(paste("Temp (",degree,"C)")), ylab="Salinity (psu)")
+plot(test$water_temperature, test$water_salinity, col=cols(100)[cut(log(test$abundance),100)],pch=16,xlab=expression(paste("Temp (",degree,"C)")), ylab="Salinity (psu)")
     ylim <- par('usr')[c(3,4)]
     xlim <- par('usr')[c(1,2)]
    color.legend(xlim[2], ylim[1], xlim[2] + 0.02*diff(xlim), ylim[2], 
-      legend=c("start","end"), rect.col=cols(100), gradient='y',align='rb')
+      legend=pretty(log(test$abundance)), rect.col=cols(100), gradient='y',align='rb')
 mtext("abundance", side=4, line=2)  
 
+para <-log(test$abundance)
+plot(test$time, log(test$water_salinity), col=cols(100)[cut(para,100)],pch=16,xlab=expression(paste("Temp (",degree,"C)")), ylab="Salinity (psu)")
+    ylim <- par('usr')[c(3,4)]
+    xlim <- par('usr')[c(1,2)]
+   color.legend(xlim[2], ylim[1], xlim[2] + 0.02*diff(xlim), ylim[2], 
+      legend=pretty(para), rect.col=cols(100), gradient='y',align='rb')
+mtext("abundance", side=4, line=2)  
