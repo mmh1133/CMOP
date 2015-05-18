@@ -34,9 +34,9 @@ crypto$daily.mean <- rollapply(data=crypto$abundance, width=24, FUN=mean, na.rm=
 
 pre.flu <- read.csv("/Users/francois/CMOP/auxillary_data/salinityCMOP_6")
 pre.flu2 <- as.data.frame(pre.flu, row.names=NULL)
-pre.flu2$time <- as.POSIXct(strptime(pre.flu2$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
-ts <- subset(pre.flu2, time > as.POSIXct("2013-09-10 16:50:00") & time < as.POSIXct("2013-09-20 00:00:00"))
-
+pre.flu2$timey <- as.POSIXct(strptime(pre.flu2$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
+ts <- subset(pre.flu2, timey > as.POSIXct("2013-09-10 16:50:00") & timey < as.POSIXct("2013-09-20 00:00:00"))
+pre.flu2$time<-NULL
 
 #### merging data frames ####
 
@@ -48,18 +48,23 @@ ts <- subset(pre.flu2, time > as.POSIXct("2013-09-10 16:50:00") & time < as.POSI
 #data.new <- data.2[complete.cases(data.2[,17]),]
 
 
+#### using findInterval to combine data frames without losing data ####
 x<-pre.crypto2$time
-vec<-pre.flu2$time
+vec<-pre.flu2$timey
 inter<-findInterval(x, vec, rightmost.closed=F, all.inside=F)
 
 test <- cbind.data.frame(pre.crypto2, pre.flu2[inter,])
 
 #flu.new<-subset(pre.flu2, row.names == inter)
 
+## checking stuff ##
+test$time_diff <- as.numeric(test$time-test$timey)
+test2 <- subset(test, time_diff < 120)
+test3<- subset(test, abundance < 1.0)
 
+#### actually making TS plot ####
 
-
- require(plotrix, quietly=T)
+ #require(plotrix, quietly=T)
 
   cols <- colorRampPalette(c("blue4","royalblue4","deepskyblue3", "seagreen3", "yellow", "orangered2","darkred"))
   #sfl$date <- as.POSIXct(sfl$date,format="%FT%T",tz='GMT')
@@ -72,7 +77,7 @@ plot(test$water_temperature, test$water_salinity, col=cols(100)[cut(log(test$abu
 mtext("abundance", side=4, line=2)  
 
 para <-log(test$abundance)
-plot(test$time, log(test$water_salinity), col=cols(100)[cut(para,100)],pch=16,xlab=expression(paste("Temp (",degree,"C)")), ylab="Salinity (psu)")
+plot(test$timey, log(test$water_salinity), col=cols(100)[cut(para,100)],pch=16,xlab=expression(paste("Temp (",degree,"C)")), ylab="Salinity (psu)")
     ylim <- par('usr')[c(3,4)]
     xlim <- par('usr')[c(1,2)]
    color.legend(xlim[2], ylim[1], xlim[2] + 0.02*diff(xlim), ylim[2], 
