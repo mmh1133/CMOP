@@ -48,7 +48,7 @@ summary.table.final <- merge(file.names, summary.table, by = "file")
 
 write.csv(summary.table.final, file=paste(savepath, "IFsummary_table_vol.csv", sep=""), row.names=FALSE)
 
-file <- file.list[2]
+file <- file.list[30]
 
 #files that are strange:40, 5, 12, 35
 #files that have only 1 crypto:10, 7
