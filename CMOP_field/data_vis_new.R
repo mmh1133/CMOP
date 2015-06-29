@@ -92,6 +92,16 @@ pre.flu2 <- as.data.frame(pre.flu, row.names=NULL)
 pre.flu2$time2 <- as.POSIXct(strptime(pre.flu2$time, "%Y/%m/%d %H:%M:%S"), tz="GMT")
 pre.flu3 <- subset(pre.flu2, time2 > as.POSIXct("2013-09-10 16:50:00") & time2 < as.POSIXct("2013-09-20 00:00:00")) 
 
+
+
+
+#### adding mesodinium counts ####
+
+pre.meso <- read.csv("/Users/francois/CMOP/mesodinium/meso.csv")
+meso <- as.data.frame(pre.meso, row.names=NULL)
+meso$time2 <- as.POSIXct(strptime(meso$datetime, "%m/%d/%Y %H:%M:%S"), tz="GMT")
+meso2 <- subset(meso, time2 > as.POSIXct("2013-09-10 16:50:00") & time2 < as.POSIXct("2013-09-20 00:00:00"))
+
 ##########################################################################################################################
 
 
@@ -219,6 +229,44 @@ axis(4)
 mtext("Nitrate", side=4, lin=3, cex=1.7)
 
 
+
+###########################
+#### div rate vs. meso ####
+###########################
+
+par(mai=c(1,1.5,1,1))
+plotCI(as.POSIXct(yay2$h.time, origin="1970-01-01", tz='GMT'), yay2$daily.GRmean, uiw= yay2$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
+#ylim=c(0,20)
+par(new=T)
+plot(meso2$time2, meso2$particles_mL, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=2,  axes=F, col="darkred", type="o")
+axis(4)
+mtext("Mesodinium counts", side=4, lin=3, cex=1.7)
+
+
+
+############################
+#### abundance vs. meso ####
+############################
+
+par(mai=c(1,1.5,1,1))
+plot(pre.crypto2$time, pre.crypto2$abundance, lwd=2, pch=16, xlab="", ylab="abundance (10^6 cells/L)", cex.lab=2, ylim=c(0,1))
+par(new=T)
+plot(meso$time2, meso$particles_mL, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=2,  axes=F, col="darkred", type="o")
+axis(4)
+mtext("Mesodinium counts", side=4, lin=3, cex=1.7)
+
+
+############################
+#### nutrients vs. meso ####
+############################
+
+par(mai=c(1,1.5,1,1))
+plot(meso$time2, meso$particles_mL, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=2, col="darkred", type="o")
+#ylim=c(0,20)
+par(new=T)
+plot(pre.flu3$time2, pre.flu3$Ammonium, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=2,  axes=F, col="blue", type="o")
+axis(4)
+mtext("Ammonium", side=4, lin=3, cex=1.7)
 
 
 #####################################################################################################
