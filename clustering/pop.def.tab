@@ -1,4 +1,0 @@
-abrev	title	xmin	ymin	xmax	ymax	color	xvar	yvar	u.co	lim
-other	Other	NA	NA	NA	NA	palegreen3	fsc_small	chl_small	NA	NA
-beads	Beads	NA	NA	NA	NA	black	chl_small	pe	NA	NA
-crypto	Cryptophytes	NA	NA	NA	65000	tomato3	chl_small	pe	NA	NA
