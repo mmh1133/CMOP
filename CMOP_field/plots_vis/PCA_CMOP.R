@@ -18,7 +18,7 @@ library(ape)
 
 #### setting up binned data ####
 
-yay <- read.csv("/Users/francois/CMOP/CMOP_field/crypto_HD_CMOP_6V3.binned.csv")
+yay <- read.csv("/Users/francois/CMOP/CMOP_field/model/crypto_HD_CMOP_6V3.binned.csv")
 
 yay$daily.GRmean <- rollapply(data=yay$h.dr.mean, width=24, FUN=mean, na.rm=T, fill=NA)*24
 yay$daily.GRsd <- rollapply(data=yay$h.dr.sd, width=24, FUN=mean, na.rm=T, fill=NA)*24
