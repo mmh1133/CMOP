@@ -9,6 +9,12 @@ library(ggplot2)
 library(zoo)
 library(plotrix)
 
+library(maps)
+library(mapdata)
+library(maptools)
+library(scales)
+library(mapproj)
+
 
 ##################################################################
 ##################################################################
@@ -630,6 +636,21 @@ par(mai=c(1,1,1,1))
 plot(cmop$n, cmop$dm, pch=16, xlab="nitrate", ylab="mean daily division rate", cex.lab=1.7, cex=1.5, col="darkred")
 res=lm(cmop$dm~cmop$n)
 abline(res)
+
+
+
+
+#############
+#### map ####
+#############
+
+map("worldHires", "Canada", xlim=c(-124.5,-123), ylim=c(45.9,46.5), col="lightcyan", fill=T)
+map("worldHires","usa", xlim=c(-124.5,-123), ylim=c(45.9,46.5), col="grey", fill=T, add=T)  
+lat<-c(46.21)
+lon<-c(-123.91)
+points(lon, lat, pch=18, col="red", cex=1.5)
+
+
 
 
 

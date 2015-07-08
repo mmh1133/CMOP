@@ -8,20 +8,22 @@ library(maptools)
 library(scales)
 library(mapproj)
 
-setwd("/Users/mariaham/Dropbox/code_share/seaflow")
 
 #### using maps package ####
 
 #making a map of canada+usa
-map("worldHires", "Canada", xlim=c(-140,-110), ylim=c(48,64), col="lightcyan", fill=T)
-map("worldHires","usa", xlim=c(-140,-110), ylim=c(48,64), col="thistle2", fill=T, add=T)  
+map("worldHires", "Canada", xlim=c(-124.5,-123), ylim=c(45.9,46.5), col="lightcyan", fill=T)
+map("worldHires","usa", xlim=c(-124.5,-123), ylim=c(45.9,46.5), col="grey", fill=T, add=T)  
+lat<-c(46.21)
+lon<-c(-123.91)
+points(lon, lat, pch=18, col="red", cex=1)
+
 
 #changing the projection
 map(database="world", ylim=c(45,90), xlim=c(-160,-50), col="lightcyan", fill=T, projection="gilbert", orientation=c(90,0,225))
 lon<-c(-72,-66,-107, -154)
 lat<-c(81.7,64.6,68.3,60)
-coord<-mapproject(lon, lat, proj="gilbert", orientation=c(90,0,225))
-points(coord, pch=20, cex=1.2, col="red") #adding some points
+points(lon, lat, pch=23, col="red", cex=1)
 
 
 
