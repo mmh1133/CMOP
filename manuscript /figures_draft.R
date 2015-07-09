@@ -105,6 +105,10 @@ yay$daily.GRsd <- rollapply(data=yay$h.dr.sd, width=24, FUN=mean, na.rm=T, fill=
 
 yay$time <- as.POSIXct(yay$h.time,tz='GMT', origin="1970-01-01")
 yay2 <- subset(yay, time > as.POSIXct("2013-09-10 16:50:00") & time < as.POSIXct("2013-09-20 00:00:00")) 
+dr.w1 <- subset(yay, time > as.POSIXct("2013-09-10 16:50:00") & time < as.POSIXct("2013-09-14 24:00:00"))
+dr.w2 <- subset(yay, time > as.POSIXct("2013-09-15 00:00:00") & time < as.POSIXct("2013-09-21 24:00:00"))
+dr.w3 <- subset(yay, time > as.POSIXct("2013-09-22 00:00:00") & time < as.POSIXct("2013-09-28 24:00:00"))
+dr.w4 <- subset(yay, time > as.POSIXct("2013-09-29 00:00:00") & time < as.POSIXct("2013-10-03 24:00:00"))
 
 
 #### setting up individual days of binned data ###
@@ -525,8 +529,27 @@ legend(1380100000, 0.35, c("crypto abundance", "salinity"), lty=c(1,1), lwd=c(2.
 #### div rate plot ####
 #######################
 
+#TC
 par(mai=c(1,1.5,1,1))
 plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
+
+#week 1
+par(mai=c(1,1.5,1,1))
+plotCI(as.POSIXct(dr.w1$h.time, origin="1970-01-01", tz='GMT'), dr.w1$daily.GRmean, uiw= dr.w1$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
+
+#week2
+par(mai=c(1,1.5,1,1))
+plotCI(as.POSIXct(dr.w2$h.time, origin="1970-01-01", tz='GMT'), dr.w2$daily.GRmean, uiw= dr.w2$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
+
+#week3
+par(mai=c(1,1.5,1,1))
+plotCI(as.POSIXct(dr.w3$h.time, origin="1970-01-01", tz='GMT'), dr.w3$daily.GRmean, uiw= dr.w3$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
+
+
+#week4
+par(mai=c(1,1.5,1,1))
+plotCI(as.POSIXct(dr.w4$h.time, origin="1970-01-01", tz='GMT'), dr.w4$daily.GRmean, uiw= dr.w4$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
+
 
 
 
