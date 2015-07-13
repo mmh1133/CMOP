@@ -15,6 +15,8 @@ library(maptools)
 library(scales)
 library(mapproj)
 
+library(marmap)
+
 
 ##################################################################
 ##################################################################
@@ -233,7 +235,11 @@ meso2 <- subset(meso, time2 > as.POSIXct("2013-09-10 16:50:00") & time2 < as.POS
 
 
 
+#### TX qPCR data ####
 
+pre.tx <- read.csv("/Users/francois/CMOP/pics_misc/tx_qPCR.csv")
+tx <- as.data.frame(pre.tx, row.names=NULL)
+tx$time2 <- as.POSIXct(strptime(tx$time, "%m/%d/%Y %H:%M:%S"), tz="GMT")
 
 
 
@@ -617,10 +623,10 @@ mtext("Nitrate", side=4, lin=3, cex=1.7)
 ###########################
 
 par(mai=c(1,1.5,1,1))
-plotCI(as.POSIXct(yay2$h.time, origin="1970-01-01", tz='GMT'), yay2$daily.GRmean, uiw= yay2$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
+plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
 #ylim=c(0,20)
 par(new=T)
-plot(meso2$time2, meso2$particles_mL, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=2,  axes=F, col="darkred", type="o")
+plot(meso$time2, meso$particles_mL, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=2,  axes=F, col="darkred", type="o")
 axis(4)
 mtext("Mesodinium counts", side=4, lin=3, cex=1.7)
 
@@ -672,9 +678,64 @@ map("worldHires","usa", xlim=c(-124.5,-123), ylim=c(45.9,46.5), col="grey", fill
 lat<-c(46.21)
 lon<-c(-123.91)
 points(lon, lat, pch=18, col="red", cex=1.5)
+map.scale()
+
+#bathymetry 
+blues <- c("lightsteelblue4", "lightsteelblue3", "lightsteelblue2", "lightsteelblue1")
+CMOP_bathy <- getNOAA.bathy(lon1= -124.5, lon2= -123, lat1= 45.9, lat2= 46.5, resolution= 1)
+plot(CMOP_bathy, image=T, land=T, lwd =0.1, bpal= list(c(0, max(CMOP_bathy), "grey"), c(min(CMOP_bathy), 0, blues)))
+plot(CMOP_bathy, deep=0, shallow= 0, step=0, lwd=0.4, add=T)
+#scaleBathy(CMOP_bathy, deg=0.1, x="bottomleft", insert=5)
 
 
 
+
+######################
+#### plotting fsc ####
+######################
+
+#smooth spline
+par(mai=c(1,1,1,1))
+plot(stat$time, stat$fsc_small, lwd=2, pch=16, xlab="", ylab="forward scatter small", cex.lab=1, type="n", xaxt="n", ylim=c(50, 250))
+axis.POSIXct(1, stat$time, format="%D")
+points(smooth.spline(as.POSIXct(stat$time, origin="1970-01-01", tz='GMT'), stat$fsc_small, spar=0.5), lwd=2, col="black", pch=16, xlab="", ylab="", axes=F)
+
+
+par(mai=c(1,1,1,1))
+plot(stat$time, stat$fsc_small, lwd=2, pch=16, xlab="", ylab="forward scatter small")
+
+
+##############################
+#### plotting tx and qPCR ####
+##############################
+
+#tx percent
+plot(tx$time2, tx$percent2, lwd=2, pch=16, cex=2, col= "red", xlab="", ylab="percent Teleaulax of total cryptophytes")
+
+#tx percent vs meso
+par(mai=c(1,1.5,1,1))
+plot(tx$time2, tx$percent2, lwd=2, pch=16, cex=2, xlab="", ylab="percent Teleaulax of total cryptophytes", cex.lab=2, ylim=c(0,0.5))
+par(new=T)
+plot(meso$time2, meso$particles_mL, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=2,  axes=F, col="red", type="o")
+axis(4)
+mtext("Mesodinium counts", side=4, lin=3, cex=1.7)
+
+#tx number vs meso
+par(mai=c(1,1.5,1,1))
+plot(tx$time2, tx$tx_cop, lwd=2, pch=16, cex=2, xlab="", ylab="Teleaulax qPCR copy number", cex.lab=2)
+par(new=T)
+plot(meso$time2, meso$particles_mL, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=2,  axes=F, col="red", type="o")
+axis(4)
+mtext("Mesodinium counts", side=4, lin=3, cex=1.7)
+
+
+#qPCR
+par(mai=c(1,1.5,1,1))
+plot(pre.crypto2$time, pre.crypto2$daily.mean, lwd=2, pch=16, xlab="", ylab="daily mean abundance (10^6 cells/L)- log scale", cex.lab=2, ylog=T, log="y")
+par(new=T)
+plot(tx$time2, tx$cryp_cop, lwd=2, pch=16, cex=2, xlab="", ylab="", axes=F, col="red", cex.lab=2)
+axis(4)
+mtext("qPCR crypto copy number", side=4, lin=3, cex=1.7)
 
 
 
