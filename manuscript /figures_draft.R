@@ -679,6 +679,8 @@ lat<-c(46.21)
 lon<-c(-123.91)
 points(lon, lat, pch=18, col="red", cex=1.5)
 map.scale()
+text(-123.86, 46.22, "SATURN03")
+text(-124.3, 46.4, "Columbia River \nEstuary", cex=2)
 
 #bathymetry 
 blues <- c("lightsteelblue4", "lightsteelblue3", "lightsteelblue2", "lightsteelblue1")
