@@ -73,9 +73,18 @@ crypto.week3$daily.mean <- rollapply(data=crypto.week3$abundance, width=24, FUN=
 crypto.week4$daily.mean <- rollapply(data=crypto.week4$abundance, width=24, FUN=mean, na.rm=T, fill=NA)*24
 
 # roll mean standard deviation #
-pre.crypto2$sd <- rollapply(data=pre.crypto2$abundance, width=24, FUN=sd, na.rm=T, fill=NA)*24
-crypto.week1$sd <- rollapply(data=crypto.week1$abundance, width=24, FUN=sd, na.rm=T, fill=NA)*24/sqrt(24)
-crypto.week1.na <- crypto.week1
+#pre.crypto2$sd <- rollapply(data=pre.crypto2$abundance, width=24, FUN=sd, na.rm=T, fill=NA)*24
+#crypto.week1$sd <- rollapply(data=crypto.week1$abundance, width=24, FUN=sd, na.rm=T, fill=NA)*24
+
+# eliminating nas for smooth.spline #
+crypto.week1.ss <- crypto.week1
+crypto.week1.ss2<- crypto.week1.ss[complete.cases(crypto.week1.ss[,11]),]
+crypto.week2.ss <- crypto.week2
+crypto.week2.ss2<- crypto.week2.ss[complete.cases(crypto.week2.ss[,11]),]
+crypto.week3.ss <- crypto.week3
+crypto.week3.ss2<- crypto.week3.ss[complete.cases(crypto.week3.ss[,11]),]
+crypto.week4.ss <- crypto.week4
+crypto.week4.ss2<- crypto.week4.ss[complete.cases(crypto.week4.ss[,11]),]
 
 
 #### setting up salinity #### 
@@ -106,6 +115,7 @@ yay <- read.csv("/Users/francois/CMOP/CMOP_field/model/crypto_HD_CMOP_6V3.binned
 
 yay$daily.GRmean <- rollapply(data=yay$h.dr.mean, width=24, FUN=mean, na.rm=T, fill=NA)*24
 yay$daily.GRsd <- rollapply(data=yay$h.dr.sd, width=24, FUN=mean, na.rm=T, fill=NA)*24
+yay$daily.GRse <- rollapply(data=yay$h.dr.sd, width=24, FUN=mean, na.rm=T, fill=NA)*24/sqrt(24)
 
 yay$time <- as.POSIXct(yay$h.time,tz='GMT', origin="1970-01-01")
 yay2 <- subset(yay, time > as.POSIXct("2013-09-10 16:50:00") & time < as.POSIXct("2013-09-20 00:00:00")) 
@@ -207,6 +217,11 @@ Par.w2 <- subset(Par4, time > as.POSIXct("2013-09-15 00:00:00") & time < as.POSI
 Par.w3 <- subset(Par4, time > as.POSIXct("2013-09-22 00:00:00") & time < as.POSIXct("2013-09-28 24:00:00"))
 Par.w4 <- subset(Par4, time > as.POSIXct("2013-09-29 00:00:00") & time < as.POSIXct("2013-10-03 24:00:00"))
 
+Par.w1.all <- subset(Par2, time > as.POSIXct("2013-09-10 16:50:00") & time < as.POSIXct("2013-09-14 24:00:00"))
+Par.w2.all <- subset(Par2, time > as.POSIXct("2013-09-15 00:00:00") & time < as.POSIXct("2013-09-21 24:00:00"))
+Par.w3.all <- subset(Par2, time > as.POSIXct("2013-09-22 00:00:00") & time < as.POSIXct("2013-09-28 24:00:00"))
+Par.w4.all <- subset(Par2, time > as.POSIXct("2013-09-29 00:00:00") & time < as.POSIXct("2013-10-03 23:58:00"))
+
 
 #### setting up nutrient data ####
 
@@ -270,9 +285,29 @@ plot(pre.flu2$time2, pre.flu$Nitrate, lwd=2, pch=16, cex=1.5, xlab="", ylab="", 
 axis(4)
 mtext(4, text="nitrate (uM)", line=2, col="red")
 par(new=T)
-plot(Par.all$time, Par.all$par.max, lwd=2, pch=16, cex=1.5, xlab="", ylab="", axes=F, col="orange")
+plot(Par2$time, Par2$par, lwd=2, pch=16, cex=1, xlab="", ylab="", axes=F, col="orange", type="l")
 axis(4, line=3.5)
-mtext(4, text="max PAR", line=5.5, col="orange")
+mtext(4, text="PAR", line=5.5, col="orange")
+
+
+par(mar=c(5,12,4,12))
+plot(sal$time, sal$water_salinity, lwd=2, pch=16, xlab="", ylab="salinity (psu?)", cex.lab=1, type="n")
+points(smooth.spline(as.POSIXct(sal$time, origin="1970-01-01", tz='GMT'), sal$water_salinity, spar=0.5), lwd=2, col="cyan4", pch=16, xlab="", ylab="", axes=F)
+par(new=T)
+plot(sal$time, sal$water_temperature, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=1,  axes=F, col="lightblue", type="n")
+points(smooth.spline(as.POSIXct(sal$time, origin="1970-01-01", tz='GMT'), sal$water_temperature, spar=0.5 ), lwd=2, pch=16, cex=1, xlab="", ylab="", axes=F, col="lightblue")
+axis(2, line=4.5)
+mtext(2, text="water temperature (degrees C)", line=6.5, col="lightblue")
+par(new=T)
+plot(pre.flu2$time2, pre.flu$Nitrate, lwd=2, pch=16, cex=1.5, xlab="", ylab="", axes=F, col="red")
+axis(4)
+mtext(4, text="nitrate (uM)", line=2, col="red")
+par(new=T)
+plot(Par2$time, Par2$par, lwd=2, pch=16, cex=1, xlab="", ylab="", axes=F, col="orange", type="n")
+points(smooth.spline(as.POSIXct(Par2$time, origin="1970-01-01", tz='GMT'), Par2$par, spar=0.5 ), lwd=2, pch=16, cex=1, xlab="", ylab="", axes=F, col="orange")
+axis(4, line=3.5)
+mtext(4, text="PAR", line=5.5, col="orange")
+
 
 
 
@@ -417,110 +452,160 @@ plotCI(pre.crypto2$time, pre.crypto2$daily.mean, uiw= pre.crypto2$sd, sfrac=0, p
 ###########################
 
 #week 1
-par(mai=c(1,1.5,1,1))
-plot(crypto.week1$time, crypto.week1$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="abundance (10^6 cells/L)", cex.lab=2, ylim=c(-30,30))
-axis.POSIXct(1, crypto.week1$time, at=seq(min(crypto.week1$time, na.rm=T), max(crypto.week1$time, na.rm=T), by=60*60*12), format="%H")
+# par(mai=c(1,1.5,1,1))
+# plot(crypto.week1$time, crypto.week1$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="abundance (10^6 cells/L)", cex.lab=2, ylim=c(-25,30))
+# axis.POSIXct(1, crypto.week1$time, at=seq(min(crypto.week1$time, na.rm=T), max(crypto.week1$time, na.rm=T), by=60*60*12), format="%c", cex=.5)
 
-lines(crypto.week1.na$time, crypto.week1.na$abundance+crypto.week1$sd, lwd=1, col='grey')
-lines(crypto.week1.na$time, crypto.week1.na$abundance-crypto.week1$sd, lwd=1, col='grey')
+# lines(crypto.week1.na$time, crypto.week1.na$abundance+crypto.week1$sd, lwd=1, col='grey')
+# lines(crypto.week1.na$time, crypto.week1.na$abundance-crypto.week1$sd, lwd=1, col='grey')
 
-index <- which(diff(crypto.week1.na$time) > 182)
-crypto.week1.na[index,'abundance'] <- NA
+#index <- which(diff(crypto.week1.na$time) > 182)
+#crypto.week1.na[index,'abundance'] <- NA
 
+par(mfrow=c(4,1), mar=c(1,1,1,1)+0.1, pty="m", mgp=c(3,1,0))
 
 #week 1 log scale
-par(mai=c(1,1.5,1,1))
-plot(crypto.week1$time, crypto.week1$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="abundance (10^6 cells/L)- log scale", cex.lab=2, ylog=T, log="y")
+#par(mai=c(1,1.5,1,1))
+plot(crypto.week1$time, crypto.week1$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="abundance (10^6 cells/L)- log scale", cex.lab=0.5, log="y")
 points(smooth.spline(crypto.week1.ss2$time, crypto.week1.ss2$abundance, spar=0.5), lwd=2, col="lightblue", pch=16, xlab="", ylab="", axes=F, cex=0.75)
-axis.POSIXct(1, crypto.week1$time, at=seq(min(crypto.week1$time, na.rm=T), max(crypto.week1$time, na.rm=T), by=60*60*12), format="%H")
+axis.POSIXct(1, crypto.week1$time, at=seq(min(crypto.week1$time, na.rm=T), max(crypto.week1$time, na.rm=T), by=60*60*6), format="%m-%d %H:%M")
 
-lines(crypto.week1.na$time, crypto.week1.na$abundance+crypto.week1$sd, lwd=1, col='grey')
-lines(crypto.week1.na$time, crypto.week1.na$abundance-crypto.week1$sd, lwd=1, col='grey')
-
-polygon(c(crypto.week1.na$time, rev(crypto.week1.na$time)), c(crypto.week1.na$abundance-crypto.week1$sd, rev(crypto.week1.na$abundance+crypto.week1$sd)), density=NA, col="pink")
+#lines(crypto.week1.na$time, crypto.week1.na$abundance+crypto.week1$sd, lwd=1, col='grey')
+#lines(crypto.week1.na$time, crypto.week1.na$abundance-crypto.week1$sd, lwd=1, col='grey')
 
 
-crypto.week1.ss <- crypto.week1
-#index2 <- which(crypto.week1$abundance == NA)
-crypto.week1.ss2<- crypto.week1.ss[complete.cases(crypto.week1.ss[,11]),]
+rect(as.POSIXct("2013-09-10 23:51:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-11 06:13:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+rect(as.POSIXct("2013-09-11 11:52:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-11 17:41:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+rect(as.POSIXct("2013-09-12 00:55:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-12 07:24:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+rect(as.POSIXct("2013-09-12 12:44:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-12 18:43:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+rect(as.POSIXct("2013-09-13 02:11:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-13 08:41:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+rect(as.POSIXct("2013-09-13 14:05:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-13 19:58:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+
+
 
 
 #week 1 daily mean
-par(mai=c(1,1.5,1,1))
-plot(crypto.week1$time, crypto.week1$daily.mean, xaxt="n", xlab="", lwd=2, pch=16, ylab="daily mean abundance (10^6 cells/L)", cex.lab=2)
-axis.POSIXct(1, crypto.week1$time, format="%D")
+# par(mai=c(1,1.5,1,1))
+# plot(crypto.week1$time, crypto.week1$daily.mean, xaxt="n", xlab="", lwd=2, pch=16, ylab="daily mean abundance (10^6 cells/L)", cex.lab=2, ylim=c(0, 150))
+# axis.POSIXct(1, crypto.week1$time, at=seq(min(crypto.week1$time, na.rm=T), max(crypto.week1$time, na.rm=T), by=60*60*12), format="%H")
+# lines(crypto.week1.na$time, crypto.week1.na$daily.mean+crypto.week1$sd, lwd=1, col='grey')
+# lines(crypto.week1.na$time, crypto.week1.na$daily.mean-crypto.week1$sd, lwd=1, col='grey')
+
+# index <- which(diff(crypto.week1.na$time) > 182)
+# crypto.week1.na[index,'daily.mean'] <- NA
+
+
 
 #week 1 daily mean log scale 
-par(mai=c(1,1.5,1,1))
-plot(crypto.week1$time, crypto.week1$daily.mean, xaxt="n", xlab="", lwd=2, pch=16, ylab="daily mean abundance (10^6 cells/L)- log scale", cex.lab=2, ylog=T, log="y")
-axis.POSIXct(1, crypto.week1$time, format="%D")
+# par(mai=c(1,1.5,1,1))
+# plot(crypto.week1$time, crypto.week1$daily.mean, xaxt="n", xlab="", lwd=2, pch=16, ylab="daily mean abundance (10^6 cells/L)- log scale", cex.lab=2, ylog=T, log="y")
+# axis.POSIXct(1, crypto.week1$time, format="%D")
 
 #week 1 sd
-par(mai=c(1,1.5,1,1))
-plotCI(crypto.week1$time, crypto.week1$daily.mean, uiw= crypto.week1$sd, sfrac=0, pch=16, 	xlab="", ylab="mean daily abundance (10^6 cells/L)", cex.lab=1.7, xaxt="n")
-axis.POSIXct(1, crypto.week1$time, format="%D")
+# par(mai=c(1,1.5,1,1))
+# plotCI(crypto.week1$time, crypto.week1$daily.mean, uiw= crypto.week1$sd, sfrac=0, pch=16, 	xlab="", ylab="mean daily abundance (10^6 cells/L)", cex.lab=1.7, xaxt="n")
+# axis.POSIXct(1, crypto.week1$time, format="%D")
 
 
 #week 2
-par(mai=c(1,1.5,1,1))
-plot(crypto.week2$time, crypto.week2$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="abundance (10^6 cells/L)", cex.lab=2)
-axis.POSIXct(1, crypto.week2$time, format="%D")
+# par(mai=c(1,1.5,1,1))
+# plot(crypto.week2$time, crypto.week2$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="abundance (10^6 cells/L)", cex.lab=2)
+# axis.POSIXct(1, crypto.week2$time, format="%D")
 
 #week 2 log scale
-par(mai=c(1,1.5,1,1))
-plot(crypto.week2$time, crypto.week2$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="abundance (10^6 cells/L)- log scale", cex.lab=2, ylog=T, log="y")
-axis.POSIXct(1, crypto.week2$time, format="%D")
+#par(mai=c(1,1.5,1,1))
+plot(crypto.week2$time, crypto.week2$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="abundance (10^6 cells/L)- log scale", cex.lab=0.5, log="y")
+points(smooth.spline(crypto.week2.ss2$time, crypto.week2.ss2$abundance, spar=0.5), lwd=2, col="lightblue", pch=16, xlab="", ylab="", axes=F, cex=0.75)
+axis.POSIXct(1, crypto.week2$time, at=seq(min(crypto.week2$time, na.rm=T), max(crypto.week2$time, na.rm=T), by=60*60*6), format="%m-%d %H:%M")
+
+
+rect(as.POSIXct("2013-09-16 17:43:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-16 23:36:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+rect(as.POSIXct("2013-09-17 06:22:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-17 12:32:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+rect(as.POSIXct("2013-09-17 18:38:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-18 00:32:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+rect(as.POSIXct("2013-09-18 07:06:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-18 13:13:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+rect(as.POSIXct("2013-09-18 19:29:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-19 01:23:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+rect(as.POSIXct("2013-09-19 07:48:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-19 13:52:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+rect(as.POSIXct("2013-09-19 20:16:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-20 02:12:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+
+
+
 
 #week 2 daily mean
-par(mai=c(1,1.5,1,1))
-plot(crypto.week2$time, crypto.week2$daily.mean, xaxt="n", xlab="", lwd=2, pch=16, ylab="daily mean abundance (10^6 cells/L)", cex.lab=2)
-axis.POSIXct(1, crypto.week2$time, format="%D")
+# par(mai=c(1,1.5,1,1))
+# plot(crypto.week2$time, crypto.week2$daily.mean, xaxt="n", xlab="", lwd=2, pch=16, ylab="daily mean abundance (10^6 cells/L)", cex.lab=2)
+# axis.POSIXct(1, crypto.week2$time, format="%D")
 
 #week 2 daily mean log scale
-par(mai=c(1,1.5,1,1))
-plot(crypto.week2$time, crypto.week2$daily.mean, xaxt="n", xlab="", lwd=2, pch=16, ylab="daily mean abundance (10^6 cells/L)- log scale", cex.lab=2, ylog=T, log="y")
-axis.POSIXct(1, crypto.week2$time, format="%D")
+# par(mai=c(1,1.5,1,1))
+# plot(crypto.week2$time, crypto.week2$daily.mean, xaxt="n", xlab="", lwd=2, pch=16, ylab="daily mean abundance (10^6 cells/L)- log scale", cex.lab=2, ylog=T, log="y")
+# axis.POSIXct(1, crypto.week2$time, format="%D")
+
+
 
 
 #week 3
-par(mai=c(1,1.5,1,1))
-plot(crypto.week3$time, crypto.week3$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="abundance (10^6 cells/L)", cex.lab=2)
-axis.POSIXct(1, crypto.week3$time, format="%D")
+# par(mai=c(1,1.5,1,1))
+# plot(crypto.week3$time, crypto.week3$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="abundance (10^6 cells/L)", cex.lab=2)
+# axis.POSIXct(1, crypto.week3$time, format="%D")
 
 #week 3 log scale
-par(mai=c(1,1.5,1,1))
-plot(crypto.week3$time, crypto.week3$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="abundance (10^6 cells/L)- log scale", cex.lab=2, ylog=T, log="y")
-axis.POSIXct(1, crypto.week3$time, format="%D")
+#par(mai=c(1,1.5,1,1))
+plot(crypto.week3$time, crypto.week3$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="abundance (10^6 cells/L)- log scale", cex.lab=0.5, ylog=T, log="y")
+points(smooth.spline(crypto.week3.ss2$time, crypto.week3.ss2$abundance, spar=0.5), lwd=2, col="lightblue", pch=16, xlab="", ylab="", axes=F, cex=0.75)
+axis.POSIXct(1, crypto.week3$time, at=seq(min(crypto.week3$time, na.rm=T), max(crypto.week3$time, na.rm=T), by=60*60*6), format="%m-%d %H:%M")
 
+
+rect(as.POSIXct("2013-09-23 23:07:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-24 05:22:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+rect(as.POSIXct("2013-09-24 10:57:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-24 16:47:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+rect(as.POSIXct("2013-09-24 23:52:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-25 06:16:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+rect(as.POSIXct("2013-09-25 11:40:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-25 17:28:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+rect(as.POSIXct("2013-09-26 00:43:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-26 07:16:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+rect(as.POSIXct("2013-09-26 12:33:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-26 18:18:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+rect(as.POSIXct("2013-09-16 17:43:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-16 23:36:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+rect(as.POSIXct("2013-09-27 01:45:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-27 07:24:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+
+
+ 
+ 
 #week 3 daily mean 
-par(mai=c(1,1.5,1,1))
-plot(crypto.week3$time, crypto.week3$daily.mean, xaxt="n", xlab="", lwd=2, pch=16, ylab="daily mean abundance (10^6 cells/L)", cex.lab=2)
-axis.POSIXct(1, crypto.week3$time, format="%D")
+# par(mai=c(1,1.5,1,1))
+# plot(crypto.week3$time, crypto.week3$daily.mean, xaxt="n", xlab="", lwd=2, pch=16, ylab="daily mean abundance (10^6 cells/L)", cex.lab=2)
+# axis.POSIXct(1, crypto.week3$time, format="%D")
 
 #week 3 daily mean log scale
-par(mai=c(1,1.5,1,1))
-plot(crypto.week3$time, crypto.week3$daily.mean, xaxt="n", xlab="", lwd=2, pch=16, ylab="daily mean abundance (10^6 cells/L)- log scale", cex.lab=2, ylog=T, log="y")
-axis.POSIXct(1, crypto.week3$time, format="%D")
+# par(mai=c(1,1.5,1,1))
+# plot(crypto.week3$time, crypto.week3$daily.mean, xaxt="n", xlab="", lwd=2, pch=16, ylab="daily mean abundance (10^6 cells/L)- log scale", cex.lab=2, ylog=T, log="y")
+# axis.POSIXct(1, crypto.week3$time, format="%D")
 
 #week 4
-par(mai=c(1,1.5,1,1))
-plot(crypto.week4$time, crypto.week4$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="abundance (10^6 cells/L)", cex.lab=2)
-axis.POSIXct(1, crypto.week4$time, format="%D")
+# par(mai=c(1,1.5,1,1))
+# plot(crypto.week4$time, crypto.week4$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="abundance (10^6 cells/L)", cex.lab=2)
+# axis.POSIXct(1, crypto.week4$time, format="%D")
 
 #week 4 log scale
-par(mai=c(1,1.5,1,1))
-plot(crypto.week4$time, crypto.week4$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="abundance (10^6 cells/L)- log scale", cex.lab=2, ylog=T, log="y")
-axis.POSIXct(1, crypto.week4$time, format="%D")
+#par(mai=c(1,1.5,1,1))
+plot(crypto.week4$time, crypto.week4$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="abundance (10^6 cells/L)- log scale", cex.lab=0.5, ylog=T, log="y")
+points(smooth.spline(crypto.week4.ss2$time, crypto.week4.ss2$abundance, spar=0.5), lwd=2, col="lightblue", pch=16, xlab="", ylab="", axes=F, cex=0.75)
+axis.POSIXct(1, crypto.week4$time, at=seq(min(crypto.week4$time, na.rm=T), max(crypto.week4$time, na.rm=T), by=60*60*6), format="%m-%d %H:%M")
+
+
+rect(as.POSIXct("2013-09-30 17:03:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-30 22:53:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+rect(as.POSIXct("2013-10-01 05:32:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-10-01 11:48:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+rect(as.POSIXct("2013-10-01 17:52:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-10-01 22:45:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+rect(as.POSIXct("2013-10-02 06:12:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-10-02 12:23:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+rect(as.POSIXct("2013-10-02 18:37:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-10-03 00:32:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col="#FF003322", border=NA)
+
+
 
 #week 4 daily mean 
-par(mai=c(1,1.5,1,1))
-plot(crypto.week4$time, crypto.week4$daily.mean, xaxt="n", xlab="", lwd=2, pch=16, ylab="daily mean abundance (10^6 cells/L)", cex.lab=2)
-axis.POSIXct(1, crypto.week4$time, format="%D")
+# par(mai=c(1,1.5,1,1))
+# plot(crypto.week4$time, crypto.week4$daily.mean, xaxt="n", xlab="", lwd=2, pch=16, ylab="daily mean abundance (10^6 cells/L)", cex.lab=2)
+# axis.POSIXct(1, crypto.week4$time, format="%D")
 
 #week 4 daily mean log scale
-par(mai=c(1,1.5,1,1))
-plot(crypto.week4$time, crypto.week4$daily.mean, xaxt="n", xlab="", lwd=2, pch=16, ylab="daily mean abundance (10^6 cells/L)- log scale", cex.lab=2, ylog=T, log="y")
-axis.POSIXct(1, crypto.week4$time, format="%D")
+# par(mai=c(1,1.5,1,1))
+# plot(crypto.week4$time, crypto.week4$daily.mean, xaxt="n", xlab="", lwd=2, pch=16, ylab="daily mean abundance (10^6 cells/L)- log scale", cex.lab=2, ylog=T, log="y")
+# axis.POSIXct(1, crypto.week4$time, format="%D")
 
 
 #####################################
@@ -567,24 +652,24 @@ legend(1380100000, 0.35, c("crypto abundance", "salinity"), lty=c(1,1), lwd=c(2.
 
 #TC
 par(mai=c(1,1.5,1,1))
-plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
+plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRse, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
 
 #week 1
 par(mai=c(1,1.5,1,1))
-plotCI(as.POSIXct(dr.w1$h.time, origin="1970-01-01", tz='GMT'), dr.w1$daily.GRmean, uiw= dr.w1$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
+plotCI(as.POSIXct(dr.w1$h.time, origin="1970-01-01", tz='GMT'), dr.w1$daily.GRmean, uiw= dr.w1$daily.GRse, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
 
 #week2
 par(mai=c(1,1.5,1,1))
-plotCI(as.POSIXct(dr.w2$h.time, origin="1970-01-01", tz='GMT'), dr.w2$daily.GRmean, uiw= dr.w2$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
+plotCI(as.POSIXct(dr.w2$h.time, origin="1970-01-01", tz='GMT'), dr.w2$daily.GRmean, uiw= dr.w2$daily.GRse, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
 
 #week3
 par(mai=c(1,1.5,1,1))
-plotCI(as.POSIXct(dr.w3$h.time, origin="1970-01-01", tz='GMT'), dr.w3$daily.GRmean, uiw= dr.w3$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
+plotCI(as.POSIXct(dr.w3$h.time, origin="1970-01-01", tz='GMT'), dr.w3$daily.GRmean, uiw= dr.w3$daily.GRse, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
 
 
 #week4
 par(mai=c(1,1.5,1,1))
-plotCI(as.POSIXct(dr.w4$h.time, origin="1970-01-01", tz='GMT'), dr.w4$daily.GRmean, uiw= dr.w4$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
+plotCI(as.POSIXct(dr.w4$h.time, origin="1970-01-01", tz='GMT'), dr.w4$daily.GRmean, uiw= dr.w4$daily.GRse, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7, type="l")
 
 
 
@@ -638,13 +723,13 @@ mtext("PAR", side=4, line=3, cex=1.5)
 #### div rate vs. nutrients ####
 ################################
 
-par(mai=c(1,1.5,1,1))
-plotCI(as.POSIXct(yay2$h.time, origin="1970-01-01", tz='GMT'), yay2$daily.GRmean, uiw= yay2$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
-#ylim=c(0,20)
-par(new=T)
-plot(pre.flu3$time2, pre.flu3$Nitrate, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=2,  axes=F, col="darkred", type="o")
-axis(4)
-mtext("Nitrate", side=4, lin=3, cex=1.7)
+# par(mai=c(1,1.5,1,1))
+# plotCI(as.POSIXct(yay2$h.time, origin="1970-01-01", tz='GMT'), yay2$daily.GRmean, uiw= yay2$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
+# #ylim=c(0,20)
+# par(new=T)
+# plot(pre.flu3$time2, pre.flu3$Nitrate, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=2,  axes=F, col="darkred", type="o")
+# axis(4)
+# mtext("Nitrate", side=4, lin=3, cex=1.7)
 
 
 
@@ -687,14 +772,32 @@ axis(4)
 mtext("Ammonium", side=4, lin=3, cex=1.7)
 
 
-###########################
-#### N vs. div no time ####
-###########################
+###################################
+#### nutrients vs. div no time ####
+###################################
 
-par(mai=c(1,1,1,1))
-plot(cmop$n, cmop$dm, pch=16, xlab="nitrate", ylab="mean daily division rate", cex.lab=1.7, cex=1.5, col="darkred")
-res=lm(cmop$dm~cmop$n)
-abline(res)
+par(mfrow=c(2,2), mai=c(1,1,1,1), pty="s")
+
+#nitrate
+#par(mai=c(1,1,1,7))
+plot(cmop$n, cmop$dm, pch=16, xlab="nitrate", ylab="mean daily division rate", cex.lab=1.7, cex=1.5)
+res1=lm(cmop$dm~cmop$n)
+abline(res1)
+text(5.5,8, "R^2=0.019", cex=2)
+
+#phosphate
+# par(mai=c(1,1,1,7))
+plot(cmop$ph, cmop$dm, pch=16, xlab="phosphate", ylab="mean daily division rate", cex.lab=1.7, cex=1.5)
+res2=lm(cmop$dm~cmop$ph)
+abline(res2)
+text(0.95,8, "R^2=0.268", cex=2)
+
+#ammonium
+# par(mai=c(1,1,1,7))
+plot(cmop$a, cmop$dm, pch=16, xlab="ammonia", ylab="mean daily division rate", cex.lab=1.7, cex=1.5)
+res3=lm(cmop$dm~cmop$a)
+abline(res3)
+text(11,8, "R^2=0.077", cex=2)
 
 
 
@@ -703,6 +806,7 @@ abline(res)
 #### map ####
 #############
 
+#estuary map
 map("worldHires", "Canada", xlim=c(-124.5,-123.15), ylim=c(45.9,46.5), col="lightcyan", fill=T)
 map("worldHires","usa", xlim=c(-124.5,-123.15), ylim=c(45.9,46.5), col="grey", fill=T, add=T)  
 lat<-c(46.21)
@@ -712,11 +816,23 @@ map.scale(-123.5, 46)
 text(-123.85, 46.23, "SATURN03", cex=1.5)
 text(-124.3, 46.4, "Columbia River \nEstuary", cex=3)
 
+#washington/oregon map
+map("usa", xlim=c(-127,-120), ylim=c(44,50), col="grey", fill=T)  
+map("state", add=T)
+lat<-c(46.21)
+lon<-c(-123.91)
+points(lon, lat, pch=18, col="red", cex=2)
+map.scale(-122.5, 44.3)
+text(-125, 46.4, "Pacific \nOcean", cex=2)
+text(-122.65, 45, "Oregon", cex=1.5)
+text(-122.5, 46.5, "Washington", cex=1.5)
+
+
 #bathymetry 
-blues <- c("lightsteelblue4", "lightsteelblue3", "lightsteelblue2", "lightsteelblue1")
-CMOP_bathy <- getNOAA.bathy(lon1= -124.5, lon2= -123, lat1= 45.9, lat2= 46.5, resolution= 1)
-plot(CMOP_bathy, image=T, land=T, lwd =0.1, bpal= list(c(0, max(CMOP_bathy), "grey"), c(min(CMOP_bathy), 0, blues)))
-plot(CMOP_bathy, deep=0, shallow= 0, step=0, lwd=0.4, add=T)
+# blues <- c("lightsteelblue4", "lightsteelblue3", "lightsteelblue2", "lightsteelblue1")
+# CMOP_bathy <- getNOAA.bathy(lon1= -124.5, lon2= -123, lat1= 45.9, lat2= 46.5, resolution= 1)
+# plot(CMOP_bathy, image=T, land=T, lwd =0.1, bpal= list(c(0, max(CMOP_bathy), "grey"), c(min(CMOP_bathy), 0, blues)))
+# plot(CMOP_bathy, deep=0, shallow= 0, step=0, lwd=0.4, add=T)
 #scaleBathy(CMOP_bathy, deg=0.1, x="bottomleft", insert=5)
 
 
@@ -791,11 +907,11 @@ cc <- read.csv(paste0(out.dir,"RHODO_div-rate.csv"))[-1,]
 #### div rate of model vs. cc ####
 ##################################
 
-par(pty='m')
-plotCI(as.POSIXct(cc$time, origin="1970-01-01"), cc$div, cc$div.se, ylim=c(0,0.05), sfrac=0, lwd=2, pch=16, cex=1,ylab=NA, xlab=NA)
-plotCI(m$time, m$div.ave, m$div.sd, col=2,add=T, sfrac=0, lwd=2, pch=16,cex=1)
-mtext(substitute(paste("Division (h"^{-1},")")), side=2, line=3, cex=1)
-mtext("time", side=1, line=3, cex=1)
+# par(pty='m')
+# plotCI(as.POSIXct(cc$time, origin="1970-01-01"), cc$div, cc$div.se, ylim=c(0,0.05), sfrac=0, lwd=2, pch=16, cex=1,ylab=NA, xlab=NA)
+# plotCI(m$time, m$div.ave, m$div.sd, col=2,add=T, sfrac=0, lwd=2, pch=16,cex=1)
+# mtext(substitute(paste("Division (h"^{-1},")")), side=2, line=3, cex=1)
+# mtext("time", side=1, line=3, cex=1)
 
 
 
@@ -807,4 +923,13 @@ plot(as.POSIXct(cc$time, origin="1970-01-01"), cc$div, ylim=c(0,0.05), sfrac=0, 
 plotCI(m$time, m$div.ave, m$div.sd, col=2,add=T, sfrac=0, lwd=2, pch=16,cex=1.5)
 mtext(substitute(paste("Division (h"^{-1},")")), side=2, line=3, cex=1.5)
 mtext("time", side=1, line=3, cex=1.5)
+
+
+plot(cc$div, m$div.ave)
+
+
+
+
+
+
 
