@@ -72,8 +72,10 @@ crypto.week2$daily.mean <- rollapply(data=crypto.week2$abundance, width=24, FUN=
 crypto.week3$daily.mean <- rollapply(data=crypto.week3$abundance, width=24, FUN=mean, na.rm=T, fill=NA)*24
 crypto.week4$daily.mean <- rollapply(data=crypto.week4$abundance, width=24, FUN=mean, na.rm=T, fill=NA)*24
 
-
-
+# roll mean standard deviation #
+pre.crypto2$sd <- rollapply(data=pre.crypto2$abundance, width=24, FUN=sd, na.rm=T, fill=NA)*24
+crypto.week1$sd <- rollapply(data=crypto.week1$abundance, width=24, FUN=sd, na.rm=T, fill=NA)*24/sqrt(24)
+crypto.week1.na <- crypto.week1
 
 
 #### setting up salinity #### 
@@ -398,6 +400,10 @@ plot(pre.crypto2$time, pre.crypto2$daily.mean, lwd=2, pch=16, xlab="", ylab="dai
 par(mai=c(1,1.5,1,1))
 plot(pre.crypto2$time, pre.crypto2$daily.mean, lwd=2, pch=16, xlab="", ylab="daily mean abundance (10^6 cells/L)", cex.lab=2)
 
+#full TC- daily mean + sd
+par(mai=c(1,1.5,1,1))
+plotCI(pre.crypto2$time, pre.crypto2$daily.mean, uiw= pre.crypto2$sd, sfrac=0, pch=16, 	xlab="", ylab="mean daily abundance (10^6 cells/L)", cex.lab=1.7)
+
 
 ################################
 #### one day abundance plot ####
@@ -412,13 +418,32 @@ plot(pre.crypto2$time, pre.crypto2$daily.mean, lwd=2, pch=16, xlab="", ylab="dai
 
 #week 1
 par(mai=c(1,1.5,1,1))
-plot(crypto.week1$time, crypto.week1$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="abundance (10^6 cells/L)", cex.lab=2)
-axis.POSIXct(1, crypto.week1$time, format="%D")
+plot(crypto.week1$time, crypto.week1$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="abundance (10^6 cells/L)", cex.lab=2, ylim=c(-30,30))
+axis.POSIXct(1, crypto.week1$time, at=seq(min(crypto.week1$time, na.rm=T), max(crypto.week1$time, na.rm=T), by=60*60*12), format="%H")
+
+lines(crypto.week1.na$time, crypto.week1.na$abundance+crypto.week1$sd, lwd=1, col='grey')
+lines(crypto.week1.na$time, crypto.week1.na$abundance-crypto.week1$sd, lwd=1, col='grey')
+
+index <- which(diff(crypto.week1.na$time) > 182)
+crypto.week1.na[index,'abundance'] <- NA
+
 
 #week 1 log scale
 par(mai=c(1,1.5,1,1))
 plot(crypto.week1$time, crypto.week1$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="abundance (10^6 cells/L)- log scale", cex.lab=2, ylog=T, log="y")
-axis.POSIXct(1, crypto.week1$time, format="%D")
+points(smooth.spline(crypto.week1.ss2$time, crypto.week1.ss2$abundance, spar=0.5), lwd=2, col="lightblue", pch=16, xlab="", ylab="", axes=F, cex=0.75)
+axis.POSIXct(1, crypto.week1$time, at=seq(min(crypto.week1$time, na.rm=T), max(crypto.week1$time, na.rm=T), by=60*60*12), format="%H")
+
+lines(crypto.week1.na$time, crypto.week1.na$abundance+crypto.week1$sd, lwd=1, col='grey')
+lines(crypto.week1.na$time, crypto.week1.na$abundance-crypto.week1$sd, lwd=1, col='grey')
+
+polygon(c(crypto.week1.na$time, rev(crypto.week1.na$time)), c(crypto.week1.na$abundance-crypto.week1$sd, rev(crypto.week1.na$abundance+crypto.week1$sd)), density=NA, col="pink")
+
+
+crypto.week1.ss <- crypto.week1
+#index2 <- which(crypto.week1$abundance == NA)
+crypto.week1.ss2<- crypto.week1.ss[complete.cases(crypto.week1.ss[,11]),]
+
 
 #week 1 daily mean
 par(mai=c(1,1.5,1,1))
@@ -428,6 +453,11 @@ axis.POSIXct(1, crypto.week1$time, format="%D")
 #week 1 daily mean log scale 
 par(mai=c(1,1.5,1,1))
 plot(crypto.week1$time, crypto.week1$daily.mean, xaxt="n", xlab="", lwd=2, pch=16, ylab="daily mean abundance (10^6 cells/L)- log scale", cex.lab=2, ylog=T, log="y")
+axis.POSIXct(1, crypto.week1$time, format="%D")
+
+#week 1 sd
+par(mai=c(1,1.5,1,1))
+plotCI(crypto.week1$time, crypto.week1$daily.mean, uiw= crypto.week1$sd, sfrac=0, pch=16, 	xlab="", ylab="mean daily abundance (10^6 cells/L)", cex.lab=1.7, xaxt="n")
 axis.POSIXct(1, crypto.week1$time, format="%D")
 
 
@@ -673,14 +703,14 @@ abline(res)
 #### map ####
 #############
 
-map("worldHires", "Canada", xlim=c(-124.5,-123), ylim=c(45.9,46.5), col="lightcyan", fill=T)
-map("worldHires","usa", xlim=c(-124.5,-123), ylim=c(45.9,46.5), col="grey", fill=T, add=T)  
+map("worldHires", "Canada", xlim=c(-124.5,-123.15), ylim=c(45.9,46.5), col="lightcyan", fill=T)
+map("worldHires","usa", xlim=c(-124.5,-123.15), ylim=c(45.9,46.5), col="grey", fill=T, add=T)  
 lat<-c(46.21)
 lon<-c(-123.91)
 points(lon, lat, pch=18, col="red", cex=1.5)
-map.scale()
-text(-123.86, 46.22, "SATURN03")
-text(-124.3, 46.4, "Columbia River \nEstuary", cex=2)
+map.scale(-123.5, 46)
+text(-123.85, 46.23, "SATURN03", cex=1.5)
+text(-124.3, 46.4, "Columbia River \nEstuary", cex=3)
 
 #bathymetry 
 blues <- c("lightsteelblue4", "lightsteelblue3", "lightsteelblue2", "lightsteelblue1")
