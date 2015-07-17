@@ -21,7 +21,7 @@ phyto <- 'crypto'
 
 
 ## MODEL
-all.filelist <- list.files(paste("/Users/francois/CMOP/CMOP_field/model/",sep=""),pattern=paste(phyto,"_modelHD_growthV3_",cruise,"_Ncat",cat,sep=""))
+all.filelist <- list.files(paste("/Users/francois/CMOP/CMOP_field/model/",sep=""),pattern=paste(phyto,"_modelHD_growthV3_",cruise,"_Ncat",cat,sep=""), full.names=T)
 filelist <- all.filelist[grep(pattern=paste(phyto), all.filelist)]
 
 
@@ -275,7 +275,7 @@ write.csv(DSL, paste("/Users/francois/Documents/DATA/SeaFlow/CMOP/CMOP_git/CMOP_
 
 
 ### new stuff ###
-output <- merge.model.output(filelist)
+output <- merge.model.output(filelist, plot.raw=F)
 
-
+plot.parameters(output)
 

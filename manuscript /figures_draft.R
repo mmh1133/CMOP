@@ -576,7 +576,7 @@ par(mfrow=c(4,1), mar=c(2,8,2.5,2)+0.8, pty="m")
 
 #week 1 log scale
 #par(mai=c(1,1.5,1,1))
-plot(crypto.week1$time, crypto.week1$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab= "abundance 10^6 cells/L \nlog scale", cex.lab=1.5, log="y", col="darkgrey")
+plot(crypto.week1$time, crypto.week1$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab= "abundance 10^6 cells/L", cex.lab=1.5, log="y", col="darkgrey")
 points(smooth.spline(crypto.week1.ss2$time, crypto.week1.ss2$abundance, spar=0.5), lwd=2, col="black", pch=16, xlab="", ylab="", axes=F, cex=0.75)
 axis.POSIXct(1, crypto.week1$time, at=seq(min(crypto.week1$time, na.rm=T), max(crypto.week1$time, na.rm=T), by=60*60*6), format="%m-%d %H:%M")
 mtext("A", side=3, cex=2)
