@@ -2,6 +2,7 @@ library(rgl)
 library(zoo)
 library(plotrix)
 library(popcycle)
+library(ssPopModel)
 
 
 	set.evt.location("/Volumes/seaflow/CMOP_6")
@@ -271,5 +272,10 @@ plot(DSL$h.dr.mean, DSL$h.gr.mean, xlim=c(0,0.1), ylim=c(0,0.1))
 
 
 write.csv(DSL, paste("/Users/francois/Documents/DATA/SeaFlow/CMOP/CMOP_git/CMOP_field/model","/",phyto,"_HD_",cruise, "V3.binned.csv",sep=""),quote=F, row.names=F)
+
+
+### new stuff ###
+output <- merge.model.output(filelist)
+
 
 
