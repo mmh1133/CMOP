@@ -574,6 +574,8 @@ plotCI(pre.crypto2$time, pre.crypto2$daily.mean, uiw= pre.crypto2$sd, sfrac=0, p
 par(mfrow=c(4,1), mar=c(2,8,2.5,2)+0.8, pty="m")
 #par(mfrow=c(4,1), pty="m")
 
+
+#substitute(paste("text"^{6},"text"))
 #week 1 log scale
 #par(mai=c(1,1.5,1,1))
 plot(crypto.week1$time, crypto.week1$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab= "abundance 10^6 cells/L", cex.lab=1.5, log="y", col="darkgrey")
@@ -948,6 +950,7 @@ text(-124.3, 46.4, "Columbia River \nEstuary", cex=3)
 
 #washington/oregon map
 map("usa", xlim=c(-127,-120), ylim=c(44,50), col="grey", fill=T)  
+
 map("state", add=T)
 lat<-c(46.21)
 lon<-c(-123.91)
