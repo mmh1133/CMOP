@@ -370,6 +370,8 @@ mtext(substitute(paste("phosphate (", mu, "M)")),side=4, line=3, cex=1.2)
 legend("topright", c("nitrate", "ammonium", "phosphate"), pch=c(16, 0, 4), cex=1.5)
 mtext("C", side=3, cex=2, adj=0)
 
+#png(filename="/Users/francois/CMOP/manuscript/third_draft_figures/aux_TC")
+#dev.off()
 
 
 # full TC #
@@ -584,7 +586,7 @@ plotCI(pre.crypto2$time, pre.crypto2$daily.mean, uiw= pre.crypto2$sd, sfrac=0, p
 
 #quartz("Quartz", width=15, height=12)
 par(mfrow=c(4,1), mar=c(2,8,2.5,2)+0.8, pty="m")
-#par(mfrow=c(4,1), pty="m")
+
 
 #substitute(paste("abundance 10"^{6}, " cells L"^{-1}))
 
@@ -784,10 +786,10 @@ par(mfrow=c(4,1), mar=c(2,8,2.5,2)+0.8, pty="m", cex.axis=2)
 
 #week 1
 #par(mai=c(1,1.5,1,1))
-plotCI(dr.w1$time, dr.w1$daily.GRmean, uiw= dr.w1$daily.GRse, sfrac=0, pch=NA, 	xlab="", ylab="", cex.lab=1.7, xaxt="n", las=1, ylim=c(0.7,2.05), xlim=c(as.POSIXct("2013-09-11 00:00:00", origin="1970-01-01", tz='GMT'), as.POSIXct("2013-09-14 02:00:00", origin="1970-01-01", tz='GMT')))
+plotCI(dr.w1$time, dr.w1$daily.GRmean, uiw= dr.w1$daily.GRse, sfrac=0, pch=NA, 	xlab="", ylab="", cex.lab=1.7, xaxt="n", las=1, ylim=c(0.7,2.05), xlim=c(as.POSIXct("2013-09-11 00:00:00", origin="1970-01-01", tz='GMT'), as.POSIXct("2013-09-14 00:00:00", origin="1970-01-01", tz='GMT')))
 axis.POSIXct(1, dr.w1$time, at=seq(as.POSIXct("2013-09-11 00:00:00", origin="1970-01-01", tz='GMT'), as.POSIXct("2013-09-14 00:00:00", origin="1970-01-01", tz='GMT'), by=60*60*12), format="%m-%d %H:%M", cex.axis=1.5)
 par(new=T)
-plot(dr.w1$time, dr.w1$daily.GRmean, xlab="", ylab="", axes=F, type="l", ylim=c(0.7,2.05), xlim=c(as.POSIXct("2013-09-11 00:00:00", origin="1970-01-01", tz='GMT'), as.POSIXct("2013-09-14 02:00:00", origin="1970-01-01", tz='GMT')))
+plot(dr.w1$time, dr.w1$daily.GRmean, xlab="", ylab="", axes=F, type="l", ylim=c(0.7,2.05), xlim=c(as.POSIXct("2013-09-11 00:00:00", origin="1970-01-01", tz='GMT'), as.POSIXct("2013-09-14 00:00:00", origin="1970-01-01", tz='GMT')))
 mtext("A", side=3, cex=2, line=0, adj=0)
 mtext(text="mean daily division rate", side=2, cex=2.5, outer=T, line=-4)
 
@@ -802,10 +804,10 @@ rect(as.POSIXct("2013-09-13 14:05:00", origin="1970-01-01", tz='GMT'), 0.0000000
 
 #week2
 #par(mai=c(1,1.5,1,1))
-plotCI(dr.w2$time, dr.w2$daily.GRmean, uiw= dr.w2$daily.GRse, sfrac=0, pch=NA, 	xlab="", ylab="", cex.lab=1.7, xaxt="n", las=1, ylim=c(0,1.2),  xlim=c(as.POSIXct("2013-09-17 00:00:00", origin="1970-01-01", tz='GMT'), as.POSIXct("2013-09-19 12:00:00", origin="1970-01-01", tz='GMT')))
+plotCI(dr.w2$time, dr.w2$daily.GRmean, uiw= dr.w2$daily.GRse, sfrac=0, pch=NA, 	xlab="", ylab="", cex.lab=1.7, xaxt="n", las=1, ylim=c(0,1.2),  xlim=c(as.POSIXct("2013-09-17 06:00:00", origin="1970-01-01", tz='GMT'), as.POSIXct("2013-09-19 12:00:00", origin="1970-01-01", tz='GMT')))
 axis.POSIXct(1, dr.w2$time, at=seq(as.POSIXct("2013-09-17 07:00:00", origin="1970-01-01", tz='GMT'), max(dr.w2$time, na.rm=T), by=60*60*12), format="%m-%d %H:%M", cex.axis=1.5)
 par(new=T)
-plot(dr.w2$time, dr.w2$daily.GRmean, xlab="", ylab="", axes=F, type="l", ylim=c(0,1.2),  xlim=c(as.POSIXct("2013-09-17 00:00:00", origin="1970-01-01", tz='GMT'), as.POSIXct("2013-09-19 12:00:00", origin="1970-01-01", tz='GMT')))
+plot(dr.w2$time, dr.w2$daily.GRmean, xlab="", ylab="", axes=F, type="l", ylim=c(0,1.2),  xlim=c(as.POSIXct("2013-09-17 06:00:00", origin="1970-01-01", tz='GMT'), as.POSIXct("2013-09-19 12:00:00", origin="1970-01-01", tz='GMT')))
 mtext("B", side=3, cex=2, line=0, adj=0)
 
 
@@ -820,37 +822,39 @@ rect(as.POSIXct("2013-09-19 20:16:00", origin="1970-01-01", tz='GMT'), -0.5, as.
 
 #week3
 #par(mai=c(1,1.5,1,1))
-plotCI(dr.w3$time, dr.w3$daily.GRmean, uiw= dr.w3$daily.GRse, sfrac=0, pch=NA, 	xlab="", ylab="", cex.lab=1.7, xaxt="n", las=1, ylim=c(0,7))
+plotCI(dr.w3$time, dr.w3$daily.GRmean, uiw= dr.w3$daily.GRse, sfrac=0, pch=NA, 	xlab="", ylab="", cex.lab=1.7, xaxt="n", las=1, ylim=c(0,7), xlim=c(as.POSIXct("2013-09-23 09:00:00", origin="1970-01-01", tz='GMT'), as.POSIXct("2013-09-27 20:00:00", origin="1970-01-01", tz='GMT')))
 axis.POSIXct(1, dr.w3$time, at=seq(as.POSIXct("2013-09-22 07:00:00", origin="1970-01-01", tz='GMT'), max(dr.w3$time, na.rm=T), by=60*60*12), format="%m-%d %H:%M", cex.axis=1.5)
 par(new=T)
-plot(dr.w3$time, dr.w3$daily.GRmean, xlab="", ylab="", axes=F, type="l", ylim=c(0,7))
+plot(dr.w3$time, dr.w3$daily.GRmean, xlab="", ylab="", axes=F, type="l", ylim=c(0,7), xlim=c(as.POSIXct("2013-09-23 09:00:00", origin="1970-01-01", tz='GMT'), as.POSIXct("2013-09-27 20:00:00", origin="1970-01-01", tz='GMT')))
 mtext("C", side=3, cex=2, line=0, adj=0)
 
 
-rect(as.POSIXct("2013-09-23 23:07:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-24 05:22:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
-rect(as.POSIXct("2013-09-24 10:57:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-24 16:47:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
-rect(as.POSIXct("2013-09-24 23:52:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-25 06:16:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
-rect(as.POSIXct("2013-09-25 11:40:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-25 17:28:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
-rect(as.POSIXct("2013-09-26 00:43:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-26 07:16:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
-rect(as.POSIXct("2013-09-26 12:33:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-26 18:18:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
-rect(as.POSIXct("2013-09-16 17:43:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-16 23:36:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
-rect(as.POSIXct("2013-09-27 01:45:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-27 07:24:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
+rect(as.POSIXct("2013-09-23 10:19:00", origin="1970-01-01", tz='GMT'), -0.5, as.POSIXct("2013-09-23 16:11:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
+rect(as.POSIXct("2013-09-23 23:07:00", origin="1970-01-01", tz='GMT'), -0.5, as.POSIXct("2013-09-24 05:22:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
+rect(as.POSIXct("2013-09-24 10:57:00", origin="1970-01-01", tz='GMT'), -0.5, as.POSIXct("2013-09-24 16:47:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
+rect(as.POSIXct("2013-09-24 23:52:00", origin="1970-01-01", tz='GMT'), -0.5, as.POSIXct("2013-09-25 06:16:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
+rect(as.POSIXct("2013-09-25 11:40:00", origin="1970-01-01", tz='GMT'), -0.5, as.POSIXct("2013-09-25 17:28:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
+rect(as.POSIXct("2013-09-26 00:43:00", origin="1970-01-01", tz='GMT'), -0.5, as.POSIXct("2013-09-26 07:16:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
+rect(as.POSIXct("2013-09-26 12:33:00", origin="1970-01-01", tz='GMT'), -0.5, as.POSIXct("2013-09-26 18:18:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
+rect(as.POSIXct("2013-09-16 17:43:00", origin="1970-01-01", tz='GMT'), -0.5, as.POSIXct("2013-09-16 23:36:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
+rect(as.POSIXct("2013-09-27 01:45:00", origin="1970-01-01", tz='GMT'), -0.5, as.POSIXct("2013-09-27 08:21:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
+rect(as.POSIXct("2013-09-27 13:42:00", origin="1970-01-01", tz='GMT'), -0.5, as.POSIXct("2013-09-27 19:24:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
 
 
 
 #week4
 #par(mai=c(1,1.5,1,1))
-plotCI(dr.w4$time,dr.w4$daily.GRmean, uiw= dr.w4$daily.GRse, sfrac=0, pch=NA, 	xlab="", ylab="", cex.lab=1.7, xaxt="n", las=1, ylim=c(0,12) )
+plotCI(dr.w4$time,dr.w4$daily.GRmean, uiw= dr.w4$daily.GRse, sfrac=0, pch=NA, 	xlab="", ylab="", cex.lab=1.7, xaxt="n", las=1, ylim=c(0,12), xlim=c(as.POSIXct("2013-10-01 06:00:00", origin="1970-01-01", tz='GMT'), as.POSIXct("2013-10-02 13:00:00", origin="1970-01-01", tz='GMT')) )
 axis.POSIXct(1, dr.w4$time, at=seq(as.POSIXct("2013-09-29 11:00:00", origin="1970-01-01", tz='GMT'), max(dr.w4$time, na.rm=T), by=60*60*12), format="%m-%d %H:%M", cex.axis=1.5)
 par(new=T)
-plot(dr.w4$time, dr.w4$daily.GRmean, xlab="", ylab="", axes=F, type="l", ylim=c(0,12))
+plot(dr.w4$time, dr.w4$daily.GRmean, xlab="", ylab="", axes=F, type="l", ylim=c(0,12), xlim=c(as.POSIXct("2013-10-01 06:00:00", origin="1970-01-01", tz='GMT'), as.POSIXct("2013-10-02 13:00:00", origin="1970-01-01", tz='GMT')) )
 mtext("D", side=3, cex=2, line=0, adj=0)
 
-rect(as.POSIXct("2013-09-30 17:03:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-30 22:53:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
-rect(as.POSIXct("2013-10-01 05:32:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-10-01 11:48:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
-rect(as.POSIXct("2013-10-01 17:52:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-10-01 22:45:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
-rect(as.POSIXct("2013-10-02 06:12:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-10-02 12:23:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
-rect(as.POSIXct("2013-10-02 18:37:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-10-03 00:32:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
+rect(as.POSIXct("2013-09-30 17:03:00", origin="1970-01-01", tz='GMT'), -0.5, as.POSIXct("2013-09-30 22:53:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
+rect(as.POSIXct("2013-10-01 05:32:00", origin="1970-01-01", tz='GMT'), -0.5, as.POSIXct("2013-10-01 11:48:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
+rect(as.POSIXct("2013-10-01 17:52:00", origin="1970-01-01", tz='GMT'), -0.5, as.POSIXct("2013-10-01 22:45:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
+rect(as.POSIXct("2013-10-02 06:12:00", origin="1970-01-01", tz='GMT'), -0.5, as.POSIXct("2013-10-02 12:23:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
+rect(as.POSIXct("2013-10-02 18:37:00", origin="1970-01-01", tz='GMT'), -0.5, as.POSIXct("2013-10-03 00:32:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
 
 
 
@@ -859,10 +863,10 @@ rect(as.POSIXct("2013-10-02 18:37:00", origin="1970-01-01", tz='GMT'), 0.0000000
 #####################################
 
 par(mai=c(1,1.5,1,1))
-plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
+plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7, xlim=c(as.POSIXct("2013-09-10 16:50:00", origin="1970-01-01", tz='GMT'), as.POSIXct("2013-10-03 24:00:00", origin="1970-01-01", tz='GMT')))
 #ylim=c(0,20)
 par(new=T)
-plot(pre.crypto2$time, pre.crypto2$abundance, lwd=2, pch=16, xlab="", ylab="", cex.lab=2,  axes=F, cex=.6, col="darkred", ylim=c(0,1))
+plot(pre.crypto2$time, pre.crypto2$abundance, lwd=2, pch=16, xlab="", ylab="", cex.lab=2,  axes=F, cex=.6, col="darkred", ylim=c(0,1), xlim=c(as.POSIXct("2013-09-10 16:50:00", origin="1970-01-01", tz='GMT'), as.POSIXct("2013-10-03 24:00:00", origin="1970-01-01", tz='GMT')))
 axis(4)
 mtext("abundance (10^6 cells/L)", side=4, lin=3, cex=1.7)
 
@@ -1136,7 +1140,7 @@ axis.POSIXct(1, m$time2, at=seq(as.POSIXct("2014-09-22 20:00:00", origin="1970-0
 
 mtext(substitute(paste("division (h"^{-1},")")), side=2, line=5, cex=1.8)
 legend("topleft", c("cell cycle", "model"), lty=c(1,1), lwd=c(3,3), col=c("black", "darkgrey"), cex=1.2)
-
+mtext("A", side=3, cex=2, adj=0)
 
 
 plot(both$m.new, both$cc.new, pch=16, cex=1.5, ylab=NA, xlab=NA, las=1, cex.axis=1.5)
@@ -1146,9 +1150,10 @@ res5 <- lmodel2(both$cc.new~both$m.new, data=both, nperm=0, range.x="relative", 
 par(new=T)
 plot(res5, "MA", ylab="", xlab="", main="", col="black", axes=F)
 text(0.018,0.04, substitute(paste("R"^{2}, "=0.597")), cex=2)
+mtext("B", side=3, cex=2, adj=0)
 
-tiff(filename="/Users/francois/CMOP/manuscript/third_draft_figures/cc_m")
-dev.off()
+#tiff(filename="/Users/francois/CMOP/manuscript/third_draft_figures/cc_m")
+#dev.off()
 
 
 

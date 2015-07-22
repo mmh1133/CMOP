@@ -279,3 +279,39 @@ output <- merge.model.output(filelist, plot.raw=F)
 
 plot.parameters(output)
 
+merged.estimates <- output
+
+
+
+## plot parameters function breakdown ##
+ jet.colors <- colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000"))
+
+        volbins <- unique(as.numeric(row.names(merged.estimates$Vproj)))
+        para <- merged.estimates$estimates
+        h2.time <- para$h.time
+        cat <- length(volbins)
+        del <- matrix(nrow=length(h2.time), ncol=cat)
+        
+        for(i in 1:cat)  del[,i] <- para$h2.dmax.mean * (volbins[i]/max(volbins))^para$h2.b.mean/ (1 + (volbins[i]/max(volbins))^para$h2.b.mean)
+
+            
+        quartz("Quartz", width=10, height=10)
+      par(mfrow=c(2,1),mar=c(4,4,1,4)+1, las=1)
+        plot(volbins, del[1,], ylim=c(0,max(del, na.rm=T)), type='l', col="#00007F", lwd=2, xlab="Cell volume", ylab=paste("Delta (per",10,"min)"), cex.lab=1.5)
+                for(i in 2:nrow(del))   points(volbins, del[i,], type='l', col=jet.colors(nrow(del))[cut(as.numeric(h2.time),nrow(del))][i], lwd=2)
+            ylim <- par('usr')[c(3,4)]
+            xlim <- par('usr')[c(1,2)]
+            color.legend(xlim[2]- diff(xlim)/40 , ylim[1], xlim[2], ylim[2], legend=format(as.POSIXct(range(h2.time, na.rm=T),origin="1970-01-01"),"%d %b"), rect.col=jet.colors(100), gradient='y',align='rb')
+            mtext("A", side=3, cex=2, adj=0)
+
+         max <- max(para$h2.gmax.mean*(1-exp(-1000)/para$h2.E_star.mean), na.rm=T)
+        plot(seq(0,1000,by=10),para$h2.gmax.mean[1]*(1-exp(-seq(0,1000,by=10)/para$h2.E_star.mean[1])), ylim=c(0,max),type='l', col="#00007F", lwd=2, xlab="Light Intensity", cex.lab=1.5, ylab=paste("Gamma (per",10,"min)"))
+                for(i in 1:length(h2.time)) points(seq(0,1000,by=10),para$h2.gmax.mean[i]*(1-exp(-seq(0,1000,by=10)/para$h2.E_star.mean[i])),type='l',col=jet.colors(nrow(del))[cut(as.numeric(h2.time),length(h2.time))][i],lwd=2)
+                    ylim <- par('usr')[c(3,4)]
+                    xlim <- par('usr')[c(1,2)]
+            color.legend(xlim[2]- diff(xlim)/40 , ylim[1], xlim[2], ylim[2], legend=format(as.POSIXct(range(h2.time, na.rm=T),origin="1970-01-01"),"%d %b"), rect.col=jet.colors(100), gradient='y',align='rb')
+            mtext("B", side=3, cex=2, adj=0)
+
+
+png(filename="/Users/francois/CMOP/manuscript/third_draft_figures/parameters.png")
+dev.off()
