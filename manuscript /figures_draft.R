@@ -370,8 +370,8 @@ mtext(substitute(paste("phosphate (", mu, "M)")),side=4, line=3, cex=1.2)
 legend("topright", c("nitrate", "ammonium", "phosphate"), pch=c(16, 0, 4), cex=1.5)
 mtext("C", side=3, cex=2, adj=0)
 
-#png(filename="/Users/francois/CMOP/manuscript/third_draft_figures/aux_TC")
-#dev.off()
+png(filename="/Users/francois/CMOP/manuscript/third_draft_figures/aux_TC_new.png")
+dev.off()
 
 
 # full TC #
@@ -993,7 +993,7 @@ mtext("B", side=3, cex=2, adj=0)
 
 #ammonium
 # par(mai=c(1,1,1,7))
-plot(cmop$a, cmop$dm, pch=16, xlab="ammonia", ylab="mean daily division rate", cex.lab=1.7, cex=1.5)
+plot(cmop$a, cmop$dm, pch=16, xlab="ammonium", ylab="mean daily division rate", cex.lab=1.7, cex=1.5)
 #res3=lm(cmop$dm~cmop$a)
 res3 <- lmodel2(cmop$dm~cmop$a, data=cmop, nperm=0, range.x="relative", range.y="relative")
 par(new=T)
