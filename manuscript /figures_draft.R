@@ -87,6 +87,13 @@ crypto.week3.ss2<- crypto.week3.ss[complete.cases(crypto.week3.ss[,11]),]
 crypto.week4.ss <- crypto.week4
 crypto.week4.ss2<- crypto.week4.ss[complete.cases(crypto.week4.ss[,11]),]
 
+# finding weekly means #
+abund.week1.mean <- mean(crypto.week1$abundance, na.rm=T)
+abund.week2.mean <- mean(crypto.week2$abundance, na.rm=T)
+abund.week3.mean <- mean(crypto.week3$abundance, na.rm=T)
+abund.week4.mean <- mean(crypto.week4$abundance, na.rm=T)
+
+
 
 #### setting up salinity #### 
 
@@ -602,7 +609,7 @@ par(mfrow=c(4,1), mar=c(2,8,2.5,2)+0.8, pty="m")
 
 #week 1 log scale
 #par(mai=c(1,1.5,1,1))
-plot(crypto.week1$time, crypto.week1$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab= "", cex.lab=1.5, log="y", col="darkgrey", las=1, cex.axis=1.2)
+plot(crypto.week1$time, crypto.week1$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab= "", cex.lab=1.5, log="y", col="darkgrey", las=1, cex.axis=1.2, ylim=c(0.0005, 40))
 points(smooth.spline(crypto.week1.ss2$time, crypto.week1.ss2$abundance, spar=0.5), lwd=2, col="black", pch=16, xlab="", ylab="", axes=F, cex=0.75)
 axis.POSIXct(1, crypto.week1$time, at=seq(min(crypto.week1$time, na.rm=T), max(crypto.week1$time, na.rm=T), by=60*60*6), format="%m-%d %H:%M", cex.axis=1.5)
 mtext("A", side=3, cex=2, line=0, adj=0)
@@ -652,7 +659,7 @@ rect(as.POSIXct("2013-09-13 14:05:00", origin="1970-01-01", tz='GMT'), 0.0000000
 
 #week 2 log scale
 #par(mai=c(1,1.5,1,1))
-plot(crypto.week2$time, crypto.week2$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="", cex.lab=1.5, log="y", col="darkgrey", las=1, cex.axis=1.2)
+plot(crypto.week2$time, crypto.week2$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="", cex.lab=1.5, log="y", col="darkgrey", las=1, cex.axis=1.2, ylim=c(0.0005, 40))
 points(smooth.spline(crypto.week2.ss2$time, crypto.week2.ss2$abundance, spar=0.5), lwd=2, col="black", pch=16, xlab="", ylab="", axes=F, cex=0.75)
 axis.POSIXct(1, crypto.week2$time, at=seq(as.POSIXct("2013-09-16 20:00:00", origin="1970-01-01", tz='GMT'), max(crypto.week2$time, na.rm=T), by=60*60*6), format="%m-%d %H:%M", cex.axis=1.5)
 mtext("B", side=3, cex=2, adj=0)
@@ -688,7 +695,7 @@ rect(as.POSIXct("2013-09-19 20:16:00", origin="1970-01-01", tz='GMT'), 0.0000000
 
 #week 3 log scale
 #par(mai=c(1,1.5,1,1))
-plot(crypto.week3$time, crypto.week3$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="", cex.lab=1.5, ylog=T, log="y", col="darkgrey", las=1, cex.axis=1.2)
+plot(crypto.week3$time, crypto.week3$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="", cex.lab=1.5, ylog=T, log="y", col="darkgrey", las=1, cex.axis=1.2, ylim=c(0.0005, 40))
 points(smooth.spline(crypto.week3.ss2$time, crypto.week3.ss2$abundance, spar=0.5), lwd=2, col="black", pch=16, xlab="", ylab="", axes=F, cex=0.75)
 axis.POSIXct(1, crypto.week3$time, at=seq(min(crypto.week3$time, na.rm=T), max(crypto.week3$time, na.rm=T), by=60*60*6), format="%m-%d %H:%M", cex.axis=1.5)
 mtext("C", side=3, cex=2, adj=0)
@@ -722,7 +729,7 @@ rect(as.POSIXct("2013-09-27 01:45:00", origin="1970-01-01", tz='GMT'), 0.0000000
 
 #week 4 log scale
 #par(mai=c(1,1.5,1,1))
-plot(crypto.week4$time, crypto.week4$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="", cex.lab=1.5, ylog=T, log="y", col="darkgrey", las=1, cex.axis=1.2)
+plot(crypto.week4$time, crypto.week4$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="", cex.lab=1.5, ylog=T, log="y", col="darkgrey", las=1, cex.axis=1.2, ylim=c(0.0005, 40))
 points(smooth.spline(crypto.week4.ss2$time, crypto.week4.ss2$abundance, spar=0.5), lwd=2, col="black", pch=16, xlab="", ylab="", axes=F, cex=0.75)
 axis.POSIXct(1, crypto.week4$time, at=seq(as.POSIXct("2013-09-30 18:50:00", origin="1970-01-01", tz='GMT'), max(crypto.week4$time, na.rm=T), by=60*60*6), format="%m-%d %H:%M", cex.axis=1.5)
 mtext("D", side=3, cex=2, adj=0)
