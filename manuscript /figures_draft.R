@@ -331,7 +331,7 @@ tx$time2 <- as.POSIXct(strptime(tx$time, "%m/%d/%Y %H:%M:%S"), tz="GMT")
 ########################
 #### aux data plots ####
 ########################
-
+#png(filename="/Users/francois/CMOP/manuscript/third_draft_figures/aux_TC_new.png")
 par(mfrow=c(3,1), mar=c(2,9,2.5,8)+0.8, pty="m")
 
 # TS #
@@ -377,7 +377,7 @@ mtext(substitute(paste("phosphate (", mu, "M)")),side=4, line=3, cex=1.2)
 legend("topright", c("nitrate", "ammonium", "phosphate"), pch=c(16, 0, 4), cex=1.5)
 mtext("C", side=3, cex=2, adj=0)
 
-png(filename="/Users/francois/CMOP/manuscript/third_draft_figures/aux_TC_new.png")
+#png(filename="/Users/francois/CMOP/manuscript/third_draft_figures/aux_TC_new.png")
 dev.off()
 
 
