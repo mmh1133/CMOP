@@ -94,6 +94,57 @@ abund.week3.mean <- mean(crypto.week3$abundance, na.rm=T)
 abund.week4.mean <- mean(crypto.week4$abundance, na.rm=T)
 
 
+# daily averages for abundance #
+day1.crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-11 00:00:00") & time < as.POSIXct("2013-09-12 00:00:00"))
+day2.crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-12 00:00:00") & time < as.POSIXct("2013-09-13 00:00:00"))
+day3.crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-13 00:00:00") & time < as.POSIXct("2013-09-14 00:00:00"))
+day4.crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-14 00:00:00") & time < as.POSIXct("2013-09-15 00:00:00"))
+day5.crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-15 00:00:00") & time < as.POSIXct("2013-09-16 00:00:00"))
+day6.crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-16 00:00:00") & time < as.POSIXct("2013-09-17 00:00:00"))
+day7.crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-17 00:00:00") & time < as.POSIXct("2013-09-18 00:00:00"))
+day8.crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-18 00:00:00") & time < as.POSIXct("2013-09-19 00:00:00"))
+day9.crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-19 00:00:00") & time < as.POSIXct("2013-09-20 00:00:00"))
+day10.crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-20 00:00:00") & time < as.POSIXct("2013-09-21 00:00:00"))
+day11.crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-21 00:00:00") & time < as.POSIXct("2013-09-22 00:00:00"))
+day12.crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-22 00:00:00") & time < as.POSIXct("2013-09-23 00:00:00"))
+day13.crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-23 00:00:00") & time < as.POSIXct("2013-09-24 00:00:00"))
+day14.crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-24 00:00:00") & time < as.POSIXct("2013-09-25 00:00:00"))
+day15.crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-25 00:00:00") & time < as.POSIXct("2013-09-26 00:00:00"))
+day16.crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-26 00:00:00") & time < as.POSIXct("2013-09-27 00:00:00"))
+day17.crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-27 00:00:00") & time < as.POSIXct("2013-09-28 00:00:00"))
+day18.crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-28 00:00:00") & time < as.POSIXct("2013-09-29 00:00:00"))
+day19.crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-29 00:00:00") & time < as.POSIXct("2013-09-30 00:00:00"))
+day20.crypto <- subset(pre.crypto2, time > as.POSIXct("2013-09-30 00:00:00") & time < as.POSIXct("2013-10-01 00:00:00"))
+day21.crypto <- subset(pre.crypto2, time > as.POSIXct("2013-10-01 00:00:00") & time < as.POSIXct("2013-10-02 00:00:00"))
+day22.crypto <- subset(pre.crypto2, time > as.POSIXct("2013-10-02 00:00:00") & time < as.POSIXct("2013-10-03 00:00:00"))
+day23.crypto <- subset(pre.crypto2, time > as.POSIXct("2013-10-03 00:00:00") & time < as.POSIXct("2013-10-04 00:00:00"))
+
+d1m.crypto <- mean(day1.crypto$abundance, na.rm=T)
+d2m.crypto <- mean(day2.crypto$abundance, na.rm=T)
+d3m.crypto <- mean(day3.crypto$abundance, na.rm=T)
+d4m.crypto <- mean(day4.crypto$abundance, na.rm=T)
+d5m.crypto <- mean(day5.crypto$abundance, na.rm=T)  #NA
+d6m.crypto <- mean(day6.crypto$abundance, na.rm=T)  #NA
+d7m.crypto <- mean(day7.crypto$abundance, na.rm=T)
+d8m.crypto <- mean(day8.crypto$abundance, na.rm=T)
+d9m.crypto <- mean(day9.crypto$abundance, na.rm=T)
+d10m.crypto <- mean(day10.crypto$abundance, na.rm=T) #NA
+d11m.crypto <- mean(day11.crypto$abundance, na.rm=T) #NA
+d12m.crypto <- mean(day12.crypto$abundance, na.rm=T) #NA
+d13m.crypto <- mean(day13.crypto$abundance, na.rm=T)
+d14m.crypto <- mean(day14.crypto$abundance, na.rm=T)  
+d15m.crypto <- mean(day15.crypto$abundance, na.rm=T)  
+d16m.crypto <- mean(day16.crypto$abundance, na.rm=T)
+d17m.crypto <- mean(day17.crypto$abundance, na.rm=T)
+d18m.crypto <- mean(day18.crypto$abundance, na.rm=T) #NA
+d19m.crypto <- mean(day19.crypto$abundance, na.rm=T) #NA
+d20m.crypto <- mean(day20.crypto$abundance, na.rm=T) #NA
+d21m.crypto <- mean(day21.crypto$abundance, na.rm=T)
+d22m.crypto <- mean(day22.crypto$abundance, na.rm=T)
+d23m.crypto <- mean(day23.crypto$abundance, na.rm=T) #NA
+
+abundance <- c(d1m.crypto, d2m.crypto, d3m.crypto, d7m.crypto, d8m.crypto, d9m.crypto, d13m.crypto, d14m.crypto, d15m.crypto, d16m.crypto, d17m.crypto, d21m.crypto, d22m.crypto)
+
 
 #### setting up salinity #### 
 
@@ -312,6 +363,18 @@ meso$time2 <- as.POSIXct(strptime(meso$datetime, "%m/%d/%Y %H:%M:%S"), tz="GMT")
 meso2 <- subset(meso, time2 > as.POSIXct("2013-09-10 16:50:00") & time2 < as.POSIXct("2013-09-20 00:00:00"))
 meso3 <- subset(meso, time2 > as.POSIXct("2013-09-10 00:00:00") & time2 < as.POSIXct("2013-09-20 00:00:00"))
 
+pre.meso <- meso$particles_mL
+remove.meso <- c(3,6,12,15)
+meso <- pre.meso[-remove.meso]
+
+#making nut data compatable
+remove.meso2 <- c(1,8)
+n.meso <- n[-remove.meso2]
+ph.meso <- ph[-remove.meso2]
+a.meso <- a[-remove.meso2]
+par.meso <- par.cum[-remove.meso2]
+cmop.meso <- data.frame(meso, n.meso, ph.meso, a.meso, par.meso)
+
 
 #### TX qPCR data ####
 
@@ -319,6 +382,11 @@ pre.tx <- read.csv("/Users/francois/CMOP/pics_misc/tx_qPCR.csv")
 tx <- as.data.frame(pre.tx, row.names=NULL)
 tx$time2 <- as.POSIXct(strptime(tx$time, "%m/%d/%Y %H:%M:%S"), tz="GMT")
 
+
+### calculating production ###
+
+production <- dm*abundance
+cmop.pro <- data.frame(production, n, ph, a, par.cum)
 
 
 
@@ -1015,6 +1083,107 @@ res4 <- lmodel2(cmop$dm~cmop$par.cum, data=cmop, nperm=0, range.x="relative", ra
 par(new=T)
 plot(res4, "MA", ylab="", xlab="", main="", col="black")
 text(140,8, substitute(paste("R"^{2}, "=0.214")), cex=2)
+mtext("D", side=3, cex=2, adj=0)
+
+
+#substitute(paste("abundance 10"^{6}, " cells L"^{-1}))
+
+
+
+####################################
+#### nutrients vs. meso no time ####
+####################################
+
+
+quartz("Quartz", width=10, height=10)
+par(mfrow=c(2,2), mar=c(1,0.5,0.5,0.2)+3.7, pty="s", las=1, cex.axis=1.5)
+
+#nitrate
+#par(mai=c(1,1,1,7))
+plot(cmop.meso$n.meso, cmop.meso$meso, pch=16, xlab="nitrate", ylab="M. major abundance", cex.lab=1.7, cex=1.5)
+#res1=lm(cmop$dm~cmop$n)
+res1 <- lmodel2(cmop.meso$meso~cmop.meso$n.meso, data=cmop.meso, nperm=0, range.x="relative", range.y="relative")
+par(new=T)
+plot(res1, "MA", ylab="", xlab="", main="", col="black")
+text(5.5,300, substitute(paste("R"^{2}, "=0.017")), cex=2)
+mtext("A", side=3, cex=2, adj=0)
+
+#phosphate
+# par(mai=c(1,1,1,7))
+plot(cmop.meso$ph.meso, cmop.meso$meso, pch=16, xlab="phosphate", ylab="", cex.lab=1.7, cex=1.5)
+#res2=lm(cmop$dm~cmop$ph)
+res2 <- lmodel2(cmop.meso$meso~cmop.meso$ph.meso, data=cmop.meso, nperm=0, range.x="relative", range.y="relative")
+par(new=T)
+plot(res2, "MA", ylab="", xlab="", main="", col="black")
+text(0.55,300, substitute(paste("R"^{2}, "=0.068")), cex=2)
+mtext("B", side=3, cex=2, adj=0)
+
+#ammonium
+# par(mai=c(1,1,1,7))
+plot(cmop.meso$a.meso, cmop.meso$meso, pch=16, xlab="ammonium", ylab="M. major abundance", cex.lab=1.7, cex=1.5)
+#res3=lm(cmop$dm~cmop$a)
+res3 <- lmodel2(cmop.meso$meso~cmop.meso$a.meso, data=cmop.meso, nperm=0, range.x="relative", range.y="relative")
+par(new=T)
+plot(res3, "MA", ylab="", xlab="", main="", col="black")
+text(11,300, substitute(paste("R"^{2}, "=0.081")), cex=2)
+mtext("C", side=3, cex=2, adj=0)
+
+#par(mai=c(1,1,1,7))
+plot(cmop.meso$par.meso, cmop.meso$meso, pch=16, xlab="PAR", ylab="", cex.lab=1.7, cex=1.5)
+#res4=lm(cmop$dm~cmop$par.cum)
+res4 <- lmodel2(cmop.meso$meso~cmop.meso$par.meso, data=cmop.meso, nperm=0, range.x="relative", range.y="relative")
+par(new=T)
+plot(res4, "MA", ylab="", xlab="", main="", col="black")
+text(70,300, substitute(paste("R"^{2}, "=0.196")), cex=2)
+mtext("D", side=3, cex=2, adj=0)
+
+
+
+
+##########################################
+#### nutrients vs. production no time ####
+##########################################
+
+quartz("Quartz", width=10, height=10)
+par(mfrow=c(2,2), mar=c(1,0.5,0.5,0.2)+3.7, pty="s", las=1, cex.axis=1.5)
+
+#nitrate
+#par(mai=c(1,1,1,7))
+plot(cmop.pro$n, cmop.pro$production, pch=16, xlab="nitrate", ylab="production", cex.lab=1.7, cex=1.5)
+#res1=lm(cmop$dm~cmop$n)
+res1 <- lmodel2(cmop.pro$production~cmop.pro$n, data=cmop.pro, nperm=0, range.x="relative", range.y="relative")
+par(new=T)
+plot(res1, "MA", ylab="", xlab="", main="", col="black")
+text(5.5,2.5, substitute(paste("R"^{2}, "=0.231")), cex=2)
+mtext("A", side=3, cex=2, adj=0)
+
+#phosphate
+# par(mai=c(1,1,1,7))
+plot(cmop.pro$ph, cmop.pro$production, pch=16, xlab="phosphate", ylab="", cex.lab=1.7, cex=1.5)
+#res2=lm(cmop$dm~cmop$ph)
+res2 <- lmodel2(cmop.pro$production~cmop.pro$ph, data=cmop.pro, nperm=0, range.x="relative", range.y="relative")
+par(new=T)
+plot(res2, "MA", ylab="", xlab="", main="", col="black")
+text(0.95,2.5, substitute(paste("R"^{2}, "=0.142")), cex=2)
+mtext("B", side=3, cex=2, adj=0)
+
+#ammonium
+# par(mai=c(1,1,1,7))
+plot(cmop.pro$a, cmop.pro$production, pch=16, xlab="ammonium", ylab="production", cex.lab=1.7, cex=1.5)
+#res3=lm(cmop$dm~cmop$a)
+res3 <- lmodel2(cmop.pro$production~cmop.pro$a, data=cmop.pro, nperm=0, range.x="relative", range.y="relative")
+par(new=T)
+plot(res3, "MA", ylab="", xlab="", main="", col="black")
+text(11,2.5, substitute(paste("R"^{2}, "=0.004")), cex=2)
+mtext("C", side=3, cex=2, adj=0)
+
+#par(mai=c(1,1,1,7))
+plot(cmop.pro$par.cum, cmop.pro$production, pch=16, xlab="PAR", ylab="", cex.lab=1.7, cex=1.5)
+#res4=lm(cmop$dm~cmop$par.cum)
+res4 <- lmodel2(cmop.pro$production~cmop.pro$par.cum, data=cmop.pro, nperm=0, range.x="relative", range.y="relative")
+par(new=T)
+plot(res4, "MA", ylab="", xlab="", main="", col="black")
+text(140,2.5, substitute(paste("R"^{2}, "=0.133")), cex=2)
 mtext("D", side=3, cex=2, adj=0)
 
 
