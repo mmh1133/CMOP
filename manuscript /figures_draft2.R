@@ -73,10 +73,6 @@ crypto.week2$daily.mean <- rollapply(data=crypto.week2$abundance, width=24, FUN=
 crypto.week3$daily.mean <- rollapply(data=crypto.week3$abundance, width=24, FUN=mean, na.rm=T, fill=NA)*24
 crypto.week4$daily.mean <- rollapply(data=crypto.week4$abundance, width=24, FUN=mean, na.rm=T, fill=NA)*24
 
-# roll mean standard deviation #
-#pre.crypto2$sd <- rollapply(data=pre.crypto2$abundance, width=24, FUN=sd, na.rm=T, fill=NA)*24
-#crypto.week1$sd <- rollapply(data=crypto.week1$abundance, width=24, FUN=sd, na.rm=T, fill=NA)*24
-
 # eliminating nas for smooth.spline #
 crypto.week1.ss <- crypto.week1
 crypto.week1.ss2<- crypto.week1.ss[complete.cases(crypto.week1.ss[,11]),]
@@ -457,9 +453,21 @@ cmop.pro <- data.frame(production, n, ph, a, par.cum, production.se, tn)
 
 
 
-########################
-#### aux data plots ####
-########################
+##################################################################
+##################################################################
+#####  												         #####
+#####                  actual plotting time!                 #####
+#####														 #####
+##################################################################
+##################################################################
+
+
+
+
+################################
+#### FIG 2 - aux data plots ####
+################################
+
 png(filename="/Users/francois/CMOP/manuscript/third_draft_figures/aux_TC_new.png")
 par(mfrow=c(3,1), mar=c(2,11,2.5,9)+0.8, pty="m")
 
@@ -510,231 +518,15 @@ mtext("C", side=3, cex=2, adj=0)
 dev.off()
 
 
-# full TC #
-# par(mar=c(5,12,4,12))
-# plot(sal$time, sal$water_salinity, lwd=2, pch=16, xlab="", ylab="salinity (psu?)", cex.lab=1, type="n")
-# points(smooth.spline(as.POSIXct(sal$time, origin="1970-01-01", tz='GMT'), sal$water_salinity, spar=0.5), lwd=2, col="cyan4", pch=16, xlab="", ylab="", axes=F)
-# par(new=T)
-# plot(sal$time, sal$water_temperature, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=1,  axes=F, col="lightblue", type="n")
-# points(smooth.spline(as.POSIXct(sal$time, origin="1970-01-01", tz='GMT'), sal$water_temperature, spar=0.5 ), lwd=2, pch=16, cex=1, xlab="", ylab="", axes=F, col="lightblue")
-# axis(2, line=4.5)
-# mtext(2, text="water temperature (degrees C)", line=6.5, col="lightblue")
-# par(new=T)
-# plot(pre.flu2$time2, pre.flu$Nitrate, lwd=2, pch=16, cex=1.5, xlab="", ylab="", axes=F, col="red")
-# axis(4)
-# mtext(4, text="nitrate (uM)", line=2, col="red")
-# par(new=T)
-# plot(Par2$time, Par2$par, lwd=2, pch=16, cex=1, xlab="", ylab="", axes=F, col="orange", type="l")
-# axis(4, line=3.5)
-# mtext(4, text="PAR", line=5.5, col="orange")
 
-#smooth spline
-# par(mar=c(5,12,4,12))
-# plot(sal$time, sal$water_salinity, lwd=2, pch=16, xlab="", ylab="salinity (psu?)", cex.lab=1, type="n")
-# points(smooth.spline(as.POSIXct(sal$time, origin="1970-01-01", tz='GMT'), sal$water_salinity, spar=0.5), lwd=2, col="cyan4", pch=16, xlab="", ylab="", axes=F)
-# par(new=T)
-# plot(sal$time, sal$water_temperature, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=1,  axes=F, col="lightblue", type="n")
-# points(smooth.spline(as.POSIXct(sal$time, origin="1970-01-01", tz='GMT'), sal$water_temperature, spar=0.5 ), lwd=2, pch=16, cex=1, xlab="", ylab="", axes=F, col="lightblue")
-# axis(2, line=4.5)
-# mtext(2, text="water temperature (degrees C)", line=6.5, col="lightblue")
-# par(new=T)
-# plot(pre.flu2$time2, pre.flu$Nitrate, lwd=2, pch=16, cex=1.5, xlab="", ylab="", axes=F, col="red")
-# axis(4)
-# mtext(4, text="nitrate (uM)", line=2, col="red")
-# par(new=T)
-# #plot(Par2$time, Par2$par, lwd=2, pch=16, cex=1, xlab="", ylab="", axes=F, col="orange", type="n")
-# smooth <- smooth.spline(as.POSIXct(Par2$time, origin="1970-01-01", tz='GMT'), Par2$par, spar=0.2 )
-# id <- which(smooth$y < 0)
-# smooth$y[id] <- 0
-# plot(smooth$x, smooth$y, lwd=2, pch=16, cex=1, xlab="", ylab="", axes=F, col="orange")
-# axis(4, line=3.5)
-# mtext(4, text="PAR", line=5.5, col="orange")
+###################################
+#### FIG 3 - weekly abundances ####
+###################################
 
-
-#max par
-# par(mar=c(5,12,4,12))
-# plot(sal$time, sal$water_salinity, lwd=2, pch=16, xlab="", ylab="salinity (psu?)", cex.lab=1, type="n")
-# points(smooth.spline(as.POSIXct(sal$time, origin="1970-01-01", tz='GMT'), sal$water_salinity, spar=0.5), lwd=2, col="cyan4", pch=16, xlab="", ylab="", axes=F)
-# par(new=T)
-# plot(sal$time, sal$water_temperature, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=1,  axes=F, col="lightblue", type="n")
-# points(smooth.spline(as.POSIXct(sal$time, origin="1970-01-01", tz='GMT'), sal$water_temperature, spar=0.5 ), lwd=2, pch=16, cex=1, xlab="", ylab="", axes=F, col="lightblue")
-# axis(2, line=4.5)
-# mtext(2, text="water temperature (degrees C)", line=6.5, col="lightblue")
-# par(new=T)
-# plot(pre.flu2$time2, pre.flu$Nitrate, lwd=2, pch=16, cex=1.5, xlab="", ylab="", axes=F, col="red")
-# axis(4)
-# mtext(4, text="nitrate (uM)", line=2, col="red")
-# par(new=T)
-# plot(Par.all$time, Par.all$par.max, lwd=2, pch=16, cex=1.5, xlab="", ylab="", axes=F, col="orange")
-# axis(4, line=3.5)
-# mtext(4, text="PAR", line=5.5, col="orange")
-
-
-# # par(mar=c(5,12,4,12))
-# plot(sal$time, sal$water_salinity, lwd=2, pch=16, xlab="", ylab="salinity (psu?)", cex.lab=1, type="n")
-# points(smooth.spline(as.POSIXct(sal$time, origin="1970-01-01", tz='GMT'), sal$water_salinity, spar=0.5), lwd=2, col="cyan4", pch=16, xlab="", ylab="", axes=F)
-# par(new=T)
-# plot(sal$time, sal$water_temperature, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=1,  axes=F, col="lightblue", type="n")
-# points(smooth.spline(as.POSIXct(sal$time, origin="1970-01-01", tz='GMT'), sal$water_temperature, spar=0.5 ), lwd=2, pch=16, cex=1, xlab="", ylab="", axes=F, col="lightblue")
-# axis(2, line=4.5)
-# mtext(2, text="water temperature (degrees C)", line=6.5, col="lightblue")
-# par(new=T)
-# plot(pre.flu2$time2, pre.flu$Nitrate, lwd=2, pch=16, cex=1, xlab="", ylab="", axes=F, col="red")
-# axis(4)
-# mtext(4, text="nitrate (uM)", line=2, col="red")
-# par(new=T)
-# plot(Par2$time, Par2$par, lwd=2, pch=16, cex=1, xlab="", ylab="", axes=F, col="orange", type="n")
-# points(smooth.spline(as.POSIXct(Par2$time, origin="1970-01-01", tz='GMT'), Par2$par, spar=0.5), lwd=2, pch=16, cex=1, xlab="", ylab="", axes=F, col="orange")
-# axis(4, line=3.5)
-# mtext(4, text="max PAR", line=5.5, col="orange")
-
-
-# week 1 #
-# par(mar=c(5,12,4,12))
-# plot(sal.w1$time, sal.w1$water_salinity, lwd=2, pch=16, xlab="", ylab="salinity (psu?)", cex.lab=1, type="n", xaxt="n")
-# axis.POSIXct(1, sal.w1$time, format="%D")
-# points(smooth.spline(as.POSIXct(sal.w1$time, origin="1970-01-01", tz='GMT'), sal.w1$water_salinity, spar=0.5), lwd=2, col="cyan4", pch=16, xlab="", ylab="", axes=F)
-# par(new=T)
-# plot(sal.w1$time, sal.w1$water_temperature, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=1,  axes=F, col="lightblue", type="n")
-# points(smooth.spline(as.POSIXct(sal.w1$time, origin="1970-01-01", tz='GMT'), sal.w1$water_temperature, spar=0.5 ), lwd=2, pch=16, cex=1, xlab="", ylab="", axes=F, col="lightblue")
-# axis(2, line=4.5)
-# mtext(2, text="water temperature (degrees C)", line=6.5, col="lightblue")
-# par(new=T)
-# plot(flu.w1$time2, flu.w1$Nitrate, lwd=2, pch=16, cex=1.5, xlab="", ylab="", axes=F, col="red")
-# axis(4)
-# mtext(4, text="nitrate (uM)", line=2, col="red")
-# par(new=T)
-# plot(Par.w1$time, Par.w1$par.max, lwd=2, pch=16, cex=1.5, xlab="", ylab="", axes=F, col="orange")
-# axis(4, line=3.5)
-# mtext(4, text="max PAR", line=5.5, col="orange")
-
-
-week 2 #
-# par(mar=c(5,12,4,12))
-# plot(sal.w2$time, sal.w2$water_salinity, lwd=2, pch=16, xlab="", ylab="salinity (psu?)", cex.lab=1, type="n", xaxt="n")
-# axis.POSIXct(1, sal.w2$time, format="%D")
-# points(smooth.spline(as.POSIXct(sal.w2$time, origin="1970-01-01", tz='GMT'), sal.w2$water_salinity, spar=0.5), lwd=2, col="cyan4", pch=16, xlab="", ylab="", axes=F)
-# par(new=T)
-# plot(sal.w2$time, sal.w2$water_temperature, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=1,  axes=F, col="lightblue", type="n")
-# points(smooth.spline(as.POSIXct(sal.w2$time, origin="1970-01-01", tz='GMT'), sal.w2$water_temperature, spar=0.5 ), lwd=2, pch=16, cex=1, xlab="", ylab="", axes=F, col="lightblue")
-# axis(2, line=4.5)
-# mtext(2, text="water temperature (degrees C)", line=6.5, col="lightblue")
-# par(new=T)
-# plot(flu.w2$time2, flu.w2$Nitrate, lwd=2, pch=16, cex=1.5, xlab="", ylab="", axes=F, col="red")
-# axis(4)
-# mtext(4, text="nitrate (uM)", line=2, col="red")
-# par(new=T)
-# plot(Par.w2$time, Par.w2$par.max, lwd=2, pch=16, cex=1.5, xlab="", ylab="", axes=F, col="orange")
-# axis(4, line=3.5)
-# mtext(4, text="max PAR", line=5.5, col="orange")
-
-# rect(as.POSIXct("2013-09-16 17:43:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-16 23:36:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
-# rect(as.POSIXct("2013-09-17 06:22:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-17 12:32:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
-# rect(as.POSIXct("2013-09-17 18:38:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-18 00:32:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
-# rect(as.POSIXct("2013-09-18 07:06:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-18 13:13:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
-# rect(as.POSIXct("2013-09-18 19:29:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-19 01:23:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
-# rect(as.POSIXct("2013-09-19 07:48:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-19 13:52:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
-# rect(as.POSIXct("2013-09-19 20:16:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-20 02:12:00", origin="1970-01-01", tz='GMT'), 49.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
-
-
-
-
-# week 3 #
-# par(mar=c(5,12,4,12))
-# plot(sal.w3$time, sal.w3$water_salinity, lwd=2, pch=16, xlab="", ylab="salinity (psu?)", cex.lab=1, type="n", xaxt="n")
-# axis.POSIXct(1, sal.w3$time, format="%D")
-# points(smooth.spline(as.POSIXct(sal.w3$time, origin="1970-01-01", tz='GMT'), sal.w3$water_salinity, spar=0.5), lwd=2, col="cyan4", pch=16, xlab="", ylab="", axes=F)
-# par(new=T)
-# plot(sal.w3$time, sal.w3$water_temperature, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=1,  axes=F, col="lightblue", type="n")
-# points(smooth.spline(as.POSIXct(sal.w3$time, origin="1970-01-01", tz='GMT'), sal.w3$water_temperature, spar=0.5 ), lwd=2, pch=16, cex=1, xlab="", ylab="", axes=F, col="lightblue")
-# axis(2, line=4.5)
-# mtext(2, text="water temperature (degrees C)", line=6.5, col="lightblue")
-# par(new=T)
-# plot(flu.w3$time2, flu.w3$Nitrate, lwd=2, pch=16, cex=1.5, xlab="", ylab="", axes=F, col="red")
-# axis(4)
-# mtext(4, text="nitrate (uM)", line=2, col="red")
-# par(new=T)
-# plot(Par.w3$time, Par.w3$par.max, lwd=2, pch=16, cex=1.5, xlab="", ylab="", axes=F, col="orange")
-# axis(4, line=3.5)
-# mtext(4, text="max PAR", line=5.5, col="orange")
-
-
-# week 4 #
-# par(mar=c(5,12,4,12))
-# plot(sal.w4$time, sal.w4$water_salinity, lwd=2, pch=16, xlab="", ylab="salinity (psu?)", cex.lab=1, type="n", xaxt="n")
-# axis.POSIXct(1, sal.w4$time, format="%D")
-# points(smooth.spline(as.POSIXct(sal.w4$time, origin="1970-01-01", tz='GMT'), sal.w4$water_salinity, spar=0.5), lwd=2, col="cyan4", pch=16, xlab="", ylab="", axes=F)
-# par(new=T)
-# plot(sal.w4$time, sal.w4$water_temperature, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=1,  axes=F, col="lightblue", type="n")
-# points(smooth.spline(as.POSIXct(sal.w4$time, origin="1970-01-01", tz='GMT'), sal.w4$water_temperature, spar=0.5 ), lwd=2, pch=16, cex=1, xlab="", ylab="", axes=F, col="lightblue")
-# axis(2, line=4.5)
-# mtext(2, text="water temperature (degrees C)", line=6.5, col="lightblue")
-# par(new=T)
-# plot(flu.w4$time2, flu.w4$Nitrate, lwd=2, pch=16, cex=1.5, xlab="", ylab="", axes=F, col="red")
-# axis(4)
-# mtext(4, text="nitrate (uM)", line=2, col="red")
-# par(new=T)
-# plot(Par.w4$time, Par.w4$par.max, lwd=2, pch=16, cex=1.5, xlab="", ylab="", axes=F, col="orange")
-# axis(4, line=3.5)
-# mtext(4, text="max PAR", line=5.5, col="orange")
-
-
-
-
-########################
-#### abundance plot ####
-########################
-
-#full TC 
-par(mai=c(1,1.5,1,1))
-plot(pre.crypto2$time, pre.crypto2$abundance, lwd=2, pch=16, xlab="", ylab="abundance (10^6 cells/L)", cex.lab=2)
-
-#full TC- log scale
-par(mai=c(1,1.5,1,1))
-plot(pre.crypto2$time, pre.crypto2$abundance, lwd=2, pch=16, xlab="", ylab="abundance (10^6 cells/L)- log scale", cex.lab=2, ylog=T, log="y")
-
-#gap.plot(pre.crypto2$time, pre.crypto2$abundance, gap = c(5,17), lwd=2, pch=16, xlab="time", ylab="abundance (10^6 cells/L)", ylim=c(0,20))
-
-#full TC- daily mean log scale
-par(mai=c(1,1.5,1,1))
-plot(pre.crypto2$time, pre.crypto2$daily.mean, lwd=2, pch=16, xlab="", ylab="daily mean abundance (10^6 cells/L)- log scale", cex.lab=2, ylog=T, log="y")
-
-#full TC- daily mean
-par(mai=c(1,1.5,1,1))
-plot(pre.crypto2$time, pre.crypto2$daily.mean, lwd=2, pch=16, xlab="", ylab="daily mean abundance (10^6 cells/L)", cex.lab=2)
-
-#full TC- daily mean + sd
-par(mai=c(1,1.5,1,1))
-plotCI(pre.crypto2$time, pre.crypto2$daily.mean, uiw= pre.crypto2$sd, sfrac=0, pch=16, 	xlab="", ylab="mean daily abundance (10^6 cells/L)", cex.lab=1.7)
-
-
-################################
-#### one day abundance plot ####
-################################
-
-#plot(crypto$time, crypto$abundance, lwd=2, pch=16, xlab="", ylab="abundance (10^6 cells/L)", cex.lab=1.5)
-#points(smooth.spline(as.POSIXct(crypto$time, origin="1970-01-01", tz='GMT'), crypto$abundance, spar=0.5), lwd=2, pch=16, xlab="", ylab="", type="l", cex=5, axes=F)
-
-###########################
-#### weekly abundances ####
-###########################
-
-#week 1
-# par(mai=c(1,1.5,1,1))
-# plot(crypto.week1$time, crypto.week1$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="abundance (10^6 cells/L)", cex.lab=2, ylim=c(-25,30))
-# axis.POSIXct(1, crypto.week1$time, at=seq(min(crypto.week1$time, na.rm=T), max(crypto.week1$time, na.rm=T), by=60*60*12), format="%c", cex=.5)
-
-# lines(crypto.week1.na$time, crypto.week1.na$abundance+crypto.week1$sd, lwd=1, col='grey')
-# lines(crypto.week1.na$time, crypto.week1.na$abundance-crypto.week1$sd, lwd=1, col='grey')
-
-#index <- which(diff(crypto.week1.na$time) > 182)
-#crypto.week1.na[index,'abundance'] <- NA
 
 quartz("Quartz", width=13, height=10)
 par(mfrow=c(4,1), mar=c(2,9.5,2.5,2)+0.8, pty="m")
 
-
-#substitute(paste("abundance 10"^{6}, " cells L"^{-1}))
 
 #week 1 log scale
 #par(mai=c(1,1.5,1,1))
@@ -744,9 +536,6 @@ axis.POSIXct(1, crypto.week1$time, at=seq(min(crypto.week1$time, na.rm=T), max(c
 mtext("A", side=3, cex=2, line=0, adj=0)
 mtext(substitute(paste("abundance 10"^{6}, " cells L"^{-1})), side=2, cex=2.5, outer=T, line=-4)
 
-#lines(crypto.week1.na$time, crypto.week1.na$abundance+crypto.week1$sd, lwd=1, col='grey')
-#lines(crypto.week1.na$time, crypto.week1.na$abundance-crypto.week1$sd, lwd=1, col='grey')
-
 
 rect(as.POSIXct("2013-09-10 23:51:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-11 06:13:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
 rect(as.POSIXct("2013-09-11 11:52:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-11 17:41:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
@@ -755,36 +544,6 @@ rect(as.POSIXct("2013-09-12 12:44:00", origin="1970-01-01", tz='GMT'), 0.0000000
 rect(as.POSIXct("2013-09-13 02:11:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-13 08:41:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
 rect(as.POSIXct("2013-09-13 14:05:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-13 19:58:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
 
-
-
-
-#week 1 daily mean
-# par(mai=c(1,1.5,1,1))
-# plot(crypto.week1$time, crypto.week1$daily.mean, xaxt="n", xlab="", lwd=2, pch=16, ylab="daily mean abundance (10^6 cells/L)", cex.lab=2, ylim=c(0, 150))
-# axis.POSIXct(1, crypto.week1$time, at=seq(min(crypto.week1$time, na.rm=T), max(crypto.week1$time, na.rm=T), by=60*60*12), format="%H")
-# lines(crypto.week1.na$time, crypto.week1.na$daily.mean+crypto.week1$sd, lwd=1, col='grey')
-# lines(crypto.week1.na$time, crypto.week1.na$daily.mean-crypto.week1$sd, lwd=1, col='grey')
-
-# index <- which(diff(crypto.week1.na$time) > 182)
-# crypto.week1.na[index,'daily.mean'] <- NA
-
-
-
-#week 1 daily mean log scale 
-# par(mai=c(1,1.5,1,1))
-# plot(crypto.week1$time, crypto.week1$daily.mean, xaxt="n", xlab="", lwd=2, pch=16, ylab="daily mean abundance (10^6 cells/L)- log scale", cex.lab=2, ylog=T, log="y")
-# axis.POSIXct(1, crypto.week1$time, format="%D")
-
-#week 1 sd
-# par(mai=c(1,1.5,1,1))
-# plotCI(crypto.week1$time, crypto.week1$daily.mean, uiw= crypto.week1$sd, sfrac=0, pch=16, 	xlab="", ylab="mean daily abundance (10^6 cells/L)", cex.lab=1.7, xaxt="n")
-# axis.POSIXct(1, crypto.week1$time, format="%D")
-
-
-#week 2
-# par(mai=c(1,1.5,1,1))
-# plot(crypto.week2$time, crypto.week2$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="abundance (10^6 cells/L)", cex.lab=2)
-# axis.POSIXct(1, crypto.week2$time, format="%D")
 
 #week 2 log scale
 #par(mai=c(1,1.5,1,1))
@@ -801,26 +560,6 @@ rect(as.POSIXct("2013-09-18 19:29:00", origin="1970-01-01", tz='GMT'), 0.0000000
 rect(as.POSIXct("2013-09-19 07:48:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-19 13:52:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
 rect(as.POSIXct("2013-09-19 20:16:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-20 02:12:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
 
-
-
-
-#week 2 daily mean
-# par(mai=c(1,1.5,1,1))
-# plot(crypto.week2$time, crypto.week2$daily.mean, xaxt="n", xlab="", lwd=2, pch=16, ylab="daily mean abundance (10^6 cells/L)", cex.lab=2)
-# axis.POSIXct(1, crypto.week2$time, format="%D")
-
-#week 2 daily mean log scale
-# par(mai=c(1,1.5,1,1))
-# plot(crypto.week2$time, crypto.week2$daily.mean, xaxt="n", xlab="", lwd=2, pch=16, ylab="daily mean abundance (10^6 cells/L)- log scale", cex.lab=2, ylog=T, log="y")
-# axis.POSIXct(1, crypto.week2$time, format="%D")
-
-
-
-
-#week 3
-# par(mai=c(1,1.5,1,1))
-# plot(crypto.week3$time, crypto.week3$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="abundance (10^6 cells/L)", cex.lab=2)
-# axis.POSIXct(1, crypto.week3$time, format="%D")
 
 #week 3 log scale
 #par(mai=c(1,1.5,1,1))
@@ -839,23 +578,6 @@ rect(as.POSIXct("2013-09-16 17:43:00", origin="1970-01-01", tz='GMT'), 0.0000000
 rect(as.POSIXct("2013-09-27 01:45:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-27 07:24:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.07), border=NA)
 
 
- 
- 
-#week 3 daily mean 
-# par(mai=c(1,1.5,1,1))
-# plot(crypto.week3$time, crypto.week3$daily.mean, xaxt="n", xlab="", lwd=2, pch=16, ylab="daily mean abundance (10^6 cells/L)", cex.lab=2)
-# axis.POSIXct(1, crypto.week3$time, format="%D")
-
-#week 3 daily mean log scale
-# par(mai=c(1,1.5,1,1))
-# plot(crypto.week3$time, crypto.week3$daily.mean, xaxt="n", xlab="", lwd=2, pch=16, ylab="daily mean abundance (10^6 cells/L)- log scale", cex.lab=2, ylog=T, log="y")
-# axis.POSIXct(1, crypto.week3$time, format="%D")
-
-#week 4
-# par(mai=c(1,1.5,1,1))
-# plot(crypto.week4$time, crypto.week4$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="abundance (10^6 cells/L)", cex.lab=2)
-# axis.POSIXct(1, crypto.week4$time, format="%D")
-
 #week 4 log scale
 #par(mai=c(1,1.5,1,1))
 plot(crypto.week4$time, crypto.week4$abundance, xaxt="n", xlab="", lwd=2, pch=16, ylab="", cex.lab=1.5, ylog=T, log="y", col="darkgrey", las=1, cex.axis=1.7, ylim=c(0.0005, 40))
@@ -871,65 +593,15 @@ rect(as.POSIXct("2013-10-02 18:37:00", origin="1970-01-01", tz='GMT'), 0.0000000
 
 
 
-#week 4 daily mean 
-# par(mai=c(1,1.5,1,1))
-# plot(crypto.week4$time, crypto.week4$daily.mean, xaxt="n", xlab="", lwd=2, pch=16, ylab="daily mean abundance (10^6 cells/L)", cex.lab=2)
-# axis.POSIXct(1, crypto.week4$time, format="%D")
-
-#week 4 daily mean log scale
-# par(mai=c(1,1.5,1,1))
-# plot(crypto.week4$time, crypto.week4$daily.mean, xaxt="n", xlab="", lwd=2, pch=16, ylab="daily mean abundance (10^6 cells/L)- log scale", cex.lab=2, ylog=T, log="y")
-# axis.POSIXct(1, crypto.week4$time, format="%D")
 
 
-#####################################
-#### salinity vs. abundance plot ####
-#####################################
-
-# par(mai=c(1,1.5,1,1))
-# plot(crypto$time, crypto$abundance, type="n", ylab="abundance (10^6 cells/L)", xlab="", cex.lab=1.5)
-# points(smooth.spline(as.POSIXct(crypto$time, origin="1970-01-01", tz='GMT'), crypto$abundance, spar=0.5), lwd=2, pch=16, xlab="", ylab="", type="l", cex=5)
-# par(new=T)
-# plot(sal$time, sal$water_salinity, xlab="", ylab="", axes=F, type="n")
-# points(smooth.spline(as.POSIXct(sal$time, origin="1970-01-01", tz='GMT'), sal$water_salinity, spar=0.5), lwd=2, col="cyan4", pch=16, xlab="", ylab="", axes=F)
-# #type="l", cex=2, lty=2
-# axis(4)
-# mtext("salinity", side=4, line=3, cex=1.5)
-# legend(1380100000, 0.35, c("crypto abundance", "salinity"), lty=c(1,1), lwd=c(2.5,2.5), col=c("darkred", "darkblue"))
-# #legend not working probably due to time issue 
-
-
-
-###########################
-#### new sal vs. abund ####
-###########################
-
-
-
-# # plot(crypto$time, crypto$abundance, ylab="abundance (10^6 cells/L)", xlab="", cex.lab=1.5, pch=16)
-# #points(smooth.spline(as.POSIXct(crypto$time, origin="1970-01-01", tz='GMT'), crypto$abundance, spar=0.5), lwd=2, pch=16, xlab="", ylab="", type="l", cex=5, axes=F)
-# par(new=T)
-# plot(flu$time, flu$water_salinity, xlab="", ylab="", axes=F, type="n")
-# points(smooth.spline(as.POSIXct(flu$time, origin="1970-01-01", tz='GMT'), flu$water_salinity, spar=0.5), lwd=2, col="cyan4", pch=16, xlab="", ylab="", axes=F)
-# #type="l", cex=2, lty=2
-# axis(4)
-# mtext("salinity", side=4, line=3, cex=1.5)
-# legend(1380100000, 0.35, c("crypto abundance", "salinity"), lty=c(1,1), lwd=c(2.5,2.5), col=c("darkred", "darkblue"))
-# #legend not working probably due to time issue 
-
-
-
-
-#######################
-#### div rate plot ####
-#######################
+###############################
+#### FIG 4 - div rate plot ####
+###############################
 
 quartz("Quartz", width=13, height=10)
 par(mfrow=c(4,1), mar=c(2,8,2.5,2)+0.8, pty="m", cex.axis=2)
 
-#TC
-#par(mai=c(1,1.5,1,1))
-#plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRse, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
 
 #week 1
 #par(mai=c(1,1.5,1,1))
@@ -1005,106 +677,10 @@ rect(as.POSIXct("2013-10-02 18:37:00", origin="1970-01-01", tz='GMT'), -0.5, as.
 
 
 
-#####################################
-#### div rate vs. abundance plot ####
-#####################################
+##################################################
+#### FIG 5 - aux data correlation w/ div rate ####
+##################################################
 
-# par(mai=c(1,1.5,1,1))
-# plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7, xlim=c(as.POSIXct("2013-09-10 16:50:00", origin="1970-01-01", tz='GMT'), as.POSIXct("2013-10-03 24:00:00", origin="1970-01-01", tz='GMT')))
-# #ylim=c(0,20)
-# par(new=T)
-# plot(pre.crypto2$time, pre.crypto2$abundance, lwd=2, pch=16, xlab="", ylab="", cex.lab=2,  axes=F, cex=.6, col="darkred", ylim=c(0,1), xlim=c(as.POSIXct("2013-09-10 16:50:00", origin="1970-01-01", tz='GMT'), as.POSIXct("2013-10-03 24:00:00", origin="1970-01-01", tz='GMT')))
-# axis(4)
-# mtext("abundance (10^6 cells/L)", side=4, lin=3, cex=1.7)
-
-
-
-# par(mai=c(1,1.5,1,1))
-# plotCI(as.POSIXct(yay2$h.time, origin="1970-01-01", tz='GMT'), yay2$daily.GRmean, uiw= yay2$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
-# #ylim=c(0,20)
-# par(new=T)
-# plot(crypto$time, crypto$daily.mean, lwd=2, pch=16, xlab="", ylab="", cex.lab=2,  axes=F, cex=.75, col="darkred")
-# axis(4)
-# mtext("mean daily abundance (10^6 cells/L)", side=4, lin=3, cex=1.7)
-
-
-
-###############################
-#### div rate vs. PAR plot ####
-###############################
-
-
-# par(mai=c(1,1,1,1))
-# plotCI(as.POSIXct(yay2$h.time, origin="1970-01-01", tz='GMT'), yay2$daily.GRmean, uiw= yay2$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.main=2, cex.lab=1.5, xaxt="n")
-# #axis(2)
-# #mtext("mean daily division rate", side=2, line=3, cex=1.5)
-
-	# par(new=T)
-	# plot(Par5$time2, Par5$par.max, col="darkblue", pch=16, axes=F, type="o", xlab="", ylab="", cex.lab=1.5)	
-	# axis(4)
-	# mtext("PAR", side=4, line=3, cex=1.5)
-	
-# plot(Par2$time, Par2$par, col="darkblue", pch=16, xlab="", cex.lab=1.5, ylab="", type="o", yaxt="n")
-# axis(4)
-# mtext("PAR", side=4, line=3, cex=1.5)
-
-
-################################
-#### div rate vs. nutrients ####
-################################
-
-# par(mai=c(1,1.5,1,1))
-# plotCI(as.POSIXct(yay2$h.time, origin="1970-01-01", tz='GMT'), yay2$daily.GRmean, uiw= yay2$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
-# #ylim=c(0,20)
-# par(new=T)
-# plot(pre.flu3$time2, pre.flu3$Nitrate, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=2,  axes=F, col="darkred", type="o")
-# axis(4)
-# mtext("Nitrate", side=4, lin=3, cex=1.7)
-
-
-
-###########################
-#### div rate vs. meso ####
-###########################
-
-# par(mai=c(1,1.5,1,1))
-# plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
-# #ylim=c(0,20)
-# par(new=T)
-# plot(meso$time2, meso$particles_mL, lwd=6, pch=16, xlab="", ylab="", cex.lab=2,  axes=F, col="red", type="h")
-# axis(4)
-# mtext("Mesodinium counts", side=4, lin=3, cex=1.7)
-
-
-
-############################
-#### abundance vs. meso ####
-############################
-
-# par(mai=c(1,1.5,1,1))
-# plot(pre.crypto2$time, pre.crypto2$abundance, lwd=2, pch=16, xlab="", ylab="abundance (10^6 cells/L)", cex.lab=2, ylim=c(0,1))
-# par(new=T)
-# plot(meso$time2, meso$particles_mL, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=2,  axes=F, col="darkred", type="o")
-# axis(4)
-# mtext("Mesodinium counts", side=4, lin=3, cex=1.7)
-
-
-############################
-#### nutrients vs. meso ####
-############################
-
-# par(mai=c(1,1.5,1,1))
-# plot(meso$time2, meso$particles_mL, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=2, col="darkred", type="o")
-# #ylim=c(0,20)
-# par(new=T)
-# plot(pre.flu3$time2, pre.flu3$Ammonium, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=2,  axes=F, col="blue", type="o")
-# axis(4)
-# mtext("Ammonium", side=4, lin=3, cex=1.7)
-
-
-###################################
-#### nutrients vs. div no time ####
-###################################
 quartz("Quartz", width=10, height=10)
 par(mfrow=c(2,2), mar=c(1,0.5,0.5,0.2)+3.7, pty="s", las=1)
 
@@ -1162,9 +738,9 @@ mtext("D", side=3, cex=2, adj=0)
 
 
 
-####################################
-#### nutrients vs. meso no time ####
-####################################
+##############################################
+#### FIG 5 - aux data correlation w/ meso ####
+##############################################
 
 
 quartz("Quartz", width=10, height=10)
@@ -1212,9 +788,9 @@ mtext("D", side=3, cex=2, adj=0)
 
 
 
-##########################################
-#### nutrients vs. production no time ####
-##########################################
+####################################################
+#### FIG 5 - aux data correlation w/ production ####
+####################################################
 
 png(filename="/Users/francois/CMOP/manuscript/third_draft_figures/pro_aux_correlation.png")
 
@@ -1264,12 +840,10 @@ mtext("D", side=3, cex=2, adj=0)
 dev.off()
 
 
-#substitute(paste("abundance 10"^{6}, " cells L"^{-1}))
-#plotCI(as.POSIXct(yay$h.time, origin="1970-01-01", tz='GMT'), yay$daily.GRmean, uiw= yay$daily.GRsd, sfrac=0, pch=16, 	xlab="", ylab="mean daily division rate", cex.lab=1.7)
 
-#############
-#### map ####
-#############
+#####################
+#### FIG 1 - map ####
+#####################
 
 #estuary map
 map("worldHires", "Canada", xlim=c(-124.5,-123.15), ylim=c(45.9,46.5), col="lightcyan", fill=T)
@@ -1294,19 +868,11 @@ text(-122.65, 45, "Oregon", cex=1.5)
 text(-122.5, 46.5, "Washington", cex=1.5)
 
 
-#bathymetry 
-# blues <- c("lightsteelblue4", "lightsteelblue3", "lightsteelblue2", "lightsteelblue1")
-# CMOP_bathy <- getNOAA.bathy(lon1= -124.5, lon2= -123, lat1= 45.9, lat2= 46.5, resolution= 1)
-# plot(CMOP_bathy, image=T, land=T, lwd =0.1, bpal= list(c(0, max(CMOP_bathy), "grey"), c(min(CMOP_bathy), 0, blues)))
-# plot(CMOP_bathy, deep=0, shallow= 0, step=0, lwd=0.4, add=T)
-#scaleBathy(CMOP_bathy, deg=0.1, x="bottomleft", insert=5)
 
 
-
-
-######################
-#### plotting fsc ####
-######################
+#########################################
+#### supplemental fig - plotting fsc ####
+#########################################
 
 #smooth spline
 par(mai=c(1,1,1,1))
@@ -1317,40 +883,6 @@ points(smooth.spline(as.POSIXct(stat$time, origin="1970-01-01", tz='GMT'), stat$
 
 par(mai=c(1,1,1,1))
 plot(stat$time, stat$fsc_small, lwd=2, pch=16, xlab="", ylab="forward scatter small")
-
-
-##############################
-#### plotting tx and qPCR ####
-##############################
-
-#tx percent
-plot(tx$time2, tx$percent2, lwd=2, pch=16, cex=2, col= "red", xlab="", ylab="percent Teleaulax of total cryptophytes")
-
-#tx percent vs meso
-par(mai=c(1,1.5,1,1))
-plot(tx$time2, tx$percent2, lwd=2, pch=16, cex=2, xlab="", ylab="percent Teleaulax of total cryptophytes", cex.lab=2, ylim=c(0,0.5), xlim=c(as.POSIXct("2013-09-10 00:00:00"), as.POSIXct("2013-10-03 24:00:00")))
-par(new=T)
-plot(meso$time2, meso$particles_mL, lwd=2, pch=4, cex=1, xlab="", ylab="", cex.lab=2,  axes=F, xlim=c(as.POSIXct("2013-09-10 00:00:00"), as.POSIXct("2013-10-03 24:00:00")))
-axis(4)
-mtext("Mesodinium counts", side=4, lin=3, cex=1.7)
-legend("topright", c("Mesodinium counts", "percent Teleaulax of total cryptophytes"), pch=c(4,16))
-
-#tx number vs meso
-par(mai=c(1,1.5,1,1))
-plot(tx$time2, tx$tx_cop, lwd=2, pch=16, cex=2, xlab="", ylab="Teleaulax qPCR copy number", cex.lab=2)
-par(new=T)
-plot(meso$time2, meso$particles_mL, lwd=2, pch=16, cex=1, xlab="", ylab="", cex.lab=2,  axes=F, col="red", type="o")
-axis(4)
-mtext("Mesodinium counts", side=4, lin=3, cex=1.7)
-
-
-#qPCR
-par(mai=c(1,1.5,1,1))
-plot(pre.crypto2$time, pre.crypto2$daily.mean, lwd=2, pch=16, xlab="", ylab="daily mean abundance (10^6 cells/L)- log scale", cex.lab=2, ylog=T, log="y")
-par(new=T)
-plot(tx$time2, tx$cryp_cop, lwd=2, pch=16, cex=2, xlab="", ylab="", axes=F, col="red", cex.lab=2)
-axis(4)
-mtext("qPCR crypto copy number", side=4, lin=3, cex=1.7)
 
 
 
