@@ -141,6 +141,8 @@ d23m.crypto <- mean(day23.crypto$abundance, na.rm=T) #NA
 
 abundance <- c(d1m.crypto, d2m.crypto, d3m.crypto, d7m.crypto, d8m.crypto, d9m.crypto, d13m.crypto, d14m.crypto, d15m.crypto, d16m.crypto, d17m.crypto, d21m.crypto, d22m.crypto)
 
+
+
 #standard dev
 d1m.c.sd <- sd(day1.crypto$abundance, na.rm=T)
 d2m.c.sd <- sd(day2.crypto$abundance, na.rm=T)
