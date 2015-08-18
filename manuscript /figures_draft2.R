@@ -470,7 +470,7 @@ cmop.pro <- data.frame(production, n, ph, a, par.cum, production.se, tn)
 #### FIG 2 - aux data plots ####
 ################################
 
-png(filename="/Users/francois/CMOP/manuscript/third_draft_figures/aux_TC_new.png")
+png(filename="~/CMOP/manuscript/third_draft_figures/aux_TC_test.png",  width = 480, height = 480,pointsize=8)
 par(mfrow=c(3,1), mar=c(2,11,2.5,9)+0.8, pty="m")
 
 # TS #
