@@ -315,3 +315,19 @@ merged.estimates <- output
 
 png(filename="/Users/francois/CMOP/manuscript/third_draft_figures/parameters.png")
 dev.off()
+
+
+
+para <- output$estimates[c(1:160),]
+
+plot.parameters(output)
+
+max <- max(para$h2.gmax.mean*(1-exp(-1000)/para$h2.E_star.mean), na.rm=T)
+
+
+       plot(seq(0,1000,by=10),para$h2.gmax.mean[1]*(1-exp(-seq(0,1000,by=10)/para$h2.E_star.mean[1])), ylim=c(0,max),type='l', col="#00007F", lwd=2, xlab="Light Intensity", cex.lab=1.5, ylab=paste("Gamma (per",10,"min)"))
+       
+      para2 <- para[-c((nrow(para)-20):nrow(para)),] 
+      para3 <- subset(para2, h2.gmax.mean > 0 & h2.gmax.mean < 0.2)
+      para4 <- subset(para2, h2.gmax.mean > 0.2 & h2.gmax.mean < 0.8)
+                for(i in 1:nrow(para3)) points(seq(0,1000,by=10),para3$h2.gmax.mean[i]*(1-exp(-seq(0,1000,by=10)/para3$h2.E_star.mean[i])),type='l',lwd=2,col=jet.colors(nrow(para3))[cut(as.numeric(para3$h.time),nrow(para3))][i])
