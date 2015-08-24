@@ -413,9 +413,9 @@ flu.w4 <- subset(pre.flu2, time2 > as.POSIXct("2013-09-29 00:00:00") & time2 < a
 
 
 #picking out nitrate for div vs n and making data frame
-# n <- c(12.7, 13.3, 13.2, 7.1, 8.6, 5.9, 3.5, 5.0, 8.7, 10.3, 9.7, 11.6, 13.1) #nitrate
-# ph <- c(0.9, 1.1, 0.9, 0.9, 1.1, 0.6, 0.5, 0.6, 0.7, 0.7, 1.0, 0.4, 0.6) #phosphate
-# a <- c(5.0, 6.5, 5.1, 4.6, 5.3, 13.5, 2.3, 2.5, 3.6, 2.5, 8.1, 5.2, 5.6) #ammonium
+ # n <- c(12.7, 13.3, 13.2, 7.1, 8.6, 5.9, 3.5, 5.0, 8.7, 10.3, 9.7, 11.6, 13.1) #nitrate
+ # ph <- c(0.9, 1.1, 0.9, 0.9, 1.1, 0.6, 0.5, 0.6, 0.7, 0.7, 1.0, 0.4, 0.6) #phosphate
+ # a <- c(5.0, 6.5, 5.1, 4.6, 5.3, 13.5, 2.3, 2.5, 3.6, 2.5, 8.1, 5.2, 5.6) #ammonium
 # cmop <- data.frame(dm, n, ph, a, par.cum)
 
 n <- c(12.7, 13.3, 13.2, 7.1, 8.6, 5.9, 8.7, 10.3, 9.7) #nitrate
@@ -431,7 +431,7 @@ meso2 <- subset(meso, time2 > as.POSIXct("2013-09-10 16:50:00") & time2 < as.POS
 meso3 <- subset(meso, time2 > as.POSIXct("2013-09-10 00:00:00") & time2 < as.POSIXct("2013-09-20 00:00:00"))
 
 pre.meso <- meso$particles_mL
-remove.meso <- c(3,6,12,15)
+remove.meso <- c(3,6,7,8,12,13,14,15)
 meso <- pre.meso[-remove.meso]
 
 #making nut data compatable
@@ -441,7 +441,6 @@ ph.meso <- ph[-remove.meso2]
 a.meso <- a[-remove.meso2]
 par.meso <- par.cum[-remove.meso2]
 cmop.meso <- data.frame(meso, n.meso, ph.meso, a.meso, par.meso)
-
 
 #### TX qPCR data ####
 
@@ -457,7 +456,7 @@ production.se <- (abundance.se+dm.se)^(1/2)
 tn <- (n+a)
 cmop.pro <- data.frame(production, n, ph, a, par.cum, production.se, tn)
 
-
+production.meso <- production[-remove.meso2]
 
 ##########################################################################################################################
 
@@ -480,7 +479,7 @@ cmop.pro <- data.frame(production, n, ph, a, par.cum, production.se, tn)
 ################################
 
 png(filename="~/Desktop/aux_ver2.png", width=1500, height=900, units="px", res=150)
-#quartz("Quartz", width=10, height=6)
+quartz("Quartz", width=10, height=6)
 par(mfrow=c(3,1), mar=c(2,8,1.5,5.5)+0.5, pty="m")
 
 # TS #
@@ -536,7 +535,7 @@ dev.off()
 ###################################
 
 png(filename="/Users/mariaham/CMOP/manuscript/fourth_draft_figures/abund2_fig3.png", width=1500, height=975, units="px", res=150)
-#quartz("Quartz", width=10, height=6.5)
+quartz("Quartz", width=10, height=6.5)
 par(mfrow=c(4,1), mar=c(1.5,7,1.5,2)+0.8, pty="m")
 
 
