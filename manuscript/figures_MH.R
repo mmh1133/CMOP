@@ -53,7 +53,9 @@ library(lmodel2)
 #### setting up abundance data ####
 
 #stat <- get.stat.table() # to load the aggregate statistics
-stat <- read.csv("/Users/mariaham/CMOP/manuscript/stats_table2.csv")
+user <- '/Users/mariaham/CMOP'
+user <- '~/Documents/DATA/SeaFlow/CMOP/CMOP_git'
+stat <- read.csv(paste0(user,"/manuscript/stats_table2.csv"))
 stat$time <- as.POSIXct(stat$time,format="%FT%T",tz='GMT')
 
 # subseting files #
@@ -69,6 +71,13 @@ crypto.week4 <- subset(pre.crypto2, time > as.POSIXct("2013-09-29 00:00:00") & t
 # roll mean abundance #
 pre.crypto2$daily.mean <- rollapply(data=pre.crypto2$abundance, width=24, FUN=mean, na.rm=T, fill=NA)*24
 crypto$daily.mean <- rollapply(data=crypto$abundance, width=24, FUN=mean, na.rm=T, fill=NA)*24
+
+                    # Francois's CHECK
+                    time.range <- range(crypto.week1$time, na.rm=T)
+                    time.template <- seq(time.range[1], time.range[2], by=60*60)
+                    time.res <- cut(crypto.week1$time,time.template)
+                    daily.mean <-   tapply(crypto.week1$abundance, time.res, function(x) mean(x, na.rm=T))
+
 crypto.week1$daily.mean <- rollapply(data=crypto.week1$abundance, width=24, FUN=mean, na.rm=T, fill=NA)*24
 crypto.week2$daily.mean <- rollapply(data=crypto.week2$abundance, width=24, FUN=mean, na.rm=T, fill=NA)*24
 crypto.week3$daily.mean <- rollapply(data=crypto.week3$abundance, width=24, FUN=mean, na.rm=T, fill=NA)*24
@@ -178,7 +187,7 @@ abundance.se <- (abundance.sd/abundance.n)^2
 
 #### setting up salinity #### 
 
-pre.sal <- read.csv("/Users/mariaham/CMOP/auxillary_data/salinityCMOP_6")
+pre.sal <- read.csv(paste0(user, "/auxillary_data/salinityCMOP_6"))
 pre.sal2 <- as.data.frame(pre.sal, row.names=NULL)
 pre.sal2$time <- as.POSIXct(strptime(pre.sal2$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
 sal <- subset(pre.sal2, time > as.POSIXct("2013-09-10 16:50:00") & time < as.POSIXct("2013-10-03 24:00:00"))
@@ -191,7 +200,7 @@ sal.w4 <- subset(pre.sal2, time > as.POSIXct("2013-09-29 00:00:00") & time < as.
 
 #### setting up temperature ####
 
-pre.temp <- read.csv("/Users/mariaham/CMOP/auxillary_data/water_tempCMOP_6")
+pre.temp <- read.csv(paste0(user, "/auxillary_data/water_tempCMOP_6"))
 pre.temp2 <- as.data.frame(pre.temp, row.names=NULL)
 pre.temp2$time <- as.POSIXct(strptime(pre.temp2$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
 temp <- subset(pre.temp2, time > as.POSIXct("2013-09-10 16:50:00") & time < as.POSIXct("2013-10-03 24:00:00"))
@@ -200,7 +209,8 @@ temp <- subset(pre.temp2, time > as.POSIXct("2013-09-10 16:50:00") & time < as.P
 
 #### setting up binned data ####
 
-yay <- read.csv("/Users/mariaham/CMOP/CMOP_field/model/crypto_HD_CMOP_6V3.binned.csv")
+yay <- read.csv(paste0(user, "/CMOP_field/model/crypto_HD_CMOP_6V3.binned.csv"))
+
 
 yay$daily.GRmean <- rollapply(data=yay$h.dr.mean, width=24, FUN=mean, na.rm=T, fill=NA)*24
 yay$daily.GRsd <- rollapply(data=yay$h.dr.sd, width=24, FUN=mean, na.rm=T, fill=NA)*24
@@ -305,7 +315,7 @@ dm.se <- (dm.sd/dm.n2)^2
 
 #### setting up PAR data ####
 
-in.dir <- out.dir <- "/Users/mariaham/CMOP/CMOP_field"
+in.dir <- out.dir <- paste0(user, "/CMOP_field")
 Par.path <- paste0(in.dir,"/Par_",cruise)
 	Par <- read.csv(Par.path, sep=",")
 	Par$time <- as.POSIXct(Par$time, format="%Y/%m/%d %H:%M:%S",  tz= "GMT")
@@ -400,7 +410,7 @@ par.cum <- c(d1m.p, d2m.p, d3m.p, d7m.p, d8m.p, d9m.p, d15m.p, d16m.p, d17m.p)
 
 #### setting up nutrient data ####
 
-pre.flu <- read.csv("/Users/mariaham/CMOP/auxillary_data/Ribalet_nutrients2.csv")
+pre.flu <- read.csv(paste0(user, "/auxillary_data/Ribalet_nutrients2.csv"))
 pre.flu2 <- as.data.frame(pre.flu, row.names=NULL)
 pre.flu2$time2 <- as.POSIXct(strptime(pre.flu2$time, "%Y/%m/%d %H:%M:%S"), tz="GMT")
 pre.flu2 <- subset(pre.flu2, time2 > as.POSIXct("2013-09-10 16:50:00") & time2 < as.POSIXct("2013-10-03 00:00:00")) 
@@ -424,7 +434,7 @@ a <- c(5.0, 6.5, 5.1, 4.6, 5.3, 13.5, 3.6, 2.5, 8.1) #ammonium
 
 #### adding mesodinium counts ####
 
-pre.meso <- read.csv("/Users/mariaham/CMOP/mesodinium/meso.csv")
+pre.meso <- read.csv(paste0(user, "/mesodinium/meso.csv"))
 meso <- as.data.frame(pre.meso, row.names=NULL)
 meso$time2 <- as.POSIXct(strptime(meso$datetime, "%m/%d/%Y %H:%M:%S"), tz="GMT")
 meso2 <- subset(meso, time2 > as.POSIXct("2013-09-10 16:50:00") & time2 < as.POSIXct("2013-09-20 00:00:00"))
@@ -445,7 +455,7 @@ cmop.meso <- data.frame(meso, n.meso, ph.meso, a.meso, par.meso)
 
 #### TX qPCR data ####
 
-pre.tx <- read.csv("/Users/mariaham/CMOP/pics_misc/tx_qPCR.csv")
+pre.tx <- read.csv(paste0(user, "/pics_misc/tx_qPCR.csv"))
 tx <- as.data.frame(pre.tx, row.names=NULL)
 tx$time2 <- as.POSIXct(strptime(tx$time, "%m/%d/%Y %H:%M:%S"), tz="GMT")
 
@@ -806,7 +816,7 @@ dev.off()
 #### FIG 5 - aux data correlation w/ production ####
 ####################################################
 
-png(filename="/Users/francois/CMOP/manuscript/third_draft_figures/pro_aux_correlation.png")
+png(filename=paste0(user, "/manuscript/third_draft_figures/pro_aux_correlation.png")
 
 quartz("Quartz", width=6.5, height=6.5)
 par(mfrow=c(2,2), mar=c(2,1.5,0.5,0.2)+2, pty="s", las=1, cex.axis=1)
