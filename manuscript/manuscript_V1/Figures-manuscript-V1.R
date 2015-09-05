@@ -124,8 +124,12 @@ crypto.week3 <- subset(crypto , h.time > as.POSIXct("2013-09-23 22:00:00", tz='G
 crypto.week4 <- subset(crypto , h.time > as.POSIXct("2013-09-30 18:00:00", tz='GMT') & h.time < as.POSIXct("2013-10-03 24:00:00", tz='GMT')) 
 
 
+meso <- read.csv(paste0("~/Desktop/Meso.csv"))
+meso$Time <- as.POSIXct(meso$Time, format="%m/%d/%Y %H:%M") 
+meso$Meso <- meso$Meso/1000
+
 png("Figure3.png", width=114*2, height=114*1.5, pointsize=8, res=600, units="mm")
-par(mfrow=c(4,1), mar=c(3,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,0))
+par(mfrow=c(4,1), mar=c(3,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
 
 #week 1 
 df <- crypto.week1
@@ -144,6 +148,7 @@ rect(as.POSIXct("2013-09-13 14:05:00", origin="1970-01-01", tz='GMT'), 0.0000000
 mtext("A", side=3, cex=2, line=0, adj=0)
 mtext(substitute(paste("abundance (10"^{6}, " cells L"^{-1},')')), side=2, cex=1.2, outer=T, line=1)
 mtext("time (d)", side=1, cex=1.2, outer=T, line=-1)
+points(meso$Time, meso$Meso, pch=16, cex=1.5)
 
 #week 2 
 df <- crypto.week2
@@ -161,6 +166,8 @@ rect(as.POSIXct("2013-09-18 07:06:00", origin="1970-01-01", tz='GMT'), 0.0000000
 rect(as.POSIXct("2013-09-18 19:29:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-19 01:23:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
 rect(as.POSIXct("2013-09-19 07:48:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-19 13:52:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
 rect(as.POSIXct("2013-09-19 20:16:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-20 02:12:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
+points(meso$Time, meso$Meso, pch=16, cex=1.5)
+
 
 #week 3 
 df <- crypto.week3
@@ -179,6 +186,8 @@ rect(as.POSIXct("2013-09-26 00:43:00", origin="1970-01-01", tz='GMT'), 0.0000000
 rect(as.POSIXct("2013-09-26 12:33:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-26 18:18:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
 rect(as.POSIXct("2013-09-16 17:43:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-16 23:36:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
 rect(as.POSIXct("2013-09-27 01:45:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-27 07:24:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
+points(meso$Time, meso$Meso, pch=16, cex=1.5)
+
 
 #week 4 
 df <- crypto.week4
@@ -194,6 +203,38 @@ rect(as.POSIXct("2013-10-01 05:32:00", origin="1970-01-01", tz='GMT'), 0.0000000
 rect(as.POSIXct("2013-10-01 17:52:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-10-01 23:45:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
 rect(as.POSIXct("2013-10-02 06:12:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-10-02 12:23:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
 rect(as.POSIXct("2013-10-02 18:37:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-10-03 00:32:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
+points(meso$Time, meso$Meso, pch=16, cex=1.5)
+
+
+dev.off()
+
+
+
+###############
+### FIGURE 4 ###
+###############
+library(lmodel2)
+
+id <- findInterval(meso$Time, crypto$h.time)
+print(id)
+id <- c(21,41,64,140,164,215,237,312, 336, 357, 377, 401,452,476,500)
+data <- data.frame(cbind(meso=meso$Meso, crypto=crypto$h2.conc.mean[id]))#*crypto$h.dr.mean[id]))
+reg <- lmodel2(meso ~ crypto, data,"relative", "relative", 99)
+reg.log <- lmodel2(crypto ~ meso, log(data),"interval", "interval", 99)
+
+
+png("Figure4.png", width=114, height=114, pointsize=8, res=600, units="mm")
+
+par(mfrow=c(2,2), mar=c(3,2,1,2), pty="s", cex=1.2, oma=c(1,3,1,0))
+plot(log(data[,c(1,2)]),  xlab=NA,yaxt='n', xaxt='n',asp=1)
+axis(2, at=c(-4,-2,0),labels=c(0.02,0.2,2), las=1)
+axis(1, at=c(-4,-2,0),labels=c(0.02,0.2,2))
+abline(b=reg.log$regression.results[4,3],a=reg.log$regression.results[4,2], lty=2)
+text(-3,0,substitute(paste("R"^{2}, "=0.63")), cex=1)
+mtext(substitute(paste("crypto (10"^{6}, " cells L"^{-1},')')), side=2, cex=1.2,  line=3)
+mtext(substitute(paste("meso (10"^{6}, " cells L"^{-1},')')), side=1, cex=1.2,  line=3)
+
+
 dev.off()
 
 
@@ -203,9 +244,8 @@ dev.off()
 
 
 
-
 ###############
-### FIGURE 4 ###
+### FIGURE 5 ###
 ###############
 i <- min(crypto$h.time, na.rm=T)
 f <- max(crypto$h.time, na.rm=T)
@@ -215,7 +255,7 @@ time <- as.POSIXct(rollapply(crypto$h.time, width=24, by=24, FUN=max), origin="1
 daily.mean <- rollapply(crypto$h.dr.mean, width=24, by=24, FUN=sum)[id]
 daily.sd<- rollapply(crypto$h.dr.sd, width=24, by=24, FUN=sum)[id]
 
-png("Figure4.png", width=114*2, height=114*1.5/2, pointsize=8, res=600, units="mm")
+png("Figure5.png", width=114*2, height=114*1.5/2, pointsize=8, res=600, units="mm")
 par(mfrow=c(1,1), mar=c(3,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,0))
 plotCI(time, daily.mean/log(2), uiw=daily.sd, sfrac=0, xlab="", lwd=2, pch=16, ylab= "", cex.lab=1.5, col="darkgrey", las=1, yaxt='n',xlim=c(i,f), xaxt='n')
 lines(time, daily.mean/log(2))
@@ -230,7 +270,7 @@ dev.off()
 
 
 ###############
-### FIGURE 5 ###
+### FIGURE 6 ###
 ###############
 library(lmodel2)
 nut <- nut[-c(4,5,8,9,12,16),]
@@ -257,7 +297,7 @@ data <- data.frame(cbind(DIN=nut$DIN, PO4 =nut$Phosphate, TEMP=daily.temp, SAL=d
 DIN.P <- lmodel2(PROD ~ DIN, data,"relative", "relative", 99)
 PO4.P <- lmodel2(PROD ~ PO4, data,"relative", "relative", 99)
 
-png("Figure5.png", width=114, height=114, pointsize=8, res=600, units="mm")
+png("Figure6.png", width=114, height=114, pointsize=8, res=600, units="mm")
 
 par(mfrow=c(2,2), mar=c(3,2,1,2), pty="s", cex=1.2, oma=c(1,3,1,0))
 plot(data[,c(1,6)], ylim=c(0,0.8), xlim=c(7,21),yaxt='n', xaxt='n', xlab=NA)
@@ -290,5 +330,4 @@ mtext(substitute(paste("PAR (",mu, "E m"^{-1},"s"^{-1},')')),side=1, cex=1.2, li
 mtext("D", side=3, cex=2, adj=0)
 
 dev.off()
-
 
