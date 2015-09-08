@@ -5,7 +5,6 @@ stat$h.time <- as.POSIXct(stat$h.time,origin='1970-01-01',tz='GMT')
 
 
  
-
 ###############
 ### FIGURE 1 ###
 ###############
@@ -69,6 +68,24 @@ nut <- read.csv(paste0(user, "/auxillary_data/Ribalet_nutrients2.csv"))
     #nut[which(diff(nut$time)>1),"time"] <- NA
     nut$DIN <- nut$Nitrate+nut$Nitrite+nut$Ammonium
 
+
+### PLOT ABUNDANCE vs SALINITY
+# time.template <- seq(i, f, by=60*60)
+# time.res <- cut(crypto$h.time,time.template)
+# hourly.abun.mean <-  tapply(crypto$h2.conc.mean, time.res, function(x) mean(x, na.rm=T))
+
+# time.res <- cut(sal$time,time.template)
+# hourly.sal.mean <-  tapply(sal$water_salinity, time.res, function(x) mean(x, na.rm=T))
+# id <- unique(c(which(is.na(hourly.sal.mean)),which(is.na(hourly.abun.mean))))
+
+# plot(hourly.sal.mean, hourly.abun.mean, log='y')
+# lines(smooth.spline(hourly.sal.mean[-id], hourly.abun.mean[-id], spar=0.99), col=2)
+
+
+
+
+
+
 png("Figure2.png", width=114*2, height=114*1.5, pointsize=8, res=600, units="mm")
 
 par(mfrow=c(3,1), mar=c(3,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
@@ -76,12 +93,12 @@ par(mfrow=c(3,1), mar=c(3,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
 plot(sal.LPF$x, sal.LPF$y,  xlab="", ylab="", xlim=c(i,f), type='l', xaxt='n', yaxt='n', lwd=1.5, ylim=c(0,30))
 axis(2, at=c(0, 30, 15), las=1)
 axis.POSIXct(1, at=seq(i, f, by=60*60*24*6), labels=c(1,7,14,21))
-mtext("sal (psu)",side=2, cex=1.2, line=3)
+mtext("salinity (psu)",side=2, cex=1.2, line=3)
 par(new=T)
 plot(temp.LPF$x, temp.LPF$y,  xlab="", ylab="", xlim=c(i,f), type='l', xaxt='n', yaxt='n', col='darkgrey', lwd=1.5, ylim=c(13,21))
 axis(4, at=c(13,17,21),las=1)
 mtext("A", side=3, cex=2, adj=0)
-mtext(expression(paste("temp (",degree,"C)")),side=4, cex=1.2, line=3)
+mtext(expression(paste("temperature (",degree,"C)")),side=4, cex=1.2, line=3)
 
 plot(par.LPF$x, par.LPF$y,  xlab="", ylab="", xlim=c(i,f), type='l', xaxt='n', yaxt='n', lwd=1.5)
 axis(2, at=c(0, 300, 600), las=1)
@@ -223,16 +240,17 @@ reg <- lmodel2(meso ~ crypto, data,"relative", "relative", 99)
 reg.log <- lmodel2(crypto ~ meso, log(data),"interval", "interval", 99)
 
 
-png("Figure4.png", width=114, height=114, pointsize=8, res=600, units="mm")
+png("Figure4.png", width=114*2, height=114*1.5, pointsize=8, res=600, units="mm")
 
 par(mfrow=c(2,2), mar=c(3,2,1,2), pty="s", cex=1.2, oma=c(1,3,1,0))
-plot(log(data[,c(1,2)]),  xlab=NA,yaxt='n', xaxt='n',asp=1)
+plot(log(data[,c(1,2)]),  xlab=NA, ylab=NA, yaxt='n', xaxt='n',asp=1)
 axis(2, at=c(-4,-2,0),labels=c(0.02,0.2,2), las=1)
 axis(1, at=c(-4,-2,0),labels=c(0.02,0.2,2))
 abline(b=reg.log$regression.results[4,3],a=reg.log$regression.results[4,2], lty=2)
-text(-3,0,substitute(paste("R"^{2}, "=0.63")), cex=1)
-mtext(substitute(paste("crypto (10"^{6}, " cells L"^{-1},')')), side=2, cex=1.2,  line=3)
-mtext(substitute(paste("meso (10"^{6}, " cells L"^{-1},')')), side=1, cex=1.2,  line=3)
+text(-4,0,substitute(paste("R"^{2}, "=0.63")), cex=1)
+mtext(substitute(paste("TLC (10"^{6}, " cells L"^{-1},')')), side=2, cex=1.2,  line=3)
+mtext(substitute(paste("                 (10"^{6}, " cells L"^{-1},')')), side=1, cex=1.2,  line=3)
+mtext("M. major                      ", side=1, cex=1.2,  line=2.83, font=3)
 
 
 dev.off()
@@ -241,49 +259,30 @@ dev.off()
 
 
 
+##################
+### FIGURE 5 & 6 ###
+##################
 
-
-
-###############
-### FIGURE 5 ###
-###############
-i <- min(crypto$h.time, na.rm=T)
-f <- max(crypto$h.time, na.rm=T)
-
-id <- c(1,2,3,8,9,14,15,17,19,20) # days where we have enough hourly estimates of hourly division rates (> 19)
-time <- as.POSIXct(rollapply(crypto$h.time, width=24, by=24, FUN=max), origin="1970-01-01", tz='GMT')[id]
-daily.mean <- rollapply(crypto$h.dr.mean, width=24, by=24, FUN=sum)[id]
-daily.sd<- rollapply(crypto$h.dr.sd, width=24, by=24, FUN=sum)[id]
-
-png("Figure5.png", width=114*2, height=114*1.5/2, pointsize=8, res=600, units="mm")
-par(mfrow=c(1,1), mar=c(3,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,0))
-plotCI(time, daily.mean/log(2), uiw=daily.sd, sfrac=0, xlab="", lwd=2, pch=16, ylab= "", cex.lab=1.5, col="darkgrey", las=1, yaxt='n',xlim=c(i,f), xaxt='n')
-lines(time, daily.mean/log(2))
-axis(2, at=seq(0,2.5,1), las=1)
-axis.POSIXct(1, at=seq(min(time), max(time), by=60*60*24*6), labels=c(1,7,14,21))
-mtext(substitute(paste("division rate (div d"^{-1},')')), side=2, cex=1.2, line=2)
-mtext("time (d)", side=1, cex=1.2, outer=T, line=-1)
-dev.off()
-
-
-
-
-
-###############
-### FIGURE 6 ###
-###############
 library(lmodel2)
-nut <- nut[-c(4,5,8,9,12,16),]
+nut <- read.csv(paste0(user, "/auxillary_data/Ribalet_nutrients2.csv"))
+    nut$time <- as.POSIXct(strptime(nut$time, "%Y/%m/%d %H:%M:%S"), tz="GMT")
+    nut <- subset(nut, time > i & time < f)
+    #nut[which(diff(nut$time)>1),"time"] <- NA
+    nut$DIN <- nut$Nitrate+nut$Nitrite+nut$Ammonium
+    nut <- nut[-c(4,5,8,9,12,16),]
 
-id <- c(1,2,3,8,9,14,15,17,20,21)
 id <- c(1,2,3,9,10,14,15,17,20,21)
 
 time.template <- seq(i, f, by=60*60*24)
 time.res <- cut(crypto$h.time,time.template)
-daily.abun.mean <-   tapply(crypto$h2.conc.mean, time.res, function(x) mean(x, na.rm=T))
+daily.abun.mean <-  tapply(crypto$h2.conc.mean, time.res, function(x) mean(x, na.rm=T))
+daily.abun.sd <-  tapply(crypto$h2.conc.sd, time.res, function(x) mean(x, na.rm=T))
 daily.dr.mean <-   tapply(crypto$h.dr.mean, time.res, function(x) mean(x, na.rm=T))*24
-daily.prod <- c(daily.dr.mean * daily.abun.mean)[id] 
-daily.dr <- daily.dr.mean[id] 
+daily.dr.sd <-   tapply(crypto$h.dr.sd, time.res, function(x) mean(x, na.rm=T))*24
+daily.prod.mean <- c(daily.dr.mean * daily.abun.mean)[id] 
+daily.prod.sd <- c(daily.dr.sd * daily.abun.sd)[id] 
+daily.dr.mean <- daily.dr.mean[id] 
+daily.dr.se <- daily.dr.sd[id] / sqrt(24)
 
 
 time.res <- cut(par$time,time.template)
@@ -293,41 +292,111 @@ time.res <- cut(sal$time, time.template)
 daily.temp <-  tapply(sal$water_temperature, time.res, function(x) mean(x, na.rm=T))[id] 
 daily.sal <-  tapply(sal$water_salinity, time.res, function(x) mean(x, na.rm=T))[id] 
 
-data <- data.frame(cbind(DIN=nut$DIN, PO4 =nut$Phosphate, TEMP=daily.temp, SAL=daily.sal, PAR=daily.par, PROD=daily.prod, DR=daily.dr))
+data <- data.frame(cbind(DIN=nut$DIN, PO4 =nut$Phosphate, TEMP=daily.temp, SAL=daily.sal, PAR=daily.par, PROD=daily.prod.mean, DR=daily.dr.mean, PROD.sd = daily.prod.sd , DR.se = daily.dr.se))
+time <- as.POSIXct(rownames(data), tz='GMT')
+
 DIN.P <- lmodel2(PROD ~ DIN, data,"relative", "relative", 99)
 PO4.P <- lmodel2(PROD ~ PO4, data,"relative", "relative", 99)
+DIN.DR <- lmodel2(DR ~ DIN, data,"relative", "relative", 99)
+PO4.DR <- lmodel2(DR ~ PO4, data,"relative", "relative", 99)
+sal.DR <- lmodel2(DR ~ SAL, data,"relative", "relative", 99)
+temp.DR <- lmodel2(DR ~ TEMP, data,"relative", "relative", 99)
 
-png("Figure6.png", width=114, height=114, pointsize=8, res=600, units="mm")
 
-par(mfrow=c(2,2), mar=c(3,2,1,2), pty="s", cex=1.2, oma=c(1,3,1,0))
-plot(data[,c(1,6)], ylim=c(0,0.8), xlim=c(7,21),yaxt='n', xaxt='n', xlab=NA)
-axis(2, at=c(0,0.4,0.8), las=1)
-axis(1, at=c(7,14,21))
-abline(b=DIN.P$regression.results[4,3],a=DIN.P$regression.results[4,2], lty=2)
-text(10,0.7,substitute(paste("R"^{2}, "=0.58")), cex=1)
-#text(10,0.6,"p < 0.01", cex=0.75)
-mtext(substitute(paste("Production (10"^{6},"cell L"^{-1},"d"^{-1},')')), side=2, cex=1.2, line=3)
-mtext(substitute(paste("DIN (",mu, "M)")),side=1, cex=1.2, line=2)
+png("Figure5.png", width=114*2, height=114*1.5, pointsize=8, res=600, units="mm")
+par(mfrow=c(2,1), mar=c(3,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
+plotCI(time, data$DR, uiw=data$DR.se, sfrac=0, xlab="", lwd=2, pch=16, ylab= "", cex.lab=1.5, col="darkgrey", las=1, yaxt='n',xlim=c(i,f), xaxt='n')
+lines(time, data$DR)
+axis(2, at=seq(0,2.5,0.5), las=1)
+axis.POSIXct(1, at=seq(min(time), max(time), by=60*60*24*6), labels=c(1,7,14,21))
+mtext(substitute(paste("division (d"^{-1},')')), side=2, cex=1.2, line=3)
+mtext("time (d)", side=1, cex=1.2, line=2)# par(new=T)
+# plotCI(time, data$PROD, uiw=data$PROD.sd, sfrac=0, xlab="", lwd=2, pch=1, ylab= "", cex.lab=1.5, col="darkgrey", las=1, yaxt='n',xlim=c(i,f), xaxt='n')
+# lines(time, data$PROD, col='darkgrey')
+# axis(4, at=c(0,0.4,0.8), las=1)
+# mtext(substitute(paste("production (10"^{6},"cell L"^{-1},"d"^{-1},')')), side=4, cex=1.2, line=3)
+dev.off()
+
+
+
+
+
+
+
+
+
+
+png("Figure6.png", width=114*2, height=114*2, pointsize=8, res=600, units="mm")
+
+par(mfrow=c(3,3), mar=c(3,2,2,2), pty="s", cex=1.2, oma=c(1,3,1,0))
+
+plot(data[,c(3,7)],ylim=c(0,1.6), yaxt='n',yaxt='n', xaxt='n', xlab=NA, ylab=NA, xlim=c(15,19))
+axis(1, at=c(15,17,19))
+axis(2, at=c(0,0.8,1.6),las=1)
+mtext("salinity (psu)",side=1, cex=1.2, line=2.5)
 mtext("A", side=3, cex=2, adj=0)
+mtext(substitute(paste("division (d"^{-1},')')), side=2, cex=1.2, line=3)
 
-plot(data[,c(2,6)], ylim=c(0,0.8), yaxt='n',xlim=c(0.4,1.2),yaxt='n', xaxt='n', xlab=NA)
-axis(2, at=c(0,0.4,0.8), las=1)
-axis(1, at=c(0.4,0.8,1.2))
-mtext(substitute(paste("phosphate (",mu, "M)")),side=1, cex=1.2, line=2)
+plot(data[,c(4,7)], ylim=c(0,1.6), yaxt='n',xlim=c(6,17),yaxt='n', xaxt='n', xlab=NA, ylab=NA)
+axis(1, at=c(6,11,16))
+axis(2, at=c(0,0.8,1.6),las=1)
+mtext(expression(paste("temperature (",degree,"C)")),side=1, cex=1.2, line=2.5)
 mtext("B", side=3, cex=2, adj=0)
 
-plot(data[,c(4,6)], ylim=c(0,0.8), yaxt='n',xlim=c(6,16),yaxt='n', xaxt='n', xlab=NA)
-axis(1, at=c(6,11,16))
-axis(2, at=c(0,0.4,0.8),las=1)
-mtext(substitute(paste("Production (10"^{6},"cell L"^{-1},"d"^{-1},')')), side=2, cex=1.2, line=3)
-mtext(expression(paste("temp (",degree,"C)")),side=1, cex=1.2, line=2)
+plot(data[,c(5,7)],ylim=c(0,1.6), yaxt='n',xlim=c(0,160),yaxt='n', xaxt='n', xlab=NA, ylab=NA)
+axis(1, at=c(0,80,160))
+axis(2, at=c(0,0.8,1.6),las=1)
+mtext(substitute(paste("PAR (",mu, "E m"^{-1},"s"^{-1},')')),side=1, cex=1.2, line=2.5)
 mtext("C", side=3, cex=2, adj=0)
 
-plot(data[,c(5,6)],ylim=c(0,0.8), yaxt='n',xlim=c(0,160),yaxt='n', xaxt='n', xlab=NA)
-axis(1, at=c(0,80,160))
-axis(2, at=c(0,0.4,0.8),las=1)
-mtext(substitute(paste("PAR (",mu, "E m"^{-1},"s"^{-1},')')),side=1, cex=1.2, line=2)
+
+
+
+plot(data[,c(1,7)], ylim=c(0,1.6), yaxt='n',xlim=c(5,35),yaxt='n', xaxt='n', xlab=NA, ylab=NA)
+axis(1, at=c(5,20,35))
+axis(2, at=c(0,0.8,1.6),las=1)
+mtext(substitute(paste("division (d"^{-1},')')), side=2, cex=1.2, line=3)
+mtext(substitute(paste("DIN (",mu, "M)")),side=1, cex=1.2, line=2.5)
 mtext("D", side=3, cex=2, adj=0)
 
+plot(data[,c(2,7)],ylim=c(0,1.6), yaxt='n',xlim=c(0,1.6),yaxt='n', xaxt='n', xlab=NA, ylab=NA)
+axis(1, at=c(0,0.8,1.6))
+axis(2, at=c(0,0.8,1.6),las=1)
+mtext(substitute(paste("phosphate (",mu, "M)")),side=1, cex=1.2, line=2.5)
+mtext("E", side=3, cex=2, adj=0)
+
+plot(1,1, pch=NA, yaxt='n', xaxt='n', bty='n')
+
+plot(data[,c(1,6)], ylim=c(0,0.8), yaxt='n', xaxt='n', xlab=NA, ylab=NA, xlim=c(5,35))
+axis(2, at=c(0,0.4,0.8), las=1)
+axis(1, at=c(5,20,35))
+abline(b=DIN.P$regression.results[4,3],a=DIN.P$regression.results[4,2], lty=2)
+text(10,0.7,substitute(paste("R"^{2}, "=0.57")), cex=1)
+#text(10,0.6,"p < 0.01", cex=0.75)
+mtext(substitute(paste("production (10"^{6},"cell L"^{-1},"d"^{-1},')')), side=2, cex=1.2, line=3)
+mtext(substitute(paste("DIN (",mu, "M)")),side=1, cex=1.2, line=2.5)
+mtext("F", side=3, cex=2, adj=0)
+
+plot(data[,c(2,6)], ylim=c(0,0.8), yaxt='n',xlim=c(0,1.6),yaxt='n', xaxt='n', xlab=NA, ylab=NA)
+axis(2, at=c(0,0.4,0.8), las=1)
+axis(1, at=c(0,0.8,1.6))
+mtext(substitute(paste("phosphate (",mu, "M)")),side=1, cex=1.2, line=2.5)
+mtext("G", side=3, cex=2, adj=0)
+
+# plot(data[,c(4,6)], ylim=c(0,0.8), yaxt='n',xlim=c(6,17),yaxt='n', xaxt='n', xlab=NA, ylab=NA)
+# axis(1, at=c(6,11,16))
+# axis(2, at=c(0,0.4,0.8),las=1)
+# mtext(substitute(paste("production (10"^{6},"cell L"^{-1},"d"^{-1},')')), side=2, cex=1.2, line=3)
+# mtext(expression(paste("temp (",degree,"C)")),side=1, cex=1.2, line=2)
+# mtext("C", side=3, cex=2, adj=0)
+
+# plot(data[,c(5,6)],ylim=c(0,0.8), yaxt='n',xlim=c(0,160),yaxt='n', xaxt='n', xlab=NA, ylab=NA)
+# axis(1, at=c(0,80,160))
+# axis(2, at=c(0,0.4,0.8),las=1)
+# mtext(substitute(paste("PAR (",mu, "E m"^{-1},"s"^{-1},')')),side=1, cex=1.2, line=2)
+# mtext("D", side=3, cex=2, adj=0)
+
 dev.off()
+
+
 
