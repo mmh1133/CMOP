@@ -920,7 +920,7 @@ plot(stat$time, stat$fsc_small, lwd=2, pch=16, xlab="", ylab="forward scatter sm
 ## setup ##
 
 library(lmodel2)
-home <- "/Users/francois/CMOP/"
+home <- "/Users/mariaham/CMOP/"
 out.dir <- paste0(home, "Rhodo_labExperiment/")
 
 m <- read.csv(paste0(out.dir,"model_output-V2.csv"))
