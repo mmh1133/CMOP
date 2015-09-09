@@ -262,8 +262,12 @@ dev.off()
 ##################
 ### FIGURE 5 & 6 ###
 ##################
-
 library(lmodel2)
+
+
+i <- min(stat$h.time, na.rm=T)
+f <- max(stat$h.time, na.rm=T)
+
 nut <- read.csv(paste0(user, "/auxillary_data/Ribalet_nutrients2.csv"))
     nut$time <- as.POSIXct(strptime(nut$time, "%Y/%m/%d %H:%M:%S"), tz="GMT")
     nut <- subset(nut, time > i & time < f)
