@@ -68,6 +68,12 @@ nut <- read.csv(paste0(user, "/auxillary_data/Ribalet_nutrients2.csv"))
     #nut[which(diff(nut$time)>1),"time"] <- NA
     nut$DIN <- nut$Nitrate+nut$Nitrite+nut$Ammonium
 
+ph <- read.csv(paste0(user, "/auxillary_data/pHCMOP_6"))
+    ph$time <- as.POSIXct(strptime(ph$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
+    ph <- subset(ph, time > i & time < f)
+        id <- which(diff(ph$time) > 60*60*3)
+        ph.LPF <- smooth.spline(as.POSIXct(ph$time, origin="1970-01-01", tz='GMT'), ph$ph, spar=0.05)
+        ph.LPF$y[id] <- NA
 
 ### PLOT ABUNDANCE vs SALINITY
 # time.template <- seq(i, f, by=60*60)
@@ -105,6 +111,10 @@ axis(2, at=c(0, 300, 600), las=1)
 axis.POSIXct(1, at=seq(i, f, by=60*60*24*6), labels=c(1,7,14,21))
 mtext(substitute(paste("PAR (",mu, "E m"^{-1},"s"^{-1},')')),side=2, cex=1.2, line=3)
 mtext("B", side=3, cex=2, adj=0)
+par(new=T)
+plot(ph.LPF$x, ph.LPF$y,  xlab="", ylab="", xlim=c(i,f), type='l', xaxt='n', yaxt='n', col='darkgrey', lwd=1.5)
+axis(4, at=c(7.8, 8.1, 8.4),las=1)
+mtext('pH',side=4, cex=1.2, line=3)
 
 plot(nut$time, nut$DIN,  xlab="", ylab="", xlim=c(i,f), type='o', xaxt='n', yaxt='n', lwd=1.5, ylim=c(5,35))
 axis(2, at=c(5, 20,35), las=1)
