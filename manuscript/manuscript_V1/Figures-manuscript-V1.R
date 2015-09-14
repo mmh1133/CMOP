@@ -172,6 +172,8 @@ rect(as.POSIXct("2013-09-12 00:55:00", origin="1970-01-01", tz='GMT'), 0.0000000
 rect(as.POSIXct("2013-09-12 12:44:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-12 18:43:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
 rect(as.POSIXct("2013-09-13 02:11:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-13 08:41:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
 rect(as.POSIXct("2013-09-13 14:05:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-13 19:58:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
+rect(as.POSIXct("2013-09-14 03:28:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-14 09:54:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
+rect(as.POSIXct("2013-09-14 15:29:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-14 21:18:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
 mtext("A", side=3, cex=2, line=0, adj=0)
 mtext(substitute(paste("abundance (10"^{6}, " cells L"^{-1},')')), side=2, cex=1.2, outer=T, line=1)
 mtext("time (d)", side=1, cex=1.2, outer=T, line=-1)
@@ -230,6 +232,9 @@ rect(as.POSIXct("2013-10-01 05:32:00", origin="1970-01-01", tz='GMT'), 0.0000000
 rect(as.POSIXct("2013-10-01 17:52:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-10-01 23:45:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
 rect(as.POSIXct("2013-10-02 06:12:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-10-02 12:23:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
 rect(as.POSIXct("2013-10-02 18:37:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-10-03 00:32:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
+rect(as.POSIXct("2013-10-03 06:50:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-10-03 12:54:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
+rect(as.POSIXct("2013-10-03 19:18:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-10-04 01:16:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
+rect(as.POSIXct("2013-10-04 07:26:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-10-04 13:25:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
 points(meso$Time, meso$Meso, pch=16, cex=1.5)
 
 
