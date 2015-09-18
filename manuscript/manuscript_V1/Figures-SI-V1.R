@@ -2,20 +2,71 @@ library(plotrix)
 library(zoo)
 library(lmodel2)
 
+user <- '/Users/mariaham/CMOP'
+user <- '~/Documents/DATA/SeaFlow/CMOP/CMOP_git'
+
+stat <- read.csv(paste0(user, "/CMOP_field/model/crypto_HD_CMOP_6.binned.csv"))
+stat$h.time <- as.POSIXct(stat$h.time,origin='1970-01-01',tz='GMT')
+
+df <- read.csv(paste0(user,"/CMOP_INFLUX_Sept2013/results/summary_V2-FR.csv"))
+info <- read.csv(paste0(user,"/CMOP_INFLUX_Sept2013/file_names.csv"))
+fcm <- merge(df, info, by="file")
+fcm$time <- as.POSIXct(fcm$time, format="%m/%d/%y %I:%M:%S %p")#+ 8*60*60
+fcm <- fcm[order(fcm$time),]
+pop <- subset(fcm, i =='crypto' & depth=="S")[-c(1,10),]
+pop$conc <- 10^-3*pop$n/pop$vol
+
+
+id <- findInterval(pop$time, stat$h.time)
+id <- c(1, 18, 43,  66,  144, 169, 193, 217, 314, 339, 359, 381, 396, 403,454, 478, 502)
+data <- data.frame(cbind(fcm=pop$conc, tlc=stat$h2.conc.mean[id]))
+cor <- lmodel2(tlc~ fcm, data,"relative", "relative", 99)
+
+png("FigureS2.png", width=114*1.5, height=114*1.5, pointsize=8, res=600, units="mm")
+
+par(mfrow=c(2,1), mar=c(3,2,2,2), pty="m", cex=1.2, oma=c(1,3,1,3))
+
+plot(stat$h.time, stat$h2.conc.mean, type='l', xaxt='n', yaxt='n', ylim=c(0.01,3), log='y')
+#points(stat$h.time[id], stat$h2.conc.mean[id],col=3,pch=16)
+points(pop$time, pop$conc, col=2)
+axis(1, at=seq(min(stat$h.time, na.rm=T), max(stat$h.time, na.rm=T), by=60*60*24*6), labels=c(1,7,14,21))
+axis(2, at=c(0.02,0.2,2),las=1)
+mtext("time (d)", side=1, cex=1.2, line= 2.5)
+mtext(substitute(paste("abundance (10"^{6}, " cells L"^{-1},')')), side=2, cex=1.2,  line=3)
+mtext("A", side=3, cex=2, adj=0)
+
+par(pty='s')
+plot(data, log='xy', xlim=c(0.02,2), xaxt='n', yaxt='n', ylim=c(0.02,2), ylab=NA, xlab=NA)
+axis(2, at=c(0.02,0.2,2),las=1)
+axis(1, at=c(0.02,0.2,2))
+mtext(substitute(paste("SeaFlow - abundance (10"^{6}, " cells L"^{-1},')')), side=2, cex=1.2,  line=3)
+mtext(substitute(paste("Influx - abundance (10"^{6}, " cells L"^{-1},')')), side=1, cex=1.2,  line=3)
+mtext("B", side=3, cex=2, adj=0)
+abline(b=cor$regression.results[4,3],a=cor$regression.results[4,2], lty=2)
+text(0.05,1,substitute(paste("R"^{2}, "=0.83")), cex=1)
+
+dev.off()
+
+
+
+
+
+
+
+
+
 
 user <- '/Users/mariaham/CMOP'
 user <- '~/Documents/DATA/SeaFlow/CMOP/CMOP_git'
-out.dir <- paste0(user, "/Rhodo_labExperiment/")
-
-m <- read.csv(paste0(out.dir,"model_output-V2.csv"))
+m <- read.csv(paste0(user,"/Rhodo_labExperiment/model_output-V2.csv"))
     m$time <- as.POSIXct(m$time, origin="1970-01-01", tz="" )
-cc <- read.csv(paste0(out.dir,"RHODO_div-rate.csv"))[-1,]
+cc <- read.csv(paste0(user,"/Rhodo_labExperiment/RHODO_div-rate.csv"))[-1,]
     cc$time <- as.POSIXct(cc$time, origin="1970-01-01", tz="" )
 
 i <- min(cc$time)
 f <- max(cc$time)
 
-stat <- read.delim(paste0(out.dir,"stat.tab"))
+stat <- read.delim(paste0(user,"/CMOP_INFLUX_Sept2013/stat.tab"))
     stat$time <- as.POSIXct(stat$time,tz='')-8*60*60
     rhodo <- subset(stat, pop == 'crypto' & flag == 0) 
 
@@ -36,7 +87,7 @@ night2 <- subset( rhodo , time >= as.POSIXct("2014-09-23 16:00:00")-8*60*60 &  t
 
 
 
-png("FigureS2.png", width=114*1.5, height=114*1.5, pointsize=8, res=600, units="mm")
+png("FigureS3.png", width=114*1.5, height=114*1.5, pointsize=8, res=600, units="mm")
 
 par(mfrow=c(3,1), mar=c(3,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
 # plot(rhodo$time, rhodo$fsc_small, pch=NA)
@@ -81,7 +132,7 @@ dev.off()
 
 
 
-png("FigureS3.png", width=114, height=114, pointsize=8, res=600, units="mm")
+png("FigureS4.png", width=114, height=114, pointsize=8, res=600, units="mm")
 
 
 id <- findInterval(cc$time,m$time)
@@ -101,6 +152,56 @@ mtext(substitute(paste("DNA-based division (h"^{-1},")")), side=1, line=3, cex=1
 mtext(substitute(paste("Size-based division (h"^{-1},")")), side=2, line=3, cex=1.2)
 
 dev.off()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#################
+### FSC vs PAR ###
+#################
+
+
+library(zoo)
+
+df <- read.csv(paste0(user, "/CMOP_field/FSCvsPAR.csv"))
+night <- subset(df, par  < 2)
+df[which(df$fsc2 == "#VALUE!"),'fsc2'] <- NA
+
+df$vol <- 10^(1.2384*log10(df$fsc/100)+1.003)
+df$vol.sd <- 10^(1.2384*log10(df$fsc.sd/100)+1.003)
+
+df$diam <- 2*((df$vol  *3)/(pi*4))^(1/3)
+mean(df$diam, na.rm=T)
+range(df$diam, na.rm=T)
+
+png("FigureS5.png", width=114, height=114, pointsize=8, res=600, units="mm")
+
+par(mfrow=c(3,1), mar=c(3,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,1))
+plotCI(df$time, df$vol, uiw=df$vol.sd, pch=NA, sfrac=0, col='darkgrey', yaxt='n', ylab=NA, xaxt='n', xlab=NA, lwd=1)
+abline(v=night$time, lwd=1, col=adjustcolor("black", alpha=0.15))
+lines(df$time, df$vol)
+axis(2, at=c(20,60,100), las=1)
+mtext(substitute(paste("Cell volume (", mu, "m"^{3},")")), 2, line=3 )
+mtext("time (d)", side=1, cex=1.2, line= 2.5)
+axis(1, at=seq(min(df$time, na.rm=T), max(df$time, na.rm=T), by=60*60*24*6), labels=c(1,7,14,21))
+
+dev.off()
+
+
+
+
+
+
 
 
 

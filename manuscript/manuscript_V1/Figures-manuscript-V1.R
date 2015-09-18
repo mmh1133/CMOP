@@ -4,7 +4,7 @@ stat <- read.csv(paste0(user, "/CMOP_field/model/crypto_HD_CMOP_6.binned.csv"))
 stat$h.time <- as.POSIXct(stat$h.time,origin='1970-01-01',tz='GMT')
 
 
- 
+
 ###############
 ### FIGURE 1 ###
 ###############
@@ -253,7 +253,7 @@ f <- i + 60*60*24*3.5
 plotCI(df$h.time, df$h2.conc.mean, uiw=df$h2.conc.sd, sfrac=0, xaxt='n',xlab="", lwd=2, pch=16, ylab= "", cex.lab=1.5, log="y", col="darkgrey", las=1, ylim=c(0.010, 4), xlim=c(i,f), yaxt='n')
 lines(df$h.time, df$h2.conc.mean)
 axis(2, at=c(0.02,0.2,2), las=1)
-axis(1, at=seq(i, f, by=60*60*24), labels=seq(1,4,by=1)+13)
+axis(1, at=seq(i, f, by=60*60*24), labels=seq(1,4,by=1)+14)
 mtext("C", side=3, cex=2, adj=0)
 rect(as.POSIXct("2013-09-23 23:07:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-24 05:22:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
 rect(as.POSIXct("2013-09-24 10:57:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-24 16:47:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
@@ -273,7 +273,7 @@ f <- i + 60*60*24*3.5
 plotCI(df$h.time, df$h2.conc.mean, uiw=df$h2.conc.sd, sfrac=0, xaxt='n',xlab="", lwd=2, pch=16, ylab= "", cex.lab=1.5, log="y", col="darkgrey", las=1, ylim=c(0.010, 4), xlim=c(i,f), yaxt='n')
 lines(df$h.time, df$h2.conc.mean)
 axis(2, at=c(0.02,0.2,2), las=1)
-axis(1, at=seq(i, f, by=60*60*24), labels=seq(1,4,by=1)+20)
+axis(1, at=seq(i, f, by=60*60*24), labels=seq(1,4,by=1)+22)
 mtext("D", side=3, cex=2, adj=0)
 rect(as.POSIXct("2013-09-30 17:03:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-30 22:53:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
 rect(as.POSIXct("2013-10-01 05:32:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-10-01 11:48:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
@@ -385,6 +385,8 @@ DIN.N <- lmodel2(DIN ~ N, data,"relative", "relative", 99)
 
 
 png("Figure6.png", width=114*2, height=114*1.5, pointsize=8, res=600, units="mm")
+
+ time[c(9,10)] <-  time[c(9,10)] + 60*60*24
 par(mfrow=c(2,1), mar=c(3,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
 plotCI(time, data$DR, uiw=data$DR.se, sfrac=0, xlab="", lwd=2, pch=16, ylab= "", cex.lab=1.5, col="darkgrey", las=1, yaxt='n',xlim=c(i,f), xaxt='n')
 lines(time, data$DR)

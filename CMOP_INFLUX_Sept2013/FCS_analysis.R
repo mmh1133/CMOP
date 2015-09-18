@@ -102,10 +102,11 @@ stat.table <- rbind(stat.table, var)
 
 table <- data.frame(cbind(stat.table, file=basename(file)))
 summary.table <- rbind(summary.table, table)
-write.csv(summary.table,file=paste(savepath,"summary_V2-FR.csv", sep=""), row.names=FALSE)
+write.csv(summary.table,file=paste(savepath,"/summary_V2-FR.csv", sep=""), row.names=FALSE)
 }
 
-}
 
 
-write.csv(summary.table,file=paste(savepath,"summary_2.csv", sep=""), row.names=FALSE)
+
+
+
