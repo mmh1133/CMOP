@@ -22,6 +22,17 @@ cruise <-"CMOP_6"
 
 # write.csv(flu, paste("/Users/francois/CMOP/auxillary_data/fluorescence",cruise, sep=""), quote=F, row.names=F)
 
+## Fv/FM
+
+# pre.flu1 <- read.csv("/Users/francois/CMOP/auxillary_data/saturn03.240.A.Phytoflash_2013_09_PD1.csv")
+# pre.flu2 <- read.csv("/Users/francois/CMOP/auxillary_data/saturn03.240.A.Phytoflash_2013_10_PD1.csv")
+# pre.flu1 <- as.data.frame(pre.flu1, row.names=NULL)
+# pre.flu2 <- as.data.frame(pre.flu2, row.names=NULL)
+# flu<- rbind(pre.flu1, pre.flu2)
+
+# flu$time <- as.POSIXct(strptime(flu$time, "%Y/%m/%d %H:%M:%S"), tz="GMT")
+
+# write.csv(flu, paste("/Users/francois/CMOP/auxillary_data/fvfm",cruise, sep=""), quote=F, row.names=F)
 
 
 # ## fluorescence (CDOM) ## 
