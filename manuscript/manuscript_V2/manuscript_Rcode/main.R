@@ -65,10 +65,10 @@ fluo <- read.csv(paste0(user, "fvfmCMOP_6"))
         fluo.LPF <- smooth.spline(fluo$time, fluo$fo)#, spar=0.01, df=2)
         fluo.LPF$y[id] <- NA
 
-# tide <- read.csv(paste0(user, "elevationCMOP_6"))
-#    tide$time <- as.POSIXct(strptime(tide$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
-#     tide <- subset(tide, time > i & time < f) 
-#     tide <- subset(tide, elevation > 1) 
+tide <- read.csv(paste0(user, "elevationCMOP_6"))
+   tide$time <- as.POSIXct(strptime(tide$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
+    tide <- subset(tide, time > i & time < f) 
+    tide <- subset(tide, elevation > 1) 
 
 nut <- read.csv(paste0(user, "Ribalet_nutrients2.csv"))
     nut$time <- as.POSIXct(strptime(nut$time, "%m/%d/%y %H:%M"))
@@ -178,6 +178,23 @@ P04.DR <- lmodel2(DR ~ P04, data.dr,"relative", "relative", 99)
     temp.DR <- lmodel2(DR ~ TEMP, data.dr,"relative", "relative", 99)
 ph.DR <- lmodel2(DR ~ PH, data.dr,"relative", "relative", 99)
 ph.P <- lmodel2(PROD ~ PH, data.dr,"relative", "relative", 99)
+
+
+
+
+
+
+time.template3 <- seq(min(fluo$time), max(fluo$time), by=60*60)
+time.res <- cut(fluo.LPF$x,time.template3)
+h.fluo.mean <-  tapply(fluo.LPF$y, time.res, function(x) mean(x, na.rm=T))
+time.res <- cut(tide$time,time.template3)
+h.elevation.mean <-  tapply(tide$elevation, time.res, function(x) mean(x, na.rm=T))
+
+data.cor <- data.frame(cbind(time=time.template3[-1], fluo=h.fluo.mean, elevation=h.elevation.mean ))
+
+fluo.elev <- lmodel2(fluo ~ elevation, data.cor, "relative", "relative", 99)
+
+plot(data.cor$elevation, data.cor$fluo)
 
 
 
