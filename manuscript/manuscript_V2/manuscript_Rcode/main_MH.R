@@ -14,7 +14,7 @@ library(lmodel2)
 
 
 user <- '/Users/mariaham/CMOP/manuscript/manuscript_V2/manuscript_Rcode/'
-user <- '~/Documents/DATA/SeaFlow/CMOP/CMOP_git/manuscript/manuscript_V2/manuscript_Rcode/'
+#user <- '~/Documents/DATA/SeaFlow/CMOP/CMOP_git/manuscript/manuscript_V2/manuscript_Rcode/'
 # user <- NULL # when use in DataJoy
 
 
