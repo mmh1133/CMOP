@@ -10,7 +10,7 @@ library(lmodel2)
 
 
 user <- '/Users/mariaham/CMOP'
-user <- '~/Documents/DATA/SeaFlow/CMOP/CMOP_git/manuscript/manuscript_V2/manuscript_Rcode/'
+user <- '~/Documents/DATA/SeaFlow/CMOP/CMOP_git/manuscript/manuscript_V3/manuscript_Rcode/'
 # user <- NULL # when use in DataJoy
 
 
@@ -214,9 +214,10 @@ png("FigureS1.png", width=114, height=114, pointsize=8, res=600, units="mm")
     map("worldHires", xlim=c(-124.5,-123.15), ylim=c(45.9,46.5), col="lightgrey", fill=T)  
     lat<-c(46.21)
     lon<-c(-123.91)
-    points(lon, lat, pch=16, col="black", cex=3)
-    map.scale(-123, 46, ratio=F)
-    text(-124.2, 46.2, "Pacific \nOcean", cex=1.5)
+    points(lon, lat, pch=16, col="black", cex=2.5)
+    text(lon, lat+0.04, "SATURN-03", cex=0.8)
+    map.scale(-123.6, 46, ratio=F)
+    text(-124.3, 46.2, "Pacific \nOcean", cex=1.5)
     text(-123.5, 46.4, "Columbia River \nEstuary", cex=1.5)
     box(col='black', lwd=1.5)
 
@@ -285,7 +286,7 @@ par(mfrow=c(1,2), mar=c(3,2,2,2), pty="s", cex=1.2, oma=c(1,3,1,0))
     abline(b=P04.ph$regression.results[4,3],a=P04.ph$regression.results[4,2], lty=2)
     axis(2, at=c(7.8,8.1,8.4),las=1)
     axis(1, at=c(0,0.8,1.6))
-    text(y=8.3,x=1.4,substitute(paste("R"^{2}, "=0.29")), cex=1)
+    text(y=8.3,x=1.4,substitute(paste("R = -0.54")), cex=1)
     mtext("pH",side=2, cex=1.2, line=3)
     mtext(substitute(paste("DIP (",mu, "M)")),side=1, cex=1.2, line=2.5)
     mtext("A", side=3, cex=2, line=0, adj=0)
@@ -294,7 +295,7 @@ par(mfrow=c(1,2), mar=c(3,2,2,2), pty="s", cex=1.2, oma=c(1,3,1,0))
     abline(b=DIN.ph$regression.results[4,3],a=DIN.ph$regression.results[4,2], lty=2)
     axis(2, at=c(7.8,8.1,8.4),las=1)
     axis(1, at=c(5,20,35))
-    text(y=8.3,x=31.5,substitute(paste("R"^{2}, "=0.37")), cex=1)
+    text(y=8.3,x=31.5,substitute(paste("R = -0.61")), cex=1)
     mtext(substitute(paste("DIN (",mu, "M)")),side=1, cex=1.2, line=2.5)
     mtext("B", side=3, cex=2, line=0, adj=0)
 
@@ -331,7 +332,7 @@ par(mfrow=c(2,1), mar=c(3,2,2,2), pty="m", cex=1.2, oma=c(1,3,1,3))
     mtext(substitute(paste("Influx - abundance (10"^{6}, " cells L"^{-1},')')), side=1, cex=1.2,  line=3)
     mtext("B", side=3, cex=2, adj=0)
     abline(b=cor.influx$regression.results[4,3],a=cor.influx$regression.results[4,2], lty=2)
-    text(0.05,1,substitute(paste("R"^{2}, "=0.83")), cex=1)
+    text(0.05,1,substitute(paste("R = 0.90")), cex=1)
 
 dev.off()
 
@@ -442,7 +443,7 @@ par(mfrow=c(1,1), mar=c(3,2,1,2), pty="s", cex=1.2, oma=c(1,3,1,0))
     axis(2, at=c(0, 0.15,0.3), las=1)
     axis(1, at=c(0, 0.15,0.3))
     abline(b=reg$regression.results[4,3],a=reg$regression.results[4,2], lty=2)
-    text(0.07,0.3,substitute(paste("R"^{2}, "=0.24")), cex=1)
+    text(0.07,0.3,substitute(paste("R = 0.49")), cex=1)
     mtext("Cryptophytes                             ", side=2, cex=1.2,  line=3, font=1)
     mtext(substitute(paste("                 (10"^{6}, " cells L"^{-1},')')), side=2, cex=1.2,  line=3)
     mtext(substitute(paste("                 (10"^{6}, " cells L"^{-1},')')), side=1, cex=1.2,  line=3)
@@ -514,7 +515,7 @@ png("FigureS5.png", width=114, height=114, pointsize=8, res=600, units="mm")
     abline(a=0, b=1, lty=2)
     axis(1, at=c(0,0.03,0.06))
     axis(2, at=c(0,0.03,0.06), las=1)
-        text(0.0075, 0.05,substitute(paste("R"^{2}, "=0.60")), cex=1)
+        text(0.0075, 0.05,substitute(paste("R = 0.77")), cex=1)
     mtext(substitute(paste("DNA-based division (h"^{-1},")")), side=1, line=3, cex=1.2)
     mtext(substitute(paste("Size-based division (h"^{-1},")")), side=2, line=3, cex=1.2)
 
@@ -568,7 +569,7 @@ par(mfrow=c(2,2), mar=c(3,2,2,3), pty="s", cex=1.2, oma=c(1,3,1,0))
     axis(2, at=c(0,0.8,1.6),las=1)
     axis(1, at=c(0, 0.8, 1.6))
     abline(b=P04.DR$regression.results[4,3],a=P04.DR$regression.results[4,2], lty=2)
-    text(1.4,0.2,substitute(paste("R"^{2}, "=0.44")), cex=1)
+    text(1.4,0.2,substitute(paste("R = 0.66")), cex=1)
     #text(10,0.6,"p < 0.01", cex=0.75)
     mtext(substitute(paste("division (d"^{-1},')')), side=2, cex=1.2, line=3)
     mtext(substitute(paste("DIP (",mu, "M)")),side=1, cex=1.2, line=2.5)
@@ -578,7 +579,7 @@ par(mfrow=c(2,2), mar=c(3,2,2,3), pty="s", cex=1.2, oma=c(1,3,1,0))
     axis(2, at=c(0,0.8,1.6),las=1)
     axis(1, at=c(5,20,35))
     abline(b=DIN.DR$regression.results[4,3],a=DIN.DR$regression.results[4,2], lty=2)
-    text(30,0.2,substitute(paste("R"^{2}, "=0.30")), cex=1)
+    text(30,0.2,substitute(paste("R = 0.55")), cex=1)
     #text(10,0.6,"p < 0.01", cex=0.75)
     mtext(substitute(paste("DIN (",mu, "M)")),side=1, cex=1.2, line=2.5)
     mtext("B", side=3, cex=2, adj=0)
@@ -590,28 +591,11 @@ par(mfrow=c(2,2), mar=c(3,2,2,3), pty="s", cex=1.2, oma=c(1,3,1,0))
     mtext("pH",side=1, cex=1.2, line=2.5)
     mtext("C", side=3, cex=2, adj=0)
     abline(b=ph.DR$regression.results[4,3],a=ph.DR$regression.results[4,2], lty=2)
-    text(8.3,1.4,substitute(paste("R"^{2}, "=0.41")), cex=1)
+    text(8.3,1.4,substitute(paste("R = -0.64")), cex=1)
     mtext(substitute(paste("division (d"^{-1},')')), side=2, cex=1.2, line=3)
 
 
 dev.off()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -627,17 +611,23 @@ set.cruise.id("CMOP_6")
 cruise <-"CMOP_6"
 set.project.location("/Volumes/seaflow/CMOP_6/CMOP_2013_f2")
 
-evt.list <- get.evt.list()
-
-evt <- readSeaflow(evt.list[100]) #250 - 270
-
-plot.filter.cytogram(evt, width=0.5, notch=c(1,1))
-
-
 opp.list <- get.opp.files()
 
-plot.cytogram.by.file(opp.list[3750], para.x="fsc_small", para.y="pe")
+opp <- get.opp.by.date("2013-09-10 17:00","2013-09-10 18:00")
+opp2 <- opp[round(seq(1, nrow(opp), length.out = 50000)),]
+crypto <- subset(opp2, pop == "crypto")
 
+png("FigureS3A.png", width=114, height=114, pointsize=8, res=600, units="mm")
+
+par(mfrow=c(1,2), cex=1.2)
+plot.cytogram(opp2, para.x="fsc_small", para.y="chl_small", xlab = "light scatter", ylab="red fluo")
+    points(crypto[,c("fsc_small", "chl_small")], col='red3', pch=16, cex=0.4) #
+# plot.cytogram(opp2, para.x="fsc_small", para.y="pe", xlab = "Light scatter", ylab="Orange fluo") #
+#     points(crypto[,c("fsc_small", "pe")], col='red3', pch=16, cex=0.4) #
+plot.cytogram(opp2, para.y="chl_small", para.x="pe", ylab = "red fluo", xlab="orange fluo") #
+    points(crypto[,c("pe", "chl_small")], col='red3', pch=16, cex=0.4) #
+
+dev.off()
 
 
 
