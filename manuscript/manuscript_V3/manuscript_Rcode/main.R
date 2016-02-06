@@ -194,7 +194,6 @@ data.cor <- data.frame(cbind(time=time.template3[-1], fluo=h.fluo.mean, elevatio
 
 fluo.elev <- lmodel2(fluo ~ elevation, data.cor, "relative", "relative", 99)
 
-plot(data.cor$elevation, data.cor$fluo)
 
 
 
@@ -475,9 +474,9 @@ par(mfrow=c(3,1), mar=c(3,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
     mtext(substitute(paste("abundance (10"^{6}, " cells L"^{-1},')')), side=2, cex=1.2, line=3)
 
     par(new=TRUE)
-    plotCI(cc$time,cc$mean.f.G1*100, uiw=na.approx(cc$sd.f.G1*100), sfrac=0, lwd=2, col='red3', xlim=c(min(cc$time, na.rm=T),max(cc$time, na.rm=T)),, ylim=c(0,100), pch=NA, xaxt='n', xlab=NA, ylab=NA, yaxt='n')
+    plotCI(cc$time,cc$mean.f.G1*100, uiw=na.approx(cc$sd.f.G1*100)/sqrt(3), sfrac=0, lwd=2, col='red3', xlim=c(min(cc$time, na.rm=T),max(cc$time, na.rm=T)),, ylim=c(0,100), pch=NA, xaxt='n', xlab=NA, ylab=NA, yaxt='n')
     lines(cc$time,cc$mean.f.G1*100, col='red3')
-    plotCI(cc$time,cc$mean.f.G2*100+cc$mean.f.S*100, uiw=na.approx(cc$sd.f.G2*100+cc$sd.f.S*100), sfrac=0, lwd=2, col='seagreen3', pch=NA,add=T)
+    plotCI(cc$time,cc$mean.f.G2*100+cc$mean.f.S*100, uiw=na.approx(cc$sd.f.G2*100+cc$sd.f.S*100)/sqrt(3), sfrac=0, lwd=2, col='seagreen3', pch=NA,add=T)
     lines(cc$time,cc$mean.f.G2*100+cc$mean.f.S*100, col='seagreen3')
     # plotCI(cc$time,cc$mean.f.S*100, uiw=cc$sd.f.S*100, sfrac=0, lwd=2, col='darkturquoise', pch=NA,add=T)
     # lines(cc$time,cc$mean.f.S*100, col='darkturquoise')
@@ -485,7 +484,7 @@ par(mfrow=c(3,1), mar=c(3,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
     mtext('Cells in G1 or S+G2 (%)', side=4, cex=1.2, line=2.5)
 
 
-    plotCI(cc$time,cc$div, uiw=na.approx(cc$div.se), sfrac=0, lwd=2, col='red3', xlim=c(min(cc$time, na.rm=T),max(cc$time, na.rm=T)),, ylim=c(0,0.06), pch=NA, xaxt='n', xlab=NA, ylab=NA, yaxt='n')
+    plotCI(cc$time,cc$div, uiw=na.approx(cc$div.se)/sqrt(3), sfrac=0, lwd=2, col='red3', xlim=c(min(cc$time, na.rm=T),max(cc$time, na.rm=T)),, ylim=c(0,0.06), pch=NA, xaxt='n', xlab=NA, ylab=NA, yaxt='n')
     lines(cc$time,cc$div, col='red3')
     plotCI(m$time, m$div.ave,  uiw=m$div.se, col="darkgrey",sfrac=0, lwd=2, pch=NA, add=TRUE)
     lines(m$time, m$div.ave)
@@ -507,7 +506,7 @@ dev.off()
 png("FigureS5.png", width=114, height=114, pointsize=8, res=600, units="mm")
 
     par(pty='s')
-    plotCI(data.cc[,1],data.cc[,2], uiw=data.cc[,3], xlim=c(0,0.06), ylim=c(0,0.06), xaxt='n', yaxt='n', err='x', sfrac=0, 
+    plotCI(data.cc[,1],data.cc[,2], uiw=data.cc[,3]/sqrt(3), xlim=c(0,0.06), ylim=c(0,0.06), xaxt='n', yaxt='n', err='x', sfrac=0, 
         col='darkgrey', lwd=2, pch=NA, xlab=NA, ylab=NA)
     plotCI(data.cc[,1],data.cc[,2], uiw=data.cc[,4], err='y', sfrac=0, col='darkgrey', lwd=2, pch=NA,add=TRUE)
     points(data.cc[,1],data.cc[,2], pch=16)
@@ -546,7 +545,7 @@ png("Figure5.png", width=114*2, height=114*2, pointsize=8, res=600, units="mm")
     mtext("A", side=3, cex=2, line=0, adj=0)
 
     plotCI(data.dr$time, data.dr$DR, uiw=data.dr$DR.se, sfrac=0, xlab="", lwd=2, pch=16, ylab= "", col="darkgrey", las=1, yaxt='n', xaxt='n', xlim=range(fsc$time))
-    lines(data.dr$time, data.dr$DR)
+    points(data.dr$time, data.dr$DR, pch=16, cex=2)
     axis(2, at=seq(0,2.5,0.5), las=1)
     axis(1, at=seq(min(data.dr$time), max(data.dr$time), by=60*60*24*6), labels=c(1,7,14,21))
     mtext(substitute(paste("division (d"^{-1},')')), side=2, cex=1.2, line=3)
