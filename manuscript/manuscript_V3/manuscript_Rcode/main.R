@@ -24,9 +24,9 @@ stat <- read.csv(paste0(user, "crypto_HD_CMOP_6.binned.csv"))
 
 crypto <- subset(stat, h.time > as.POSIXct("2013-09-10 16:50:00", tz='GMT') & h.time < as.POSIXct("2013-10-03 24:00:00",tz='GMT'))
     crypto.week1 <- subset(crypto ,  h.time < as.POSIXct("2013-09-13 16:00:00",tz='GMT'))
-    crypto.week2 <- subset(crypto , h.time > as.POSIXct("2013-09-16 18:00:00", tz='GMT') & h.time < as.POSIXct("2013-09-20 1:00:00", tz='GMT')) 
-    crypto.week3 <- subset(crypto , h.time > as.POSIXct("2013-09-23 22:00:00", tz='GMT') & h.time < as.POSIXct("2013-09-27 10:00:00", tz='GMT')) 
-    crypto.week4 <- subset(crypto , h.time > as.POSIXct("2013-09-30 18:00:00", tz='GMT') & h.time < as.POSIXct("2013-10-03 24:00:00", tz='GMT')) 
+    crypto.week2 <- subset(crypto , h.time > as.POSIXct("2013-09-16 18:00:00", tz='GMT') & h.time < as.POSIXct("2013-09-20 1:00:00", tz='GMT'))
+    crypto.week3 <- subset(crypto , h.time > as.POSIXct("2013-09-23 22:00:00", tz='GMT') & h.time < as.POSIXct("2013-09-27 10:00:00", tz='GMT'))
+    crypto.week4 <- subset(crypto , h.time > as.POSIXct("2013-09-30 18:00:00", tz='GMT') & h.time < as.POSIXct("2013-10-03 24:00:00", tz='GMT'))
     time.template <- seq(i, f+60*60*48, by=60*60*24)
     time.res <- cut(crypto$h.time,time.template)
     daily.abun.mean <-  tapply(crypto$h2.conc.mean, time.res, function(x) mean(x, na.rm=T))
@@ -45,7 +45,7 @@ sal <- read.csv(paste0(user, "salinityCMOP_6"))
         sal.LPF <- smooth.spline(sal$time, sal$water_salinity, spar=0.002)
         sal.LPF$y[id] <- NA
         temp.LPF <- smooth.spline(sal$time, sal$water_temperature, spar=0.002)
-        temp.LPF$y[id] <- NA      
+        temp.LPF$y[id] <- NA
 
 par <- read.csv(paste0(user, "Par_CMOP_6"))
     par$time <- as.POSIXct(par$time, format="%Y/%m/%d %H:%M:%S",  tz= "GMT")
@@ -54,21 +54,21 @@ par <- read.csv(paste0(user, "Par_CMOP_6"))
     par.LPF$y[which(par.LPF$y < 40)] <- 0
     par.LPF$y[which(diff(par.LPF$x)>8000)] <- NA
 
-# oxy <- read.csv(paste0(user, "oxygenCMOP_6"))
-#     oxy$time <- as.POSIXct(strptime(oxy$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
-#     oxy<- subset(oxy, time > i & time < f)
+oxy <- read.csv(paste0(user, "oxygenCMOP_6"))
+    oxy$time <- as.POSIXct(strptime(oxy$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
+    oxy<- subset(oxy, time > i & time < f)
 
 fluo <- read.csv(paste0(user, "fvfmCMOP_6"))
     fluo$time <- as.POSIXct(strptime(fluo$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
-    fluo<- subset(fluo, time > i & time < f) 
+    fluo<- subset(fluo, time > i & time < f)
   id <- which(diff(fluo$time) > 60*60*3)
         fluo.LPF <- smooth.spline(fluo$time, fluo$fo)#, spar=0.01, df=2)
         fluo.LPF$y[id] <- NA
 
 tide <- read.csv(paste0(user, "elevationCMOP_6"))
    tide$time <- as.POSIXct(strptime(tide$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
-    tide <- subset(tide, time > i & time < f) 
-    tide <- subset(tide, elevation > 1) 
+    tide <- subset(tide, time > i & time < f)
+    tide <- subset(tide, elevation > 1)
 
 nut <- read.csv(paste0(user, "Ribalet_nutrients2.csv"))
     nut$time <- as.POSIXct(strptime(nut$time, "%m/%d/%y %H:%M"))
@@ -131,7 +131,7 @@ c <- lmodel2(CC ~ DR, data.cc,"relative", "relative", 99)
 
 lab <- read.delim(paste0(user,"stat.tab"))
     lab$time <- as.POSIXct(lab$time,tz='')-8*60*60
-    rhodo <- subset(lab, pop == 'crypto' & flag == 0) 
+    rhodo <- subset(lab, pop == 'crypto' & flag == 0)
     time.template2 <- seq(min(rhodo$time), max(rhodo$time), by=60*60)
     time.res <- cut(rhodo$time,time.template2)
     h.abun.mean <-  tapply(rhodo$abundance, time.res, function(x) mean(x, na.rm=T))
@@ -140,7 +140,7 @@ lab <- read.delim(paste0(user,"stat.tab"))
     h.fsc.sd <-  tapply(rhodo$fsc_small, time.res, function(x) sd(x, na.rm=T))
     h.time <- tapply(rhodo$time, time.res, function(x) min(x, na.rm=T))
 
-    #dark cycle: GMT 16:00-23:00 
+    #dark cycle: GMT 16:00-23:00
     night.lab <- subset( rhodo , time >= as.POSIXct("2014-09-22 16:00:00")-8*60*60 &  time <= as.POSIXct("2014-09-22 23:00:00")-8*60*60)
     night2.lab <- subset( rhodo , time >= as.POSIXct("2014-09-23 16:00:00")-8*60*60 &  time <= as.POSIXct("2014-09-23 23:00:00")-8*60*60)
 
@@ -151,14 +151,14 @@ daily.par <- tapply(par$par, time.res, function(x) mean(x, na.rm=T))
 time.res <- cut(sal$time, time.template)
 daily.temp <-  tapply(sal$water_temperature, time.res, function(x) mean(x, na.rm=T))
 daily.sal <-  tapply(sal$water_salinity, time.res, function(x) mean(x, na.rm=T))
-
+daily.con <-  tapply(sal$water_electrical_conductivity, time.res, function(x) mean(x, na.rm=T))
 time.res <- cut(ph$time, time.template)
 daily.ph <-  tapply(ph$ph, time.res, function(x) mean(x, na.rm=T))
 
 id <- c(1,3,8,14,15,16,17,22)
-data <- data.frame(cbind(time= time.template[-24], 
-    DIN=daily.DIN, P04 =daily.PO4, TEMP=daily.temp, SAL=daily.sal, PH=daily.ph, PAR=daily.par, 
-    PROD=daily.prod.mean, DR=daily.dr.mean,PROD.sd = daily.prod.sd, DR.se = daily.dr.se,N=daily.abun.mean))
+data <- data.frame(cbind(time= time.template[-24],
+    DIN=daily.DIN, P04 =daily.PO4, TEMP=daily.temp, SAL=daily.sal, PH=daily.ph, PAR=daily.par,
+    PROD=daily.prod.mean, DR=daily.dr.mean,PROD.sd = daily.prod.sd, DR.se = daily.dr.se,N=daily.abun.mean, CON = daily.con))
 data.dr <- data[id,]
 
 
@@ -169,6 +169,10 @@ P04.ph <- lmodel2(PH ~ P04, data,"relative", "relative", 99)
     P04.N <- lmodel2(P04 ~ N, data,"relative", "relative", 99)
     ph.N <- lmodel2(PH ~ N, data,"relative", "relative", 99)
     DR.N <- lmodel2(DR ~ N, data,"relative", "relative", 99)
+    ph.SAL <- lmodel2(PH ~ SAL, data,"relative", "relative", 99)
+    ph.TEMP <- lmodel2(PH ~ TEMP, data,"relative", "relative", 99)
+    ph.TEMP <- lmodel2(PH ~ TEMP, data,"relative", "relative", 99)
+    ph.CON <- lmodel2(PH ~ CON, data,"relative", "relative", 99)
 
 DIN.P <- lmodel2(PROD ~ DIN, data.dr,"relative", "relative", 99)
     P04.P <- lmodel2(PROD ~ P04, data.dr,"relative", "relative", 99)
@@ -181,20 +185,39 @@ ph.P <- lmodel2(PROD ~ PH, data.dr,"relative", "relative", 99)
 
 
 
-
-
-
 time.template3 <- seq(min(fluo$time), max(fluo$time), by=60*60)
-time.res <- cut(fluo.LPF$x,time.template3)
+  time.res <- cut(fluo.LPF$x,time.template3)
 h.fluo.mean <-  tapply(fluo.LPF$y, time.res, function(x) mean(x, na.rm=T))
-time.res <- cut(tide$time,time.template3)
+  time.res <- cut(tide$time,time.template3)
 h.elevation.mean <-  tapply(tide$elevation, time.res, function(x) mean(x, na.rm=T))
+  time.res <- cut(oxy$time,time.template3)
+h.oxy.mean <-  tapply(oxy$oxygen, time.res, function(x) mean(x, na.rm=T))
+  time.res <- cut(ph.LPF$x,time.template3)
+h.ph.mean <-  tapply(ph.LPF$y, time.res, function(x) mean(x, na.rm=T))
+  time.res <- cut(sal$time,time.template3)
+h.sal.mean <-  tapply(sal$water_salinity, time.res, function(x) mean(x, na.rm=T))
+h.temp.mean <-  tapply(sal$water_temperature, time.res, function(x) mean(x, na.rm=T))
+h.con.mean <-  tapply(sal$water_electrical_conductivity, time.res, function(x) mean(x, na.rm=T))
+data.cor2 <- data.frame(cbind(time=time.template3[-1], elevation=h.elevation.mean, ph=h.ph.mean, temp = h.temp.mean, sal=h.sal.mean, conductivity=h.con.mean, oxygen=h.oxy.mean, fluo=h.fluo.mean))
 
-data.cor <- data.frame(cbind(time=time.template3[-1], fluo=h.fluo.mean, elevation=h.elevation.mean ))
+temp.ph <- lmodel2(ph ~ temp, data.cor2, "relative", "relative", 99)
+sal.ph <- lmodel2(ph ~ sal, data.cor2, "relative", "relative", 99)
+oxy.ph <- lmodel2(ph ~ oxygen, data.cor2, "relative", "relative", 99)
 
 fluo.elev <- lmodel2(fluo ~ elevation, data.cor, "relative", "relative", 99)
 
 
+
+time.template4 <- seq(min(sal$time), max(sal$time), by=60*60)
+time.res <- cut(sal$time,time.template4)
+h.sal.mean <-  tapply(sal$water_salinity, time.res, function(x) mean(x, na.rm=T))
+h.temp.mean <-  tapply(sal$water_temperature, time.res, function(x) mean(x, na.rm=T))
+h.con.mean <-  tapply(sal$water_electrical_conductivity, time.res, function(x) mean(x, na.rm=T))
+time.res <- cut(tide$time,time.template4)
+h.elevation.mean <-  tapply(tide$elevation, time.res, function(x) mean(x, na.rm=T))
+data.cor2 <- data.frame(cbind(time=time.template4[-1], elevation=h.elevation.mean, temp = h.temp.mean, sal=h.sal.mean, con=h.con.mean  ))
+temp.elev <- lmodel2(temp ~ elevation, data.cor2, "relative", "relative", 99)
+temp.elev <- lmodel2(temp ~ elevation, data.cor2, "relative", "relative", 99)
 
 
 
@@ -206,11 +229,11 @@ fluo.elev <- lmodel2(fluo ~ elevation, data.cor, "relative", "relative", 99)
 png("FigureS1.png", width=114, height=114, pointsize=8, res=600, units="mm")
 
     par(mfrow=c(2,1), mar=c(0,0,0,0), oma=c(0,0,0,0))
-    map("worldHires", 'usa', xlim=c(-140, -50), ylim=c(25,50),col="grey", interior=F, fill=T)  
+    map("worldHires", 'usa', xlim=c(-140, -50), ylim=c(25,50),col="grey", interior=F, fill=T)
     lat<-c(46.21)
     lon<-c(-123.91)
     polygon(c(-125,-122.5,-122.5,-125), c(45,45,47,47), border='black', lwd=1.5)
-    map("worldHires", xlim=c(-124.5,-123.15), ylim=c(45.9,46.5), col="lightgrey", fill=T)  
+    map("worldHires", xlim=c(-124.5,-123.15), ylim=c(45.9,46.5), col="lightgrey", fill=T)
     lat<-c(46.21)
     lon<-c(-123.91)
     points(lon, lat, pch=16, col="black", cex=2.5)
@@ -275,7 +298,7 @@ dev.off()
 
 
 
-### PH / DIN CORRELATION 
+### PH / DIN CORRELATION
 
 png("FigureS2.png", width=114*2, height=114, pointsize=8, res=600, units="mm")
 
@@ -285,7 +308,7 @@ par(mfrow=c(1,2), mar=c(3,2,2,2), pty="s", cex=1.2, oma=c(1,3,1,0))
     abline(b=P04.ph$regression.results[4,3],a=P04.ph$regression.results[4,2], lty=2)
     axis(2, at=c(7.8,8.1,8.4),las=1)
     axis(1, at=c(0,0.8,1.6))
-    text(y=8.3,x=1.4,substitute(paste("R = -0.54")), cex=1)
+    text(y=8.3,x=1.4,substitute(paste("R"^{2}," = 0.30")), cex=1)
     mtext("pH",side=2, cex=1.2, line=3)
     mtext(substitute(paste("DIP (",mu, "M)")),side=1, cex=1.2, line=2.5)
     mtext("A", side=3, cex=2, line=0, adj=0)
@@ -294,7 +317,7 @@ par(mfrow=c(1,2), mar=c(3,2,2,2), pty="s", cex=1.2, oma=c(1,3,1,0))
     abline(b=DIN.ph$regression.results[4,3],a=DIN.ph$regression.results[4,2], lty=2)
     axis(2, at=c(7.8,8.1,8.4),las=1)
     axis(1, at=c(5,20,35))
-    text(y=8.3,x=31.5,substitute(paste("R = -0.61")), cex=1)
+    text(y=8.3,x=31.5,substitute(paste("R"^{2}, "= 0.37")), cex=1)
     mtext(substitute(paste("DIN (",mu, "M)")),side=1, cex=1.2, line=2.5)
     mtext("B", side=3, cex=2, line=0, adj=0)
 
@@ -310,7 +333,7 @@ dev.off()
 
 ### INFLUX VALIDATION
 
-png("FigureS3.png", width=114*1.5, height=114*1.5, pointsize=8, res=600, units="mm")
+png("FigureS4.png", width=114*1.5, height=114*1.5, pointsize=8, res=600, units="mm")
 
 par(mfrow=c(2,1), mar=c(3,2,2,2), pty="m", cex=1.2, oma=c(1,3,1,3))
 
@@ -331,7 +354,7 @@ par(mfrow=c(2,1), mar=c(3,2,2,2), pty="m", cex=1.2, oma=c(1,3,1,3))
     mtext(substitute(paste("Influx - abundance (10"^{6}, " cells L"^{-1},')')), side=1, cex=1.2,  line=3)
     mtext("B", side=3, cex=2, adj=0)
     abline(b=cor.influx$regression.results[4,3],a=cor.influx$regression.results[4,2], lty=2)
-    text(0.05,1,substitute(paste("R = 0.90")), cex=1)
+    text(0.05,1,substitute(paste("R"^{2}, "= 0.81")), cex=1)
 
 dev.off()
 
@@ -344,7 +367,7 @@ png("Figure3.png", width=114*2, height=114*1.5, pointsize=8, res=600, units="mm"
 
 par(mfrow=c(4,1), mar=c(3,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
 
-    #week 1 
+    #week 1
     df <- crypto.week1
     i <- min(df$h.time, na.rm=T)
     f <- i + 60*60*24*3.5
@@ -365,7 +388,7 @@ par(mfrow=c(4,1), mar=c(3,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
     mtext("time (d)", side=1, cex=1.2, outer=T, line=-1)
     points(meso$Time, meso$Meso, pch=16, cex=1.5)
 
-    #week 2 
+    #week 2
     df <- crypto.week2
     i <- min(df$h.time, na.rm=T)
     f <- i + 60*60*24*3.5
@@ -384,7 +407,7 @@ par(mfrow=c(4,1), mar=c(3,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
     points(meso$Time, meso$Meso, pch=16, cex=1.5)
 
 
-    #week 3 
+    #week 3
     df <- crypto.week3
     i <- min(df$h.time, na.rm=T)
     f <- i + 60*60*24*3.5
@@ -404,7 +427,7 @@ par(mfrow=c(4,1), mar=c(3,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
     points(meso$Time, meso$Meso, pch=16, cex=1.5)
 
 
-    #week 4 
+    #week 4
     df <- crypto.week4
     i <- min(df$h.time, na.rm=T)
     f <- i + 60*60*24*3.5
@@ -431,7 +454,7 @@ dev.off()
 
 
 
-### CRYPTO / MESO CORRELATION 
+### CRYPTO / MESO CORRELATION
 
 
 png("Figure3.png", width=114, height=114, pointsize=8, res=600, units="mm")
@@ -442,7 +465,7 @@ par(mfrow=c(1,1), mar=c(3,2,1,2), pty="s", cex=1.2, oma=c(1,3,1,0))
     axis(2, at=c(0, 0.15,0.3), las=1)
     axis(1, at=c(0, 0.15,0.3))
     abline(b=reg$regression.results[4,3],a=reg$regression.results[4,2], lty=2)
-    text(0.07,0.3,substitute(paste("R = 0.49")), cex=1)
+    text(0.07,0.3,substitute(paste("R"^{2}, "= 0.24")), cex=1)
     mtext("Cryptophytes                             ", side=2, cex=1.2,  line=3, font=1)
     mtext(substitute(paste("                 (10"^{6}, " cells L"^{-1},')')), side=2, cex=1.2,  line=3)
     mtext(substitute(paste("                 (10"^{6}, " cells L"^{-1},')')), side=1, cex=1.2,  line=3)
@@ -459,35 +482,41 @@ dev.off()
 #####################
 
 ### CULTURE
+vol <- 10^(1.2384*log10(h.fsc.mean/63) + 1.003)
+vol.sd <- vol*h.fsc.sd/h.fsc.mean
 
 png("Figure4.png", width=114*2, height=114*2, pointsize=8, res=600, units="mm")
 
 par(mfrow=c(3,1), mar=c(3,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
 
-    plotCI(h.time,h.abun.mean,uiw=h.abun.sd, sfrac=0, lwd=2, col='darkgrey', xlim=c(min(cc$time, na.rm=T),max(cc$time, na.rm=T)), ylim=c(0,30), pch=NA, xaxt='n', xlab=NA, ylab=NA, yaxt='n')
-    lines(h.time,h.abun.mean) 
+    plotCI(na.approx(h.time),na.approx(vol), uiw=na.approx(vol.sd), col="darkgrey", sfrac=0, lwd=1, xlim=c(min(cc$time, na.rm=T),max(cc$time, na.rm=T)), pch=NA, xaxt='n', xlab=NA, ylab=NA, yaxt='n')
+    lines(na.approx(h.time),na.approx(h.abun.mean), lwd=1)
     rect(min(night.lab$time), -1, max(night.lab$time), 500, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
     rect(min(night2.lab$time), -1, max(night2.lab$time), 500, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
     axis.POSIXct(1, at=seq(min(cc$time, na.rm=T), max(cc$time, na.rm=T), by=60*60*6),labels=seq(1,25, 6))
-    axis(2, at=c(0,15,30), las=1)
+    axis(2, at=c(80,95,110), las=1)
     mtext("A", side=3, cex=2, line=0, adj=0)
-    mtext(substitute(paste("abundance (10"^{6}, " cells L"^{-1},')')), side=2, cex=1.2, line=3)
+    mtext(substitute(paste("Cell volume (", mu, "m"^{3},')')), side=2, cex=1.2, line=3)
+    par(new=TRUE)
+    plotCI(na.approx(h.time),na.approx(h.fsc.mean), uiw=na.approx(h.fsc.sd), col="darkgrey", pch=NA, sfrac=0, lwd=2, xlim=c(min(cc$time, na.rm=T),max(cc$time, na.rm=T)),  xaxt='n', xlab=NA, ylab=NA, yaxt='n')
+    lines(na.approx(h.time),na.approx(h.fsc.mean), lwd=1)
+
 
     par(new=TRUE)
-    plotCI(cc$time,cc$mean.f.G1*100, uiw=na.approx(cc$sd.f.G1*100)/sqrt(3), sfrac=0, lwd=2, col='red3', xlim=c(min(cc$time, na.rm=T),max(cc$time, na.rm=T)),, ylim=c(0,100), pch=NA, xaxt='n', xlab=NA, ylab=NA, yaxt='n')
-    lines(cc$time,cc$mean.f.G1*100, col='red3')
-    plotCI(cc$time,cc$mean.f.G2*100+cc$mean.f.S*100, uiw=na.approx(cc$sd.f.G2*100+cc$sd.f.S*100)/sqrt(3), sfrac=0, lwd=2, col='seagreen3', pch=NA,add=T)
-    lines(cc$time,cc$mean.f.G2*100+cc$mean.f.S*100, col='seagreen3')
+    plotCI(cc$time,cc$mean.f.G1*100, uiw=na.approx(cc$sd.f.G1*100), sfrac=0, lwd=1, col='black', xlim=c(min(cc$time, na.rm=T),max(cc$time, na.rm=T)), ylim=c(0,100), pch=NA, xaxt='n', xlab=NA, ylab=NA, yaxt='n')
+    points(cc$time,cc$mean.f.G1*100, pch=16)
+    plotCI(cc$time,cc$mean.f.G2*100+cc$mean.f.S*100, uiw=na.approx(cc$sd.f.G2*100+cc$sd.f.S*100), sfrac=0, lwd=1, pch=NA,add=T)
+    points(cc$time,cc$mean.f.G2*100+cc$mean.f.S*100, pch=21, bg='white')
     # plotCI(cc$time,cc$mean.f.S*100, uiw=cc$sd.f.S*100, sfrac=0, lwd=2, col='darkturquoise', pch=NA,add=T)
     # lines(cc$time,cc$mean.f.S*100, col='darkturquoise')
     axis(4, at=c(0,50,100), las=1)
     mtext('Cells in G1 or S+G2 (%)', side=4, cex=1.2, line=2.5)
 
 
-    plotCI(cc$time,cc$div, uiw=na.approx(cc$div.se)/sqrt(3), sfrac=0, lwd=2, col='red3', xlim=c(min(cc$time, na.rm=T),max(cc$time, na.rm=T)),, ylim=c(0,0.06), pch=NA, xaxt='n', xlab=NA, ylab=NA, yaxt='n')
-    lines(cc$time,cc$div, col='red3')
-    plotCI(m$time, m$div.ave,  uiw=m$div.se, col="darkgrey",sfrac=0, lwd=2, pch=NA, add=TRUE)
-    lines(m$time, m$div.ave)
+    plotCI(cc$time,cc$div, uiw=na.approx(cc$div.se), sfrac=0, lwd=1, xlim=c(min(cc$time, na.rm=T),max(cc$time, na.rm=T)),ylim=c(0,0.06), pch=NA, xaxt='n', xlab=NA, ylab=NA, yaxt='n')
+    points(cc$time,cc$div, pch=21, bg='white')
+    plotCI(m$time, m$div.ave,  uiw=m$div.se, sfrac=0, lwd=1, pch=NA, add=TRUE, col="darkgrey")
+    lines(m$time, m$div.ave, lwd=1)
     rect(min(night.lab$time), -1, max(night.lab$time), 1, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
     rect(min(night2.lab$time), -1, max(night2.lab$time), 1, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
     axis.POSIXct(1, at=seq(min(cc$time, na.rm=T),max(cc$time, na.rm=T), by=60*60*6),labels=seq(1,25, 6))
@@ -506,7 +535,7 @@ dev.off()
 png("FigureS5.png", width=114, height=114, pointsize=8, res=600, units="mm")
 
     par(pty='s')
-    plotCI(data.cc[,1],data.cc[,2], uiw=data.cc[,3]/sqrt(3), xlim=c(0,0.06), ylim=c(0,0.06), xaxt='n', yaxt='n', err='x', sfrac=0, 
+    plotCI(data.cc[,1],data.cc[,2], uiw=data.cc[,3]/sqrt(3), xlim=c(0,0.06), ylim=c(0,0.06), xaxt='n', yaxt='n', err='x', sfrac=0,
         col='darkgrey', lwd=2, pch=NA, xlab=NA, ylab=NA)
     plotCI(data.cc[,1],data.cc[,2], uiw=data.cc[,4], err='y', sfrac=0, col='darkgrey', lwd=2, pch=NA,add=TRUE)
     points(data.cc[,1],data.cc[,2], pch=16)
@@ -514,7 +543,7 @@ png("FigureS5.png", width=114, height=114, pointsize=8, res=600, units="mm")
     abline(a=0, b=1, lty=2)
     axis(1, at=c(0,0.03,0.06))
     axis(2, at=c(0,0.03,0.06), las=1)
-        text(0.0075, 0.05,substitute(paste("R = 0.77")), cex=1)
+        text(0.0075, 0.05,substitute(paste("R"^{2}, "= 0.59")), cex=1)
     mtext(substitute(paste("DNA-based division (h"^{-1},")")), side=1, line=3, cex=1.2)
     mtext(substitute(paste("Size-based division (h"^{-1},")")), side=2, line=3, cex=1.2)
 
@@ -530,12 +559,12 @@ dev.off()
 
 
 
-### FIELD 
+### FIELD
 
 png("Figure5.png", width=114*2, height=114*2, pointsize=8, res=600, units="mm")
 
  par(mfrow=c(3,1), mar=c(2,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,1))
-  
+
     plotCI(fsc$time, fsc$vol, uiw=fsc$vol.sd, pch=NA, sfrac=0, col='darkgrey', yaxt='n', ylab=NA, xaxt='n', xlab=NA, lwd=1)
     abline(v=night.fsc$time, lwd=1, col=adjustcolor("black", alpha=0.15))
     lines(fsc$time, fsc$vol)
@@ -568,7 +597,7 @@ par(mfrow=c(2,2), mar=c(3,2,2,3), pty="s", cex=1.2, oma=c(1,3,1,0))
     axis(2, at=c(0,0.8,1.6),las=1)
     axis(1, at=c(0, 0.8, 1.6))
     abline(b=P04.DR$regression.results[4,3],a=P04.DR$regression.results[4,2], lty=2)
-    text(1.4,0.2,substitute(paste("R = 0.66")), cex=1)
+    text(1.4,0.2,substitute(paste("R"^{2}, "= 0.44")), cex=1)
     #text(10,0.6,"p < 0.01", cex=0.75)
     mtext(substitute(paste("division (d"^{-1},')')), side=2, cex=1.2, line=3)
     mtext(substitute(paste("DIP (",mu, "M)")),side=1, cex=1.2, line=2.5)
@@ -578,7 +607,7 @@ par(mfrow=c(2,2), mar=c(3,2,2,3), pty="s", cex=1.2, oma=c(1,3,1,0))
     axis(2, at=c(0,0.8,1.6),las=1)
     axis(1, at=c(5,20,35))
     abline(b=DIN.DR$regression.results[4,3],a=DIN.DR$regression.results[4,2], lty=2)
-    text(30,0.2,substitute(paste("R = 0.55")), cex=1)
+    text(30,0.2,substitute(paste("R"^{2}, "= 0.30")), cex=1)
     #text(10,0.6,"p < 0.01", cex=0.75)
     mtext(substitute(paste("DIN (",mu, "M)")),side=1, cex=1.2, line=2.5)
     mtext("B", side=3, cex=2, adj=0)
@@ -590,7 +619,7 @@ par(mfrow=c(2,2), mar=c(3,2,2,3), pty="s", cex=1.2, oma=c(1,3,1,0))
     mtext("pH",side=1, cex=1.2, line=2.5)
     mtext("C", side=3, cex=2, adj=0)
     abline(b=ph.DR$regression.results[4,3],a=ph.DR$regression.results[4,2], lty=2)
-    text(8.3,1.4,substitute(paste("R = -0.64")), cex=1)
+    text(8.3,1.4,substitute(paste("R"^{2}, "= 0.41")), cex=1)
     mtext(substitute(paste("division (d"^{-1},')')), side=2, cex=1.2, line=3)
 
 
@@ -627,7 +656,3 @@ plot.cytogram(opp2, para.y="chl_small", para.x="pe", ylab = "red fluo", xlab="or
     points(crypto[,c("pe", "chl_small")], col='red3', pch=16, cex=0.4) #
 
 dev.off()
-
-
-
-
