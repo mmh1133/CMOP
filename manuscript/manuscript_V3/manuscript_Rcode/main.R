@@ -333,13 +333,13 @@ dev.off()
 
 ### INFLUX VALIDATION
 
-png("FigureS4.png", width=114*1.5, height=114*1.5, pointsize=8, res=600, units="mm")
+png("FigureS4.png", width=114*2, height=114*2, pointsize=8, res=600, units="mm")
 
 par(mfrow=c(2,1), mar=c(3,2,2,2), pty="m", cex=1.2, oma=c(1,3,1,3))
 
     plot(stat$h.time, stat$h2.conc.mean, type='l', xaxt='n', yaxt='n', ylim=c(0.01,3), log='y')
     #points(stat$h.time[id], stat$h2.conc.mean[id],col=3,pch=16)
-    points(pop$time, pop$conc, col=2)
+    points(pop$time, pop$conc, pch=16, cex=1.5)
     axis(1, at=seq(min(stat$h.time, na.rm=T), max(stat$h.time, na.rm=T), by=60*60*24*6), labels=c(1,7,14,21))
     axis(2, at=c(0.02,0.2,2),las=1)
     mtext("time (d)", side=1, cex=1.2, line= 2.5)
