@@ -40,30 +40,48 @@ crypto <- subset(stat, h.time > as.POSIXct("2013-09-10 16:50:00", tz='GMT') & h.
 
 sal <- read.csv(paste0(user, "salinityCMOP_6"))
     sal$time <- as.POSIXct(strptime(sal$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
-    sal <- subset(sal, time > i & time < f)
-    id <- which(diff(sal$time) > 60*60*3)
+    sal <- subset(sal, time > i-24*60*60*6 & time < f)
         sal.LPF <- smooth.spline(sal$time, sal$water_salinity, spar=0.002)
+        id <- which(diff(sal.LPF$x) > 60*60*3)
         sal.LPF$y[id] <- NA
         temp.LPF <- smooth.spline(sal$time, sal$water_temperature, spar=0.002)
+        id <- which(diff(temp.LPF$x) > 60*60*3)
         temp.LPF$y[id] <- NA
+
+plot(sal$time, sal$water_salinity)
+plot(sal$time, sal$water_temperature)
 
 par <- read.csv(paste0(user, "Par_CMOP_6"))
     par$time <- as.POSIXct(par$time, format="%Y/%m/%d %H:%M:%S",  tz= "GMT")
-    par <- subset(par, time > i & time < f)
+    par <- subset(par, time > i-24*60*60*6 & time < f)
     par.LPF <- smooth.spline(as.POSIXct(par$time, origin="1970-01-01", tz='GMT'), par$par, spar=0.05)
     par.LPF$y[which(par.LPF$y < 40)] <- 0
     par.LPF$y[which(diff(par.LPF$x)>8000)] <- NA
 
 oxy <- read.csv(paste0(user, "oxygenCMOP_6"))
     oxy$time <- as.POSIXct(strptime(oxy$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
-    oxy<- subset(oxy, time > i & time < f)
+    oxy<- subset(oxy, time > i-24*60*60*6 & time < f)
+    oxy.LPF <- smooth.spline(oxy$time, oxy$oxygensat)#, spar=0.05)
+    id <- which(diff(oxy.LPF$x) > 60*60*6)
+    oxy.LPF$y[id] <- NA
 
-fluo <- read.csv(paste0(user, "fvfmCMOP_6"))
-    fluo$time <- as.POSIXct(strptime(fluo$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
-    fluo<- subset(fluo, time > i & time < f)
-  id <- which(diff(fluo$time) > 60*60*3)
-        fluo.LPF <- smooth.spline(fluo$time, fluo$fo)#, spar=0.01, df=2)
-        fluo.LPF$y[id] <- NA
+plot(oxy.LPF$x, oxy.LPF$y)
+plot(oxy$time, oxy$oxygensat)
+
+fluo <- read.csv(paste0(user, "phytoflashCMOP_6"))
+        fluo$time <- as.POSIXct(strptime(fluo$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
+        fluo <- subset(fluo, fo < 4000)
+        fluo<- subset(fluo, time > i-24*60*60*6 & time < f)
+      id <- which(diff(fluo$time) > 60*60*3)
+            fluo.LPF <- smooth.spline(fluo$time, fluo$fo)#, spar=0.01, df=2)
+            fluo.LPF$y[id] <- NA
+
+# fluo <- read.csv(paste0(user, "fluorescenceCMOP_6"))
+#     fluo$time <- as.POSIXct(strptime(fluo$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
+#     fluo<- subset(fluo, time > i & time < f)
+#   id <- which(diff(fluo$time) > 60*60*3)
+#         fluo.LPF <- smooth.spline(fluo$time, fluo$fluorescence)#, spar=0.01, df=2)
+#         fluo.LPF$y[id] <- NA
 
 tide <- read.csv(paste0(user, "elevationCMOP_6"))
    tide$time <- as.POSIXct(strptime(tide$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
@@ -257,40 +275,43 @@ png("Figure1.png", width=114*2, height=114*1.5, pointsize=8, res=600, units="mm"
 
 par(mfrow=c(3,1), mar=c(3,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
 
-    plot(sal.LPF$x, sal.LPF$y,  xlab="", ylab="", xlim=c(i,f), type='l', xaxt='n', yaxt='n', lwd=1.5, ylim=c(0,30))
+    plot(sal.LPF$x, sal.LPF$y,  xlab="", ylab="", xlim=c(i-24*60*60*6,f), type='l', xaxt='n', yaxt='n', lwd=1.5, ylim=c(0,50))
     axis(2, at=c(0, 30, 15), las=1)
     axis.POSIXct(1, at=seq(i, f, by=60*60*24*6), labels=c(1,7,14,21))
     mtext("salinity (psu)",side=2, cex=1.2, line=3)
     par(new=T)
-    plot(temp.LPF$x, temp.LPF$y,  xlab="", ylab="", xlim=c(i,f), type='l', xaxt='n', yaxt='n', col='darkgrey', lwd=1.5, ylim=c(13,21))
+    plot(temp.LPF$x, temp.LPF$y,  xlab="", ylab="", xlim=c(i-24*60*60*6,f), type='l', xaxt='n', yaxt='n', col='darkgrey', lwd=1.5, ylim=c(5,21))
     axis(4, at=c(13,17,21),las=1)
     mtext("A", side=3, cex=2, adj=0)
     mtext(expression(paste("temperature (",degree,"C)")),side=4, cex=1.2, line=3)
+    rect(i-24*60*60*6, 0, i-24*60*60, 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
 
-    plot(fluo.LPF$x, fluo.LPF$y/1000,  xlab="", ylab="", xlim=c(i,f), type='l', xaxt='n', yaxt='n', lwd=1.5, ylim=c(0,1.8))
-    axis(2, at=c(0, 0.9, 1.8), las=1)
+    plot(fluo.LPF$x, fluo.LPF$y/1000,  xlab="", ylab="", xlim=c(i-24*60*60*6,f), type='l', xaxt='n', yaxt='n', lwd=1.5)
+    axis(2, at=c(0.8, 2.1, 3.4), las=1)
     axis.POSIXct(1, at=seq(i, f, by=60*60*24*6), labels=c(1,7,14,21))
     #mtext(substitute(paste("PAR (",mu, "E m"^{-1},"s"^{-1},')')),side=2, cex=1.2, line=3)
     mtext("red fluo (rfu)",side=2, cex=1.2, line=3)
     mtext("B", side=3, cex=2, adj=0)
     par(new=T)
-    plot(ph.LPF$x, ph.LPF$y,  xlab="", ylab="", xlim=c(i,f), type='l', xaxt='n', yaxt='n', col='darkgrey', lwd=1.5)
-    axis(4, at=c(7.8, 8.1, 8.4),las=1)
-    mtext('pH',side=4, cex=1.2, line=3)
+    plot(oxy.LPF$x, oxy.LPF$y,  xlab="", ylab="", xlim=c(i-24*60*60*6,f), type='l', xaxt='n', yaxt='n', col='darkgrey', lwd=1.5)
+    axis(4, at=c(70,80,90), las=1)
+    mtext('oxygen sat (%)',side=4, cex=1.2, line=3)
+    rect(i-24*60*60*6, 0, i-24*60*60, 100.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
 
-    plotCI(time.nut, daily.DIN,  daily.DIN.sd, xlab="", ylab="", xlim=c(i,f), sfrac=0, xaxt='n', yaxt='n', lwd=1.5, ylim=c(0,34),pch=16)
+    plotCI(time.nut, daily.DIN,  daily.DIN.sd, xlab="", ylab="", xlim=c(i-24*60*60*6,f), sfrac=0, xaxt='n', yaxt='n', lwd=1.5, ylim=c(0,34),pch=16)
     points(time.nut, daily.DIN, lwd=1.5)
     axis(2, at=c(0, 17,34), las=1)
     mtext(substitute(paste("DIN (",mu, "M)")),side=2, cex=1.2, line=3)
 
     par(new=T)
-    plotCI(time.nut, daily.PO4,  daily.PO4.sd, sfrac=0, xlab="", ylab="", xlim=c(i,f), pch=16, xaxt='n', yaxt='n', lwd=1.5, ylim=c(0,1.6),col='darkgrey')
+    plotCI(time.nut, daily.PO4,  daily.PO4.sd, sfrac=0, xlab="", ylab="", xlim=c(i-24*60*60*6,f), pch=16, xaxt='n', yaxt='n', lwd=1.5, ylim=c(0,1.6),col='darkgrey')
     points(time.nut, daily.PO4, lwd=1.5, col='darkgrey')
     axis(4, at=c(0, 0.8,1.6), las=1)
     axis.POSIXct(1, at=seq(i, f, by=60*60*24*6), labels=c(1,7,14,21))
     mtext(substitute(paste("DIP (",mu, "M)")),side=4, cex=1.2, line=3)
     mtext("C", side=3, cex=2, adj=0)
     mtext("time (d)", side=1, cex=1.2, outer=T, line=-1)
+    rect(i-24*60*60*6, -10, i-24*60*60, 100.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
 
 
 dev.off()
@@ -298,30 +319,30 @@ dev.off()
 
 
 
-### PH / DIN CORRELATION
-
-png("FigureS2.png", width=114*2, height=114, pointsize=8, res=600, units="mm")
-
-par(mfrow=c(1,2), mar=c(3,2,2,2), pty="s", cex=1.2, oma=c(1,3,1,0))
-
-    plot(data[,c(3,6)],yaxt='n',ylim=c(7.8,8.4),xlim=c(0,1.6), yaxt='n', xaxt='n', xlab=NA, ylab=NA)
-    abline(b=P04.ph$regression.results[4,3],a=P04.ph$regression.results[4,2], lty=2)
-    axis(2, at=c(7.8,8.1,8.4),las=1)
-    axis(1, at=c(0,0.8,1.6))
-    text(y=8.3,x=1.4,substitute(paste("R"^{2}," = 0.30")), cex=1)
-    mtext("pH",side=2, cex=1.2, line=3)
-    mtext(substitute(paste("DIP (",mu, "M)")),side=1, cex=1.2, line=2.5)
-    mtext("A", side=3, cex=2, line=0, adj=0)
-
-    plot(data[,c(2,6)],yaxt='n',ylim=c(7.8,8.4),xlim=c(5,35), yaxt='n', xaxt='n', xlab=NA, ylab=NA)
-    abline(b=DIN.ph$regression.results[4,3],a=DIN.ph$regression.results[4,2], lty=2)
-    axis(2, at=c(7.8,8.1,8.4),las=1)
-    axis(1, at=c(5,20,35))
-    text(y=8.3,x=31.5,substitute(paste("R"^{2}, "= 0.37")), cex=1)
-    mtext(substitute(paste("DIN (",mu, "M)")),side=1, cex=1.2, line=2.5)
-    mtext("B", side=3, cex=2, line=0, adj=0)
-
-dev.off()
+# ### PH / DIN CORRELATION
+#
+# png("FigureS2.png", width=114*2, height=114, pointsize=8, res=600, units="mm")
+#
+# par(mfrow=c(1,2), mar=c(3,2,2,2), pty="s", cex=1.2, oma=c(1,3,1,0))
+#
+#     plot(data[,c(3,6)],yaxt='n',ylim=c(7.8,8.4),xlim=c(0,1.6), yaxt='n', xaxt='n', xlab=NA, ylab=NA)
+#     abline(b=P04.ph$regression.results[4,3],a=P04.ph$regression.results[4,2], lty=2)
+#     axis(2, at=c(7.8,8.1,8.4),las=1)
+#     axis(1, at=c(0,0.8,1.6))
+#     text(y=8.3,x=1.4,substitute(paste("R"^{2}," = 0.30")), cex=1)
+#     mtext("pH",side=2, cex=1.2, line=3)
+#     mtext(substitute(paste("DIP (",mu, "M)")),side=1, cex=1.2, line=2.5)
+#     mtext("A", side=3, cex=2, line=0, adj=0)
+#
+#     plot(data[,c(2,6)],yaxt='n',ylim=c(7.8,8.4),xlim=c(5,35), yaxt='n', xaxt='n', xlab=NA, ylab=NA)
+#     abline(b=DIN.ph$regression.results[4,3],a=DIN.ph$regression.results[4,2], lty=2)
+#     axis(2, at=c(7.8,8.1,8.4),las=1)
+#     axis(1, at=c(5,20,35))
+#     text(y=8.3,x=31.5,substitute(paste("R"^{2}, "= 0.37")), cex=1)
+#     mtext(substitute(paste("DIN (",mu, "M)")),side=1, cex=1.2, line=2.5)
+#     mtext("B", side=3, cex=2, line=0, adj=0)
+#
+# dev.off()
 
 
 
@@ -589,9 +610,9 @@ png("Figure5.png", width=114*2, height=114*2, pointsize=8, res=600, units="mm")
 ###  DIVISION RATES
 
 
-png("FigureS6.png", width=114*2, height=114*2, pointsize=8, res=600, units="mm")
+png("FigureS6.png", width=114*2, height=114*1, pointsize=8, res=600, units="mm")
 
-par(mfrow=c(2,2), mar=c(3,2,2,3), pty="s", cex=1.2, oma=c(1,3,1,0))
+par(mfrow=c(1,2), mar=c(3,2,2,3), pty="s", cex=1.2, oma=c(1,3,1,0))
 
     plot(data.dr[,c(3,9)], ylim=c(0,1.6), yaxt='n', xaxt='n', xlab=NA, ylab=NA, xlim=c(0,1.6))
     axis(2, at=c(0,0.8,1.6),las=1)
@@ -613,14 +634,14 @@ par(mfrow=c(2,2), mar=c(3,2,2,3), pty="s", cex=1.2, oma=c(1,3,1,0))
     mtext("B", side=3, cex=2, adj=0)
   #  mtext(substitute(paste("division (d"^{-1},')')), side=2, cex=1.2, line=3)
 
-    plot(data.dr[,c(6,9)],ylim=c(0,1.6), yaxt='n',xlim=c(7.8,8.4),yaxt='n', xaxt='n', xlab=NA, ylab=NA)
-    axis(1, at=c(7.8,8.1,8.4))
-    axis(2, at=c(0,0.8,1.6),las=1)
-    mtext("pH",side=1, cex=1.2, line=2.5)
-    mtext("C", side=3, cex=2, adj=0)
-    abline(b=ph.DR$regression.results[4,3],a=ph.DR$regression.results[4,2], lty=2)
-    text(8.3,1.4,substitute(paste("R"^{2}, "= 0.41")), cex=1)
-    mtext(substitute(paste("division (d"^{-1},')')), side=2, cex=1.2, line=3)
+    # plot(data.dr[,c(6,9)],ylim=c(0,1.6), yaxt='n',xlim=c(7.8,8.4),yaxt='n', xaxt='n', xlab=NA, ylab=NA)
+    # axis(1, at=c(7.8,8.1,8.4))
+    # axis(2, at=c(0,0.8,1.6),las=1)
+    # mtext("pH",side=1, cex=1.2, line=2.5)
+    # mtext("C", side=3, cex=2, adj=0)
+    # abline(b=ph.DR$regression.results[4,3],a=ph.DR$regression.results[4,2], lty=2)
+    # text(8.3,1.4,substitute(paste("R"^{2}, "= 0.41")), cex=1)
+    # mtext(substitute(paste("division (d"^{-1},')')), side=2, cex=1.2, line=3)
 
 
 dev.off()
