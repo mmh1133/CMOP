@@ -41,15 +41,9 @@ crypto <- subset(stat, h.time > as.POSIXct("2013-09-10 16:50:00", tz='GMT') & h.
 sal <- read.csv(paste0(user, "salinityCMOP_6"))
     sal$time <- as.POSIXct(strptime(sal$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
     sal <- subset(sal, time > i-24*60*60*6 & time < f)
-        sal.LPF <- smooth.spline(sal$time, sal$water_salinity, spar=0.002)
-        id <- which(diff(sal.LPF$x) > 60*60*3)
-        sal.LPF$y[id] <- NA
-        temp.LPF <- smooth.spline(sal$time, sal$water_temperature, spar=0.002)
-        id <- which(diff(temp.LPF$x) > 60*60*3)
-        temp.LPF$y[id] <- NA
-
-plot(sal$time, sal$water_salinity)
-plot(sal$time, sal$water_temperature)
+        id <- which(diff(sal$time) > 60*60*3)
+        sal$water_salinity[id] <- NA
+        sal$water_temperature[id] <- NA
 
 par <- read.csv(paste0(user, "Par_CMOP_6"))
     par$time <- as.POSIXct(par$time, format="%Y/%m/%d %H:%M:%S",  tz= "GMT")
@@ -60,21 +54,25 @@ par <- read.csv(paste0(user, "Par_CMOP_6"))
 
 oxy <- read.csv(paste0(user, "oxygenCMOP_6"))
     oxy$time <- as.POSIXct(strptime(oxy$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
+    oxy <- oxy[order(oxy$time),]
     oxy<- subset(oxy, time > i-24*60*60*6 & time < f)
-    oxy.LPF <- smooth.spline(oxy$time, oxy$oxygensat)#, spar=0.05)
-    id <- which(diff(oxy.LPF$x) > 60*60*6)
-    oxy.LPF$y[id] <- NA
-
-plot(oxy.LPF$x, oxy.LPF$y)
-plot(oxy$time, oxy$oxygensat)
+    oxy[which(oxy$oxygensat > 97 | oxy$oxygensat < 70),] <- NA
+    id <- which(diff(oxy$oxygensat) > 6 | diff(oxy$oxygensat) < -6)
+    oxy$oxygensat[id] <- NA
+    id <- which(diff(oxy$time) > 60*60*3)
+    oxy$oxygensat[id] <- NA
+    oxy$oxygensat[c(7105,  7215, 7216,  9835,  9836,  9837)] <- NA
 
 fluo <- read.csv(paste0(user, "phytoflashCMOP_6"))
         fluo$time <- as.POSIXct(strptime(fluo$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
         fluo <- subset(fluo, fo < 4000)
         fluo<- subset(fluo, time > i-24*60*60*6 & time < f)
-      id <- which(diff(fluo$time) > 60*60*3)
-            fluo.LPF <- smooth.spline(fluo$time, fluo$fo)#, spar=0.01, df=2)
-            fluo.LPF$y[id] <- NA
+        id <- which(diff(fluo$fo) > 400 | diff(fluo$fo) < -400)
+        fluo$fo[id] <- NA
+        fluo$fo[c(10242:10255,20747:20752)] <- NA
+        fluo$fo[c(5779:5781)] <- c(3200,2700,2200)
+        id <- which(diff(fluo$time) > 60*60*3)
+        fluo$fo[id] <- NA
 
 # fluo <- read.csv(paste0(user, "fluorescenceCMOP_6"))
 #     fluo$time <- as.POSIXct(strptime(fluo$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
@@ -242,20 +240,24 @@ temp.elev <- lmodel2(temp ~ elevation, data.cor2, "relative", "relative", 99)
 ###########
 ### MAP ###
 ###########
-
+def.par <- par(no.readonly = TRUE)
 
 png("FigureS1.png", width=114, height=114, pointsize=8, res=600, units="mm")
 
-    par(mfrow=c(2,1), mar=c(0,0,0,0), oma=c(0,0,0,0))
-    map("worldHires", 'usa', xlim=c(-140, -50), ylim=c(25,50),col="grey", interior=F, fill=T)
-    lat<-c(46.21)
-    lon<-c(-123.91)
-    polygon(c(-125,-122.5,-122.5,-125), c(45,45,47,47), border='black', lwd=1.5)
-    map("worldHires", xlim=c(-124.5,-123.15), ylim=c(45.9,46.5), col="lightgrey", fill=T)
+    layout(matrix(c(1,1,1,2,2,2,2,2,2), 3, 3, byrow = TRUE))
+    par(mar=c(0,0,0,0), oma=c(0,0,0,0), cex=1)
+
+    map("worldHires", xlim=c(-140, -105), ylim=c(40,55),col="grey", interior=F, fill=T)
+    polygon(c(-125,-122.5,-122.5,-125), c(46,46,47,47), border='black', lwd=1.5)
+    box(col='black', lwd=1.5)
+    text(-113, 52, "Canada", cex=1.5)
+    text(-112, 47, "USA", cex=1.5)
+
+    map("worldHires", xlim=c(-124.5,-123.15), ylim=c(45.9,46.5), col="grey", fill=T, resolution=0)
     lat<-c(46.21)
     lon<-c(-123.91)
     points(lon, lat, pch=16, col="black", cex=2.5)
-    text(lon, lat+0.04, "SATURN-03", cex=0.8)
+    text(lon, lat+0.04, "SATURN-03", cex=1)
     map.scale(-123.6, 46, ratio=F)
     text(-124.3, 46.2, "Pacific \nOcean", cex=1.5)
     text(-123.5, 46.4, "Columbia River \nEstuary", cex=1.5)
@@ -273,30 +275,36 @@ dev.off()
 
 png("Figure1.png", width=114*2, height=114*1.5, pointsize=8, res=600, units="mm")
 
-par(mfrow=c(3,1), mar=c(3,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
+par(mfrow=c(3,1), mar=c(0,2,0,2), pty="m", cex=1.2, oma=c(4,3,2,3))
 
-    plot(sal.LPF$x, sal.LPF$y,  xlab="", ylab="", xlim=c(i-24*60*60*6,f), type='l', xaxt='n', yaxt='n', lwd=1.5, ylim=c(0,50))
+    plot(sal$time, sal$water_salinity,  xlab="", ylab="", xlim=c(i-24*60*60*6,f), type='l', xaxt='n', yaxt='n', lwd=1.5, ylim=c(0,50))
     axis(2, at=c(0, 30, 15), las=1)
-    axis.POSIXct(1, at=seq(i, f, by=60*60*24*6), labels=c(1,7,14,21))
+    axis.POSIXct(1, at=seq(i, f, by=60*60*24*6), labels=NA)
     mtext("salinity (psu)",side=2, cex=1.2, line=3)
     par(new=T)
-    plot(temp.LPF$x, temp.LPF$y,  xlab="", ylab="", xlim=c(i-24*60*60*6,f), type='l', xaxt='n', yaxt='n', col='darkgrey', lwd=1.5, ylim=c(5,21))
+    plot(sal$time, sal$water_temperature,  xlab="", ylab="", xlim=c(i-24*60*60*6,f), type='l', xaxt='n', yaxt='n', col='darkgrey', lwd=1.5, ylim=c(5,21))
     axis(4, at=c(13,17,21),las=1)
     mtext("A", side=3, cex=2, adj=0)
     mtext(expression(paste("temperature (",degree,"C)")),side=4, cex=1.2, line=3)
     rect(i-24*60*60*6, 0, i-24*60*60, 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
 
-    plot(fluo.LPF$x, fluo.LPF$y/1000,  xlab="", ylab="", xlim=c(i-24*60*60*6,f), type='l', xaxt='n', yaxt='n', lwd=1.5)
+    mtext(c("Spring"), 3, at=sal$time[7000])
+    mtext(c("Neap"), 3, at=sal$time[20000])
+    mtext(c("Spring"), 3, at=sal$time[36000])
+    mtext(c("Neap"), 3, at=sal$time[51000])
+    mtext(c("Neap"), 3, at=sal$time[55500])
+
+    plot(fluo$time, fluo$fo/1000,  xlab="", ylab="", xlim=c(i-24*60*60*6,f), type='l', xaxt='n', yaxt='n', lwd=1.5)
     axis(2, at=c(0.8, 2.1, 3.4), las=1)
-    axis.POSIXct(1, at=seq(i, f, by=60*60*24*6), labels=c(1,7,14,21))
+    axis.POSIXct(1, at=seq(i, f, by=60*60*24*6), labels=NA)
     #mtext(substitute(paste("PAR (",mu, "E m"^{-1},"s"^{-1},')')),side=2, cex=1.2, line=3)
     mtext("red fluo (rfu)",side=2, cex=1.2, line=3)
     mtext("B", side=3, cex=2, adj=0)
     par(new=T)
-    plot(oxy.LPF$x, oxy.LPF$y,  xlab="", ylab="", xlim=c(i-24*60*60*6,f), type='l', xaxt='n', yaxt='n', col='darkgrey', lwd=1.5)
+    plot(oxy$time, oxy$oxygensat,  xlab="", ylab="", xlim=c(i-24*60*60*6,f), type='l', xaxt='n', yaxt='n', col='darkgrey', lwd=1.5, ylim=c(50,100))
     axis(4, at=c(70,80,90), las=1)
     mtext('oxygen sat (%)',side=4, cex=1.2, line=3)
-    rect(i-24*60*60*6, 0, i-24*60*60, 100.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
+    rect(i-24*60*60*6, 0, i-24*60*60, 200.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
 
     plotCI(time.nut, daily.DIN,  daily.DIN.sd, xlab="", ylab="", xlim=c(i-24*60*60*6,f), sfrac=0, xaxt='n', yaxt='n', lwd=1.5, ylim=c(0,34),pch=16)
     points(time.nut, daily.DIN, lwd=1.5)
@@ -310,7 +318,7 @@ par(mfrow=c(3,1), mar=c(3,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
     axis.POSIXct(1, at=seq(i, f, by=60*60*24*6), labels=c(1,7,14,21))
     mtext(substitute(paste("DIP (",mu, "M)")),side=4, cex=1.2, line=3)
     mtext("C", side=3, cex=2, adj=0)
-    mtext("time (d)", side=1, cex=1.2, outer=T, line=-1)
+    mtext("time (d)", side=1, cex=1.2, outer=T, line=2)
     rect(i-24*60*60*6, -10, i-24*60*60, 100.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
 
 
@@ -384,9 +392,9 @@ dev.off()
 
 
 
-png("Figure3.png", width=114*2, height=114*1.5, pointsize=8, res=600, units="mm")
+png("Figure2.png", width=114*2, height=114*1.5, pointsize=8, res=600, units="mm")
 
-par(mfrow=c(4,1), mar=c(3,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
+par(mfrow=c(4,1), mar=c(2,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
 
     #week 1
     df <- crypto.week1
@@ -553,7 +561,7 @@ dev.off()
 
 ### CELL CYCLE / MODEL
 
-png("FigureS5.png", width=114, height=114, pointsize=8, res=600, units="mm")
+png("FigureS3.png", width=114, height=114, pointsize=8, res=600, units="mm")
 
     par(pty='s')
     plotCI(data.cc[,1],data.cc[,2], uiw=data.cc[,3]/sqrt(3), xlim=c(0,0.06), ylim=c(0,0.06), xaxt='n', yaxt='n', err='x', sfrac=0,
@@ -564,7 +572,7 @@ png("FigureS5.png", width=114, height=114, pointsize=8, res=600, units="mm")
     abline(a=0, b=1, lty=2)
     axis(1, at=c(0,0.03,0.06))
     axis(2, at=c(0,0.03,0.06), las=1)
-        text(0.0075, 0.05,substitute(paste("R"^{2}, "= 0.59")), cex=1)
+        text(0.0075, 0.05,substitute(paste("R"^{2}, "= 0.60")), cex=1)
     mtext(substitute(paste("DNA-based division (h"^{-1},")")), side=1, line=3, cex=1.2)
     mtext(substitute(paste("Size-based division (h"^{-1},")")), side=2, line=3, cex=1.2)
 
