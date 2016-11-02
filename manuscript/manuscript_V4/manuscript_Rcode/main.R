@@ -399,7 +399,7 @@ dev.off()
 
 
 
-png("Figure2.png", width=114*2, height=114*1.5, pointsize=8, res=600, units="mm")
+png("Figure3.png", width=114*2, height=114*1.5, pointsize=8, res=600, units="mm")
 
 par(mfrow=c(4,1), mar=c(2,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
 
@@ -493,7 +493,7 @@ dev.off()
 ### CRYPTO / MESO CORRELATION
 
 
-png("Figure3.png", width=114, height=114, pointsize=8, res=600, units="mm")
+png("Figure4.png", width=114, height=114, pointsize=8, res=600, units="mm")
 
 par(mfrow=c(1,1), mar=c(3,2,1,2), pty="s", cex=1.2, oma=c(1,3,1,0))
 
@@ -505,7 +505,7 @@ par(mfrow=c(1,1), mar=c(3,2,1,2), pty="s", cex=1.2, oma=c(1,3,1,0))
     mtext("Cryptophytes                             ", side=2, cex=1.2,  line=3, font=1)
     mtext(substitute(paste("                 (10"^{6}, " cells L"^{-1},')')), side=2, cex=1.2,  line=3)
     mtext(substitute(paste("                 (10"^{6}, " cells L"^{-1},')')), side=1, cex=1.2,  line=3)
-    mtext("Mesodinium                      ", side=1, cex=1.2,  line=2.83, font=3)
+    mtext("Mesodinium                          ", side=1, cex=1.2,  line=2.83, font=3)
     points(log(data[1,c(1,2)]), col=2)
 
 dev.off()
@@ -521,7 +521,7 @@ dev.off()
 vol <- 10^(1.2384*log10(h.fsc.mean/63) + 1.003)
 vol.sd <- vol*h.fsc.sd/h.fsc.mean
 
-png("Figure4.png", width=114*2, height=114*2, pointsize=8, res=600, units="mm")
+png("Figure5.png", width=114*2, height=114*2, pointsize=8, res=600, units="mm")
 
 par(mfrow=c(3,1), mar=c(3,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
 
@@ -625,7 +625,7 @@ png("Figure5.png", width=114*2, height=114*2, pointsize=8, res=600, units="mm")
 ###  DIVISION RATES
 
 
-png("FigureS6.png", width=114*2, height=114*1, pointsize=8, res=600, units="mm")
+png("Figure7.png", width=114*2, height=114*1, pointsize=8, res=600, units="mm")
 
 par(mfrow=c(1,2), mar=c(3,2,2,3), pty="s", cex=1.2, oma=c(1,3,1,0))
 
@@ -681,7 +681,7 @@ opp <- get.opp.by.date("2013-09-10 17:00","2013-09-10 18:00")
 opp2 <- opp[round(seq(1, nrow(opp), length.out = 50000)),]
 crypto <- subset(opp2, pop == "crypto")
 
-png("FigureS3A.png", width=114, height=114, pointsize=8, res=600, units="mm")
+png("Figure2.png", width=114, height=114, pointsize=8, res=600, units="mm")
 
 par(mfrow=c(1,2), cex=1.2)
 plot.cytogram(opp2, para.x="fsc_small", para.y="chl_small", xlab = "light scatter", ylab="red fluo")
