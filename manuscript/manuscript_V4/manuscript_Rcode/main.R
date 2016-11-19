@@ -390,7 +390,8 @@ par(mfrow=c(2,1), mar=c(3,2,2,2), pty="m", cex=1.2, oma=c(1,3,1,3))
     mtext(substitute(paste("Influx - abundance (10"^{6}, " cells L"^{-1},')')), side=1, cex=1.2,  line=3)
     mtext("B", side=3, cex=2, adj=0)
     abline(b=cor.influx$regression.results[4,3],a=cor.influx$regression.results[4,2], lty=2)
-    text(0.05,1,substitute(paste("R"^{2}, "= 0.81")), cex=1)
+    text(0.05,1,substitute(paste("R"^{2}, "= 0.83")), cex=1)
+    text(0.05,0.7,"p < 0.01", cex=1, font=3)
 
 dev.off()
 
@@ -581,6 +582,7 @@ png("FigureS3.png", width=114, height=114, pointsize=8, res=600, units="mm")
     axis(1, at=c(0,0.03,0.06))
     axis(2, at=c(0,0.03,0.06), las=1)
         text(0.0075, 0.05,substitute(paste("R"^{2}, "= 0.60")), cex=1)
+        text(0.0075, 0.045,"p < 0.01", cex=1, font=3)
     mtext(substitute(paste("DNA-based division (h"^{-1},")")), side=1, line=3, cex=1.2)
     mtext(substitute(paste("Size-based division (h"^{-1},")")), side=2, line=3, cex=1.2)
 
