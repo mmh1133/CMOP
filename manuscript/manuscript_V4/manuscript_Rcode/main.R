@@ -424,6 +424,7 @@ par(mfrow=c(4,1), mar=c(2,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
     mtext(substitute(paste("abundance (10"^{6}, " cells L"^{-1},')')), side=2, cex=1.2, outer=T, line=1)
     mtext("time (d)", side=1, cex=1.2, outer=T, line=-1)
     points(meso$Time, meso$Meso, pch=16, cex=1.5)
+    mtext("Neap", side=4)
 
     #week 2
     df <- crypto.week2
@@ -442,6 +443,7 @@ par(mfrow=c(4,1), mar=c(2,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
     rect(as.POSIXct("2013-09-19 07:48:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-19 13:52:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
     rect(as.POSIXct("2013-09-19 20:16:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-20 02:12:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
     points(meso$Time, meso$Meso, pch=16, cex=1.5)
+    mtext("Spring", side=4)
 
 
     #week 3
@@ -462,6 +464,7 @@ par(mfrow=c(4,1), mar=c(2,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
     rect(as.POSIXct("2013-09-16 17:43:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-16 23:36:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
     rect(as.POSIXct("2013-09-27 01:45:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-09-27 07:24:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
     points(meso$Time, meso$Meso, pch=16, cex=1.5)
+    mtext("Neap", side=4)
 
 
     #week 4
@@ -482,6 +485,7 @@ par(mfrow=c(4,1), mar=c(2,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
     rect(as.POSIXct("2013-10-03 19:18:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-10-04 01:16:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
     rect(as.POSIXct("2013-10-04 07:26:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-10-04 13:25:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
     points(meso$Time, meso$Meso, pch=16, cex=1.5)
+    mtext("Neap", side=4)
 
 
 dev.off()
@@ -632,22 +636,22 @@ png("Figure7.png", width=114*2, height=114*1, pointsize=8, res=600, units="mm")
 
 par(mfrow=c(1,2), mar=c(3,2,2,3), pty="s", cex=1.2, oma=c(1,3,1,0))
 
-    plot(data.dr[,c(3,9)], ylim=c(0,1.6), yaxt='n', xaxt='n', xlab=NA, ylab=NA, xlim=c(0,1.6))
+    plot(data.dr[,c(3,9)], ylim=c(0,1.6), yaxt='n', xaxt='n', xlab=NA, ylab=NA, xlim=c(0.4,1.0))
     axis(2, at=c(0,0.8,1.6),las=1)
-    axis(1, at=c(0, 0.8, 1.6))
+    axis(1, at=c(0.4, 0.7, 1))
     abline(b=P04.DR$regression.results[4,3],a=P04.DR$regression.results[4,2], lty=2)
-    text(1.4,0.2,substitute(paste("R"^{2}, "= 0.44")), cex=1)
-    text(1.4,0.1,"p = 0.03", cex=1, font=3)
+    text(0.9,0.2,substitute(paste("R"^{2}, "= 0.44")), cex=1)
+    text(0.9,0.1,"p = 0.03", cex=1, font=3)
     mtext(substitute(paste("division (d"^{-1},')')), side=2, cex=1.2, line=3)
     mtext(substitute(paste("DIP (",mu, "M)")),side=1, cex=1.2, line=2.5)
     mtext("A", side=3, cex=2, adj=0)
 
-    plot(data.dr[,c(2,9)], ylim=c(0,1.6), yaxt='n', xaxt='n', xlab=NA, ylab=NA, xlim=c(5,35))
+    plot(data.dr[,c(2,9)], ylim=c(0,1.6), yaxt='n', xaxt='n', xlab=NA, ylab=NA, xlim=c(5,25))
     axis(2, at=c(0,0.8,1.6),las=1)
-    axis(1, at=c(5,20,35))
+    axis(1, at=c(5,15,25))
     abline(b=DIN.DR$regression.results[4,3],a=DIN.DR$regression.results[4,2], lty=2)
-    text(30,0.2,substitute(paste("R"^{2}, "= 0.30")), cex=1)
-    text(30,0.1,"p = 0.04", cex=1, font=3)
+    text(22,0.2,substitute(paste("R"^{2}, "= 0.30")), cex=1)
+    text(22,0.1,"p = 0.04", cex=1, font=3)
     mtext(substitute(paste("DIN (",mu, "M)")),side=1, cex=1.2, line=2.5)
     mtext("B", side=3, cex=2, adj=0)
   #  mtext(substitute(paste("division (d"^{-1},')')), side=2, cex=1.2, line=3)
