@@ -1,0 +1,41 @@
+Reviewer: 1
+
+Comments to the Author
+My main concern with this ms is that there really is only a limited connection between its data and M. rubrum.  The paper is about cryptophytes.  While that is the focus of the title, the ms itself spends a lot of time speculating about control of M rubrum blooms, about which there is no data here.  My first question is whether there is any way to confirm that this was "post-bloom" and not just "no bloom this year"?  A recent paper by Dierssen et al in PNAS used ocean color to quantify M rubrum.  If the data from the present ms could be put into the context of some real data about an actual prior bloom in this estuary, it would make the connection between the ciliate and the cryptophyte abundance more concrete.
+At 0.1-0.3 x 10^6 per L Mesodinium was still pretty high during the study. What about physical mechanisms leading to bloom decline?  The authors seem too quick to make the connection between DIN, cryptophytes and bloom decline without direct data.  In this regard, the Conclusion section is a bit of an overreach.  The data do not "show" nutrient-limited division rates, much less that this leads to bloom decline of the ciliate.  These words should be tempered.
+
+Some specifics:
+Confused wording about the sampling (lines 96-100).  There is either a redundancy here or I did not follow.
+Put more information on the figures, for example add the symbols on the axes.  Nowadays, the reader expects to be able to understand the figure without reading the caption unless there is confusion.
+It is bit disappointing not to have SSU to confirm that the cells were indeed Teleaulax.  Matt Johnson has published some interesting data on different clades of cryptophytes co-occurring with M rubrum, but perhaps that is beyond the scope of this ms.
+What is the tidal excursion - the spatial extent of advection at the fixed site?  This would help evaluate the scale of "patchiness" for the cryptophytes.
+Point out to the reader that figure 3 is a log scale.
+lines 259-261 confusion. "Population growth rates" were 0.2-1.5, whereas "doubling rates" or "division rates" were 0.3-2.1 per day.  As written, the authors use "division rates" in two different senses.
+
+Reviewer: 2
+
+Comments to the Author
+minor issues:
+
+Intro
+line 43: Regarding the Qiu reference… this is fine as it is written here but you may want to add after this reference (but see Johnson et al. 2017). I’ll send you a copy of my recent PNAS letter if you like, a response to Qiui et al., titled “Mesodinium rubrum: the symbiosis that isn’t”. The bottom line is that I think they were wrong and that M. rubrum does not harbor intact endosymbionts that divide. More accurately it farms organelles (as previously described).
+
+Methods:
+Line 135 and 153: 0.025% and 0.01% gluteraldehyde seem low. Are you sure these are correct?
+
+Discussion:
+Line 322: again, I don’t think that this report by Qiu et al is correct, but you can leave this in if you like.
+
+major issues
+
+The title and theme: How confident are you of your assessment that these are all Teleaulax cryptophytes? I have trouble believing that the populations are all Teleaulax since there is no rigorous proof to back this up. Checking for cell morphology and size of populations that are sorted is not enough to say for sure in cryptophytes (they are notoriously difficult to identify). T. amphioxeia does have a distinct morphotype but there are no statistics showing what % of observed cells matched this (certainly not 100%). I think its OK to say either Teleaualx-like cryptophytes or Teleaulax dominated cryptophyte populations. Also, since you were not measure grazing, I don’t think you should use “prey” in the title. Certainly cryptophytes are more than just food. I think you should change the title to “Dynamics of cryptophytes during the decline of a red water bloom in the Columbia River Estuary”.
+
+In Fig. 3 you show a pattern for Teleaulax abundance that change but do not appear to be explained by spring/neap tide cycles. One possibility that you don’t bring up could be vertical movement. While your patterns don’t appear to be explained by diurnal cycles of migrations, a study in the Baltic showed that Teleaulax cryptophytes tended to be deeper during the day and more shallow at night (counter to ones expectations for a phototroph and different from other cryptophytes they observed). Why this would be the case is not clear (escaping predators?), but Teleaulax is pretty fast for a cryptophyte so migration could be a possibility for your variation.
+Baltic paper:
+Susanna Hajdu, Helena Höglander, Ulf Larsson, Phytoplankton vertical distributions and composition in Baltic Sea cyanobacterial blooms, Harmful Algae, Volume 6, Issue 2, February 2007, Pages 189-205, ISSN 1568-9883, http://dx.doi.org/10.1016/j.hal.2006.07.006.
+(//www.sciencedirect.com/science/article/pii/S1568988306000990)
+Keywords: Baltic Sea; Chrysochromulina; Picocyanobacteria; Phytoplankton; Vertical distribution
+
+Table S1. There is a reference to “see Materials and Methods” for Table S1 (i.e. LSU D2 region data) in the figure legend, but no such methods exist. Also there is no reference to see Table S1 within the manuscript text. Therefore I assume this was included by mistake and should be removed? Also, these data don't support your assertion that Teleaulax dominated the cryptophyte populations very well.
+
+Sincerely, Matthew Johnson
