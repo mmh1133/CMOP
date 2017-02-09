@@ -74,6 +74,15 @@ fluo <- read.csv(paste0(user, "phytoflashCMOP_6"))
         id <- which(diff(fluo$time) > 60*60*3)
         fluo$fo[id] <- NA
 
+pe <- read.csv(paste0(user, "saturn03.240.A.CyanoWatch_2013_09_PD2temp.csv"))
+  pe <- subset(pe, phycoeryth_qa_status ==1 & phycoeryth..rfu. < 1)
+pe$time <- as.POSIXct(strptime(pe$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
+pe <- pe[1:37700,]
+  pe.LPF <- smooth.spline(pe$time, pe[,2], spar=0.4)
+
+plot(pe$time, pe[,2],type='p',pch=16)
+#lines(pe.LPF, col=2)
+
 # fluo <- read.csv(paste0(user, "fluorescenceCMOP_6"))
 #     fluo$time <- as.POSIXct(strptime(fluo$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
 #     fluo<- subset(fluo, time > i & time < f)
@@ -486,6 +495,7 @@ par(mfrow=c(4,1), mar=c(2,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
     rect(as.POSIXct("2013-10-04 07:26:00", origin="1970-01-01", tz='GMT'), 0.000000001, as.POSIXct("2013-10-04 13:25:00", origin="1970-01-01", tz='GMT'), 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
     points(meso$Time, meso$Meso, pch=16, cex=1.5)
     mtext("Neap", side=4)
+    legend('right', c("Teleaulax-like cryptophyte","M. rubrum"), pch=c(NA,16), lwd=c(1,NA), bty='n', text.font=c(1,3))
 
 
 dev.off()
@@ -540,7 +550,7 @@ par(mfrow=c(3,1), mar=c(3,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
     mtext("A", side=3, cex=2, line=0, adj=0)
     mtext(substitute(paste("Cell volume (", mu, "m"^{3},')')), side=2, cex=1.2, line=3)
     par(new=TRUE)
-    plotCI(na.approx(h.time),na.approx(h.fsc.mean), uiw=na.approx(h.fsc.sd), col="darkgrey", pch=NA, sfrac=0, lwd=2, xlim=c(min(cc$time, na.rm=T),max(cc$time, na.rm=T)),  xaxt='n', xlab=NA, ylab=NA, yaxt='n')
+    plotCI(na.approx(h.time),na.approx(h.fsc.mean), uiw=na.approx(h.fsc.sd), col="darkgrey", pch=NA, sfrac=0, lwd=1, xlim=c(min(cc$time, na.rm=T),max(cc$time, na.rm=T)),  xaxt='n', xlab=NA, ylab=NA, yaxt='n')
     lines(na.approx(h.time),na.approx(h.fsc.mean), lwd=1)
 
 
@@ -553,6 +563,7 @@ par(mfrow=c(3,1), mar=c(3,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
     # lines(cc$time,cc$mean.f.S*100, col='darkturquoise')
     axis(4, at=c(0,50,100), las=1)
     mtext('Cells in G1 or S+G2 (%)', side=4, cex=1.2, line=2.5)
+    legend('left', c("cell volume","G1", "G2+S"), pch=c(NA,16,21), lwd=c(1,NA,NA), bty='n')
 
 
     plotCI(cc$time,cc$div, uiw=na.approx(cc$div.se), sfrac=0, lwd=1, xlim=c(min(cc$time, na.rm=T),max(cc$time, na.rm=T)),ylim=c(0,0.06), pch=NA, xaxt='n', xlab=NA, ylab=NA, yaxt='n')
@@ -566,6 +577,7 @@ par(mfrow=c(3,1), mar=c(3,2,1,2), pty="m", cex=1.2, oma=c(1,3,1,3))
     mtext(substitute(paste("division (h"^{-1},")")), side=2, line=3, cex=1.2)
     mtext("B", side=3, cex=2, line=0, adj=0)
     mtext("time (h)", side=1, cex=1.2, line=2.5)
+    legend('topleft', c("cell-cycle based","size-based"), pch=c(1,NA), lwd=c(NA,1), bty='n')
 
 dev.off()
 
@@ -595,9 +607,28 @@ dev.off()
 
 
 
+### PE and CHL prior survey
 
+png("FigureS2.png", width=114*2, height=114*2, pointsize=8, res=600, units="mm")
 
+par(mfrow=c(3,1), mar=c(0,2,0,2), pty="m", cex=1.2, oma=c(4,3,2,3))
 
+plot(fluo$time, fluo$fo/1000,  xlab="", ylab="", xlim=c(i-24*60*60*6,f), type='l', xaxt='n', yaxt='n', lwd=1.5)
+axis(2, at=c(0.8, 2.1, 3.4), las=1)
+axis.POSIXct(1, at=seq(i, f, by=60*60*24*6), labels=NA)
+#mtext(substitute(paste("PAR (",mu, "E m"^{-1},"s"^{-1},')')),side=2, cex=1.2, line=3)
+mtext("red fluo (rfu)",side=2, cex=1.2, line=3)
+rect(i-24*60*60*6, 0, i-24*60*60, 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
+mtext("A", side=3, cex=2, adj=0)
+plot(pe$time, pe[,2],  xlab="", ylab="", xlim=c(i-24*60*60*6,f), type='l', xaxt='n', yaxt='n', col='darkgrey', lwd=1.5, ylim=c(0,1))
+rect(i-24*60*60*6, 0, i-24*60*60, 60.0, density=NULL, col=adjustcolor("black", alpha=0.15), border=NA)
+axis(2, at=c(0, 0.5, 1), las=1)
+mtext("orange fluo (rfu)",side=2, cex=1.2, line=3)
+mtext("B", side=3, cex=2, adj=0)
+axis.POSIXct(1, at=seq(i, f, by=60*60*24*6), labels=c(1,7,14,21))
+mtext("time (d)", side=1, cex=1.2, line=2)
+
+dev.off()
 
 
 
@@ -622,7 +653,7 @@ png("Figure5.png", width=114*2, height=114*2, pointsize=8, res=600, units="mm")
     axis(1, at=seq(min(data.dr$time), max(data.dr$time), by=60*60*24*6), labels=c(1,7,14,21))
     mtext(substitute(paste("division (d"^{-1},')')), side=2, cex=1.2, line=3)
     mtext("time (d)", side=1, cex=1.2, line=2)# par(new=T)
-     mtext("B", side=3, cex=2, line=0, adj=0)
+    mtext("B", side=3, cex=2, line=0, adj=0)
 
  dev.off()
 
