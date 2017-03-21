@@ -77,10 +77,10 @@ fluo <- read.csv(paste0(user, "phytoflashCMOP_6"))
 pe <- read.csv(paste0(user, "saturn03.240.A.CyanoWatch_2013_09_PD2temp.csv"))
   pe <- subset(pe, phycoeryth_qa_status ==1 & phycoeryth..rfu. < 1)
 pe$time <- as.POSIXct(strptime(pe$time.YYYY.MM.DD.hh.mm.ss.PST., "%Y/%m/%d %H:%M:%S"), tz="GMT")
-pe <- pe[1:37700,]
-  pe.LPF <- smooth.spline(pe$time, pe[,2], spar=0.4)
-
-plot(pe$time, pe[,2],type='p',pch=16)
+#pe <- pe[1:37700,]
+pe[50040:73174,2] <- pe[50040:73174,2] - 0.092
+pe[42295,2] <- NA
+plot(pe$time, pe[,2],type='l',pch=16)
 #lines(pe.LPF, col=2)
 
 # fluo <- read.csv(paste0(user, "fluorescenceCMOP_6"))
@@ -378,7 +378,7 @@ dev.off()
 
 ### INFLUX VALIDATION
 
-png("FigureS2.png", width=114*2, height=114*2, pointsize=8, res=600, units="mm")
+png("FigureS3.png", width=114*2, height=114*2, pointsize=8, res=600, units="mm")
 
 par(mfrow=c(2,1), mar=c(3,2,2,2), pty="m", cex=1.2, oma=c(1,3,1,3))
 
@@ -516,7 +516,7 @@ par(mfrow=c(1,1), mar=c(3,2,1,2), pty="s", cex=1.2, oma=c(1,3,1,0))
     axis(2, at=c(0, 0.15,0.3), las=1)
     axis(1, at=c(0, 0.15,0.3))
     abline(b=reg$regression.results[4,3],a=reg$regression.results[4,2], lty=2)
-    text(0.07,0.3,substitute(paste("R"^{2}, "= 0.24")), cex=1)
+    text(0.07,0.3,substitute(paste("R= 0.49")), cex=1)
     text(0.07,0.27,"p= 0.04", cex=1, font=3)
     mtext("Cryptophytes                             ", side=2, cex=1.2,  line=3, font=1)
     mtext(substitute(paste("                 (10"^{6}, " cells L"^{-1},')')), side=2, cex=1.2,  line=3)
@@ -586,7 +586,7 @@ dev.off()
 
 ### CELL CYCLE / MODEL
 
-png("FigureS3.png", width=114, height=114, pointsize=8, res=600, units="mm")
+png("FigureS4.png", width=114, height=114, pointsize=8, res=600, units="mm")
 
     par(pty='s')
     plotCI(data.cc[,1],data.cc[,2], uiw=data.cc[,3]/sqrt(3), xlim=c(0,0.06), ylim=c(0,0.06), xaxt='n', yaxt='n', err='x', sfrac=0,
@@ -671,7 +671,7 @@ par(mfrow=c(1,2), mar=c(3,2,2,3), pty="s", cex=1.2, oma=c(1,3,1,0))
     axis(2, at=c(0,0.8,1.6),las=1)
     axis(1, at=c(0.4, 0.7, 1))
     abline(b=P04.DR$regression.results[4,3],a=P04.DR$regression.results[4,2], lty=2)
-    text(0.9,0.2,substitute(paste("R"^{2}, "= 0.44")), cex=1)
+    text(0.9,0.2,substitute(paste("R = 0.66")), cex=1)
     text(0.9,0.1,"p = 0.03", cex=1, font=3)
     mtext(substitute(paste("division (d"^{-1},')')), side=2, cex=1.2, line=3)
     mtext(substitute(paste("DIP (",mu, "M)")),side=1, cex=1.2, line=2.5)
@@ -681,7 +681,7 @@ par(mfrow=c(1,2), mar=c(3,2,2,3), pty="s", cex=1.2, oma=c(1,3,1,0))
     axis(2, at=c(0,0.8,1.6),las=1)
     axis(1, at=c(5,15,25))
     abline(b=DIN.DR$regression.results[4,3],a=DIN.DR$regression.results[4,2], lty=2)
-    text(22,0.2,substitute(paste("R"^{2}, "= 0.30")), cex=1)
+    text(22,0.2,substitute(paste("R = 0.55")), cex=1)
     text(22,0.1,"p = 0.04", cex=1, font=3)
     mtext(substitute(paste("DIN (",mu, "M)")),side=1, cex=1.2, line=2.5)
     mtext("B", side=3, cex=2, adj=0)
